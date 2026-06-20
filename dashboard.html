@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SISJAD - Dashboard Penjadwalan</title>
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom Stylesheet -->
+    <link href="css/custom.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Loading GA Overlay -->
+    <div class="ga-overlay d-none" id="ga-loading-overlay">
+      <div
+        class="spinner-border text-light mb-3"
+        style="width: 3.5rem; height: 3.5rem"
+        role="status"
+      ></div>
+      <h3 class="h5 fw-bold text-white mb-2">
+        Mengevaluasi Algoritma Genetika...
+      </h3>
+      <p class="text-white-50 small mb-3">
+        Memproses mutasi dan seleksi slot tanpa bentrok.
+      </p>
+      <div
+        class="progress"
+        style="
+          width: 200px;
+          height: 6px;
+          background-color: rgba(255, 255, 255, 0.2);
+        "
+      >
+        <div
+          class="progress-bar bg-white"
+          id="ga-progress-bar"
+          role="progressbar"
+          style="width: 0%"
+          aria-valuenow="0"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+      </div>
+    </div>
+
+    <div class="d-flex min-vh-100">
+      <!-- Left Navigation Rail (Sidebar) -->
+      <aside class="sidebar-wrapper" id="sidebar">
+        <div>
+          <div
+            class="sidebar-brand d-flex align-items-center gap-2 p-4 border-bottom border-light border-opacity-10"
+          >
+            <div
+              class="bg-university-blue border border-light border-opacity-20 rounded p-1 text-center"
+              style="
+                width: 32px;
+                height: 32px;
+                font-weight: 800;
+                font-size: 14px;
+                background-color: var(--color-secondary);
+              "
+            >
+              S
+            </div>
+            <span class="brand-text fw-bold fs-5">SISJAD</span>
+          </div>
+
+          <nav class="mt-4" id="sidebar-nav">
+            <a class="sidebar-menu-item active" id="tab-dashboard-btn">
+              <i class="bi bi-grid-fill"></i>
+              <span class="sidebar-text">Dashboard Jadwal</span>
+            </a>
+            <a class="sidebar-menu-item" id="tab-master-btn">
+              <i class="bi bi-journal-text"></i>
+              <span class="sidebar-text">Data Master</span>
+            </a>
+            <a class="sidebar-menu-item" id="tab-requests-btn">
+              <i class="bi bi-chat-left-dots-fill"></i>
+              <span class="sidebar-text">Permohonan Jadwal</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- User Profile & Logout -->
+        <div
+          class="p-3 border-top border-light border-opacity-10 bg-dark bg-opacity-25"
+        >
+          <div class="profile-card d-flex align-items-center gap-2 mb-3">
+            <div
+              class="rounded-circle d-flex align-items-center justify-content-center fw-bold"
+              id="user-avatar"
+              style="
+                width: 36px;
+                height: 36px;
+                background-color: #86a0cd;
+                color: #002045;
+              "
+            >
+              AD
+            </div>
+            <div
+              class="profile-text d-flex flex-column overflow-hidden"
+              style="max-width: 170px"
+            >
+              <span
+                class="fw-semibold text-white text-truncate small"
+                id="user-email-text"
+                >admin@sisjad.ac.id</span
+              >
+              <span
+                class="text-uppercase text-secondary-fixed fw-bold text-truncate"
+                id="user-role-text"
+                style="font-size: 9px; letter-spacing: 0.05em; color: #adc7f7"
+                >admin</span
+              >
+            </div>
+          </div>
+          <button class="logout-btn" id="logout-btn">
+            <i class="bi bi-box-arrow-right"></i>
+            <span class="sidebar-text">Keluar</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content Panel -->
+      <div class="flex-grow-1 d-flex flex-column min-vh-100 overflow-auto">
+        <!-- Top Sticky Header -->
+        <header class="navbar bg-white border-bottom px-4 py-3 sticky-top">
+          <div class="d-flex flex-column">
+            <h1 class="h5 fw-bold text-university-blue mb-1" id="page-title">
+              Dashboard Distribusi Jadwal
+            </h1>
+            <p class="text-muted mb-0" style="font-size: 11px">
+              Program Studi Teknik Informatika - T.A. 2026/2027
+            </p>
+          </div>
+
+          <div class="d-flex align-items-center gap-3">
+            <span class="text-muted small fw-semibold" id="navbar-greeting">Halo, Pengguna</span>
+
+            <!-- Quick statistics badge list -->
+            <div class="d-flex gap-2">
+              <div
+                class="bg-light border rounded px-3 py-1 d-flex align-items-center gap-2"
+                style="font-size: 0.75rem"
+              >
+                <span
+                  class="rounded-circle d-inline-block"
+                  style="
+                    width: 8px;
+                    height: 8px;
+                    background-color: var(--conflict-validated);
+                  "
+                ></span>
+                <span class="fw-semibold" id="stat-valid-count">0 Valid</span>
+              </div>
+              <div
+                class="bg-light border rounded px-3 py-1 d-flex align-items-center gap-2 d-none"
+                id="stat-conflict-container"
+                style="font-size: 0.75rem"
+              >
+                <span
+                  class="rounded-circle d-inline-block"
+                  style="
+                    width: 8px;
+                    height: 8px;
+                    background-color: var(--conflict-hard);
+                  "
+                ></span>
+                <span class="fw-semibold" id="stat-conflict-count"
+                  >0 Bentrok</span
+                >
+              </div>
+              <div
+                class="bg-light border rounded px-3 py-1 d-flex align-items-center gap-2"
+                id="stat-warning-container"
+                style="font-size: 0.75rem"
+              >
+                <span
+                  class="rounded-circle d-inline-block"
+                  style="
+                    width: 8px;
+                    height: 8px;
+                    background-color: var(--conflict-soft);
+                  "
+                ></span>
+                <span class="fw-semibold" id="stat-warning-count"
+                  >0 Peringatan</span
+                >
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Action Toast Success -->
+        <div
+          class="toast-container position-fixed top-0 end-0 p-3"
+          style="z-index: 1060; margin-top: 70px"
+        >
+          <div
+            id="success-toast"
+            class="toast align-items-center text-white border-0"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+            style="background-color: var(--conflict-validated)"
+          >
+            <div class="d-flex">
+              <div class="toast-body d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill"></i>
+                <span id="success-toast-msg">Jadwal sukses divalidasi!</span>
+              </div>
+              <button
+                type="button"
+                class="btn-close btn-close-white me-2 m-auto"
+                data-bs-dismiss="toast"
+                aria-label="Close"
+              ></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Layout Body Container -->
+        <div class="p-4 flex-grow-1">
+          <!-- Banner for Administrator GA schedule trigger -->
+          <div
+            class="alert alert-primary mb-4 p-4 border-0 text-white rounded d-none"
+            id="admin-banner"
+            style="
+              background-color: var(--color-primary-dark);
+              box-shadow: 0 4px 12px rgba(0, 32, 69, 0.15);
+            "
+          >
+            <div
+              class="d-flex justify-content-between align-items-center flex-wrap gap-3"
+            >
+              <div>
+                <h3 class="h6 fw-bold text-white mb-1">
+                  Penjadwalan Otomatis Siap Dijalankan
+                </h3>
+                <p class="mb-0 text-white-50 small">
+                  Algoritma optimasi constraint dapat menyusun ulang jadwal
+                  dosen & ruang untuk membebaskan bentrok secara instan.
+                </p>
+              </div>
+              <div>
+                <button class="btn btn-indigo" id="banner-auto-schedule-btn">
+                  <i class="bi bi-play-circle-fill me-1"></i> Otomatisasi Jadwal
+                  (GA)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 1: WEEKLY CALENDAR & CONFLICTS GRID -->
+          <div class="row g-4" id="tab-dashboard-view">
+            <!-- Calendar Card Column -->
+            <div class="col-xl-8 col-12">
+              <div class="custom-card">
+                <div
+                  class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3 pb-3 border-bottom"
+                >
+                  <div class="d-flex align-items-center gap-2">
+                    <h2 class="h6 fw-bold text-university-blue mb-0">
+                      Jadwal Perkuliahan Mingguan
+                    </h2>
+                    <button class="btn btn-indigo btn-sm py-1 px-2 d-none" id="add-schedule-btn" style="font-size: 0.75rem;">
+                      <i class="bi bi-plus-lg"></i> Tambah Jadwal
+                    </button>
+                  </div>
+                  <div class="d-flex gap-3" style="font-size: 0.7rem">
+                    <div class="d-flex align-items-center gap-2">
+                      <span
+                        class="d-inline-block rounded-1"
+                        style="
+                          width: 12px;
+                          height: 12px;
+                          background-color: var(--conflict-validated);
+                        "
+                      ></span>
+                      <span class="text-muted fw-semibold">Valid</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                      <span
+                        class="d-inline-block rounded-1"
+                        style="
+                          width: 12px;
+                          height: 12px;
+                          background-color: var(--conflict-soft);
+                        "
+                      ></span>
+                      <span class="text-muted fw-semibold">Warning</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                      <span
+                        class="d-inline-block rounded-1"
+                        style="
+                          width: 12px;
+                          height: 12px;
+                          background-color: var(--conflict-hard);
+                        "
+                      ></span>
+                      <span class="text-muted fw-semibold">Bentrok</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Weekly Schedule Table Grid -->
+                <div class="weekly-calendar-grid" id="calendar-grid-container">
+                  <!-- Will be rendered dynamically via JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Constraint side panel -->
+            <div class="col-xl-4 col-12">
+              <div class="custom-card d-flex flex-column gap-3">
+                <div
+                  class="d-flex justify-content-between align-items-center pb-2 border-bottom"
+                >
+                  <h2
+                    class="h6 fw-bold text-university-blue mb-0"
+                    id="constraint-panel-title"
+                  >
+                    Evaluasi Constraint
+                  </h2>
+                  <span
+                    class="badge text-bg-danger d-none"
+                    id="conflict-badge-counter"
+                    >0 Bentrok</span
+                  >
+                </div>
+
+                <!-- Conflict list container -->
+                <div
+                  class="d-flex flex-column gap-3"
+                  id="conflict-list-container"
+                >
+                  <!-- Filled dynamically via JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: DATA MASTER -->
+          <div class="d-none" id="tab-master-view">
+            <div class="custom-card mb-4">
+              <!-- Navigation Subtabs inside Master Data -->
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4 pb-2 border-bottom">
+                <ul class="nav nav-tabs border-bottom-0 mb-0">
+                  <li class="nav-item">
+                    <button class="nav-link active fw-bold small text-university-blue" id="subtab-dosen-btn">
+                      Dosen
+                    </button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="nav-link fw-bold small text-university-blue" id="subtab-ruang-btn">
+                      Ruangan
+                    </button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="nav-link fw-bold small text-university-blue" id="subtab-mk-btn">
+                      Mata Kuliah
+                    </button>
+                  </li>
+                </ul>
+                <button class="btn btn-indigo btn-sm py-1 px-3" id="add-master-btn">
+                  <i class="bi bi-plus-lg"></i> Tambah <span id="add-master-type-label">Dosen</span>
+                </button>
+              </div>
+
+              <!-- Subtab Content Tables -->
+              <div class="table-responsive" id="table-master-container">
+                <!-- Rendered via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3: SCHEDULE CHANGE REQUESTS -->
+          <div class="row g-4 d-none" id="tab-requests-view">
+            <!-- Request Form Panel -->
+            <div class="col-md-5 col-12">
+              <div class="custom-card">
+                <h2
+                  class="h6 fw-bold text-university-blue pb-2 border-bottom mb-3"
+                >
+                  Ajukan Perubahan Jadwal
+                </h2>
+                <p class="text-muted small mb-4">
+                  Gunakan form ini untuk mengajukan pergeseran jam atau ruangan
+                  mengajar dosen.
+                </p>
+
+                <form id="request-change-form">
+                  <div class="mb-3">
+                    <label
+                      class="form-label fw-semibold text-muted text-uppercase"
+                      style="font-size: 0.7rem; letter-spacing: 0.05em"
+                      >Mata Kuliah</label
+                    >
+                    <select class="form-select" id="req-subject" required>
+                      <!-- Options populated via JS -->
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label
+                      class="form-label fw-semibold text-muted text-uppercase"
+                      style="font-size: 0.7rem; letter-spacing: 0.05em"
+                      >Dosen Pemohon</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control bg-light"
+                      id="req-lecturer"
+                      value="Dr. Budi"
+                      disabled
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label
+                      class="form-label fw-semibold text-muted text-uppercase"
+                      style="font-size: 0.7rem; letter-spacing: 0.05em"
+                      >Jadwal Asal</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="req-from-time"
+                      placeholder="Contoh: Selasa, 13:00 - 15:30"
+                      required
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label
+                      class="form-label fw-semibold text-muted text-uppercase"
+                      style="font-size: 0.7rem; letter-spacing: 0.05em"
+                      >Usulan Jadwal Baru</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="req-to-time"
+                      placeholder="Contoh: Senin, 10:30 - 13:00"
+                      required
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label
+                      class="form-label fw-semibold text-muted text-uppercase"
+                      style="font-size: 0.7rem; letter-spacing: 0.05em"
+                      >Alasan Perubahan</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="req-reason"
+                      rows="3"
+                      placeholder="Alasan pemindahan jadwal..."
+                      required
+                    ></textarea>
+                  </div>
+
+                  <button type="submit" class="btn btn-indigo w-100 py-2">
+                    Kirim Permohonan
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Requests History Table -->
+            <div class="col-md-7 col-12">
+              <div class="custom-card">
+                <h2
+                  class="h6 fw-bold text-university-blue pb-2 border-bottom mb-3"
+                >
+                  Riwayat Permohonan
+                </h2>
+                <div
+                  class="d-flex flex-column gap-3"
+                  id="requests-history-list"
+                >
+                  <!-- Rendered dynamically via JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Persistent Floating Toast at the bottom when Hard Conflicts exist -->
+        <div
+          class="conflict-float-toast d-none animate"
+          id="bottom-conflict-toast"
+        >
+          <div class="d-flex align-items-center gap-3">
+            <i class="bi bi-exclamation-triangle-fill text-danger fs-5"></i>
+            <div>
+              <span class="d-block fw-bold small text-white"
+                >Bentrok Terdeteksi</span
+              >
+              <span
+                class="text-white-50"
+                style="font-size: 0.75rem"
+                id="bottom-toast-desc"
+              >
+                Terdapat beberapa bentrok hard-constraint. Selesaikan manual
+                atau jalankan Algoritma Genetika.
+              </span>
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <button
+              class="btn btn-sm btn-outline-light"
+              id="bottom-toast-dismiss-btn"
+              style="font-size: 0.75rem"
+            >
+              Abaikan
+            </button>
+            <button
+              class="btn btn-sm btn-indigo"
+              id="bottom-toast-solve-btn"
+              style="
+                font-size: 0.75rem;
+                background-color: var(--color-secondary);
+              "
+            >
+              Atur Ulang Otomatis
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div
+      class="modal fade"
+      id="eventDetailModal"
+      tabindex="-1"
+      aria-labelledby="eventDetailModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div
+          class="modal-content"
+          style="
+            border-radius: var(--rounded-default);
+            border: var(--border-l1);
+          "
+        >
+          <div class="modal-header bg-light">
+            <h5
+              class="modal-title fw-bold text-university-blue"
+              id="eventDetailModalLabel"
+            >
+              Detail Jadwal Kuliah
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="modal-detail-body">
+            <!-- Set via JS -->
+          </div>
+          <div class="modal-footer border-0">
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              data-bs-dismiss="modal"
+            >
+              Tutup
+            </button>
+            <button
+              type="button"
+              class="btn btn-indigo btn-sm d-none"
+              id="modal-resolve-btn"
+            >
+              Selesaikan Bentrok
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Master Data Add/Edit Modal -->
+    <div class="modal fade" id="masterModal" tabindex="-1" aria-labelledby="masterModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: var(--rounded-default);">
+          <div class="modal-header bg-light">
+            <h5 class="modal-title fw-bold text-university-blue" id="masterModalLabel">Tambah Data</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="master-form">
+            <div class="modal-body" id="master-modal-body">
+              <!-- Dynamically populated based on Dosen/Ruangan/MK -->
+            </div>
+            <div class="modal-footer border-0">
+              <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" class="btn btn-indigo btn-sm" id="master-submit-btn">Simpan</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Schedule Add/Edit Modal -->
+    <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: var(--rounded-default);">
+          <div class="modal-header bg-light">
+            <h5 class="modal-title fw-bold text-university-blue" id="scheduleModalLabel">Tambah Jadwal Kuliah</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="schedule-form">
+            <div class="modal-body">
+              <input type="hidden" id="sched-id" />
+              <div class="mb-3">
+                <label for="sched-subject" class="form-label fw-semibold text-muted small text-uppercase">Mata Kuliah</label>
+                <select class="form-select" id="sched-subject" required></select>
+              </div>
+              <div class="mb-3">
+                <label for="sched-lecturer" class="form-label fw-semibold text-muted small text-uppercase">Dosen Pengampu</label>
+                <select class="form-select" id="sched-lecturer" required></select>
+              </div>
+              <div class="mb-3">
+                <label for="sched-room" class="form-label fw-semibold text-muted small text-uppercase">Ruangan</label>
+                <select class="form-select" id="sched-room" required></select>
+              </div>
+              <div class="row g-2">
+                <div class="col-6">
+                  <div class="mb-3">
+                    <label for="sched-day" class="form-label fw-semibold text-muted small text-uppercase">Hari</label>
+                    <select class="form-select" id="sched-day" required>
+                      <option value="Senin">Senin</option>
+                      <option value="Selasa">Selasa</option>
+                      <option value="Rabu">Rabu</option>
+                      <option value="Kamis">Kamis</option>
+                      <option value="Jumat">Jumat</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="mb-3">
+                    <label for="sched-slot" class="form-label fw-semibold text-muted small text-uppercase">Slot Waktu</label>
+                    <select class="form-select" id="sched-slot" required>
+                      <option value="08:00 - 10:30">08:00 - 10:30</option>
+                      <option value="10:30 - 13:00">10:30 - 13:00</option>
+                      <option value="13:00 - 15:30">13:00 - 15:30</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer border-0 d-flex justify-content-between">
+              <div>
+                <button type="button" class="btn btn-outline-danger btn-sm d-none" id="sched-delete-btn">Hapus Jadwal</button>
+              </div>
+              <div>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-indigo btn-sm" id="sched-submit-btn">Simpan</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Logic JS -->
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

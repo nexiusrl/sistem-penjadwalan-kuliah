@@ -1,0 +1,16 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Administrator",
+      "email": "admin@sisjad.ac.id",
+      "password": "admin123",
+      "role": "admin"
+    }
+  ],
+  "dosen": [],
+  "ruangan": [],
+  "matakuliah": [],
+  "schedules": [],
+  "requests": []
+}
