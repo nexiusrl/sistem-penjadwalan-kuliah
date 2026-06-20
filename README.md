@@ -65,7 +65,7 @@ Gunakan kredensial berikut untuk masuk ke sistem sesuai peran masing-masing:
 | Peran (Role) | Alamat Email | Kata Sandi (Password) | Nama Akun |
 | :--- | :--- | :--- | :--- |
 | **Admin** | `admin@sisjad.ac.id` | `admin123` | Administrator |
-| **Dosen** | `dosen@sisjad.ac.id` | `dosen123` | Dr. Budi |
+| **Dosen** | `dosen@sisjad.ac.id` | `dosen123` | Dosen |
 | **Mahasiswa** | `mhs@sisjad.ac.id` | `mhs123` | Mahasiswa |
 
 *Catatan: Detail kredensial di atas juga dapat Anda temukan pada berkas [USER.md](USER.md).*
