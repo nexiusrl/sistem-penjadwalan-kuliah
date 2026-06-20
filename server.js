@@ -52,6 +52,17 @@ function writeDB(data) {
   }
 }
 
+// Middleware for checking roles
+function requireRole(allowedRoles) {
+  return (req, res, next) => {
+    const userRole = req.headers['x-user-role'];
+    if (!userRole || !allowedRoles.includes(userRole)) {
+      return res.status(403).json({ message: "Akses ditolak: Peran Anda tidak memiliki izin untuk operasi ini." });
+    }
+    next();
+  };
+}
+
 // ================= AUTH ROUTES =================
 
 // Login
@@ -132,7 +143,7 @@ app.get('/api/db', (req, res) => {
 });
 
 // ================= DOSEN CRUD =================
-app.post('/api/dosen', (req, res) => {
+app.post('/api/dosen', requireRole(['admin']), (req, res) => {
   const { name, code, pref } = req.body;
   if (!name || !code) return res.status(400).json({ message: "Nama dan Kode wajib diisi." });
 
@@ -148,7 +159,7 @@ app.post('/api/dosen', (req, res) => {
   res.status(201).json(newDosen);
 });
 
-app.put('/api/dosen/:id', (req, res) => {
+app.put('/api/dosen/:id', requireRole(['admin']), (req, res) => {
   const id = parseInt(req.params.id);
   const { name, code, pref } = req.body;
   
@@ -171,7 +182,7 @@ app.put('/api/dosen/:id', (req, res) => {
   res.json(db.dosen[index]);
 });
 
-app.delete('/api/dosen/:id', (req, res) => {
+app.delete('/api/dosen/:id', requireRole(['admin']), (req, res) => {
   const id = parseInt(req.params.id);
   const db = readDB();
   
@@ -187,7 +198,7 @@ app.delete('/api/dosen/:id', (req, res) => {
 });
 
 // ================= RUANGAN CRUD =================
-app.post('/api/ruangan', (req, res) => {
+app.post('/api/ruangan', requireRole(['admin']), (req, res) => {
   const { name, type, capacity } = req.body;
   if (!name || !type || !capacity) return res.status(400).json({ message: "Nama, Tipe, dan Kapasitas wajib diisi." });
 
@@ -203,7 +214,7 @@ app.post('/api/ruangan', (req, res) => {
   res.status(201).json(newRuangan);
 });
 
-app.put('/api/ruangan/:id', (req, res) => {
+app.put('/api/ruangan/:id', requireRole(['admin']), (req, res) => {
   const id = parseInt(req.params.id);
   const { name, type, capacity } = req.body;
   
@@ -226,7 +237,7 @@ app.put('/api/ruangan/:id', (req, res) => {
   res.json(db.ruangan[index]);
 });
 
-app.delete('/api/ruangan/:id', (req, res) => {
+app.delete('/api/ruangan/:id', requireRole(['admin']), (req, res) => {
   const id = parseInt(req.params.id);
   const db = readDB();
   
@@ -242,7 +253,7 @@ app.delete('/api/ruangan/:id', (req, res) => {
 });
 
 // ================= MATA KULIAH CRUD =================
-app.post('/api/matakuliah', (req, res) => {
+app.post('/api/matakuliah', requireRole(['admin']), (req, res) => {
   const { name, code, sks } = req.body;
   if (!name || !code || !sks) return res.status(400).json({ message: "Nama, Kode MK, dan SKS wajib diisi." });
 
@@ -258,7 +269,7 @@ app.post('/api/matakuliah', (req, res) => {
   res.status(201).json(newMK);
 });
 
-app.put('/api/matakuliah/:id', (req, res) => {
+app.put('/api/matakuliah/:id', requireRole(['admin']), (req, res) => {
   const id = parseInt(req.params.id);
   const { name, code, sks } = req.body;
   
@@ -281,7 +292,7 @@ app.put('/api/matakuliah/:id', (req, res) => {
   res.json(db.matakuliah[index]);
 });
 
-app.delete('/api/matakuliah/:id', (req, res) => {
+app.delete('/api/matakuliah/:id', requireRole(['admin']), (req, res) => {
   const id = parseInt(req.params.id);
   const db = readDB();
   
@@ -297,7 +308,7 @@ app.delete('/api/matakuliah/:id', (req, res) => {
 });
 
 // ================= SCHEDULES CRUD =================
-app.post('/api/schedules', (req, res) => {
+app.post('/api/schedules', requireRole(['admin']), (req, res) => {
   const { subject, code, lecturer, room, day, timeSlot, status, details } = req.body;
   if (!subject || !code || !lecturer || !room || !day || !timeSlot) {
     return res.status(400).json({ message: "Semua detail jadwal wajib diisi." });
@@ -321,7 +332,7 @@ app.post('/api/schedules', (req, res) => {
   res.status(201).json(newSchedule);
 });
 
-app.put('/api/schedules/:id', (req, res) => {
+app.put('/api/schedules/:id', requireRole(['admin']), (req, res) => {
   const id = parseInt(req.params.id);
   const { subject, code, lecturer, room, day, timeSlot, status, details } = req.body;
   
@@ -345,7 +356,7 @@ app.put('/api/schedules/:id', (req, res) => {
   res.json(db.schedules[index]);
 });
 
-app.delete('/api/schedules/:id', (req, res) => {
+app.delete('/api/schedules/:id', requireRole(['admin']), (req, res) => {
   const id = parseInt(req.params.id);
   const db = readDB();
   
@@ -358,7 +369,7 @@ app.delete('/api/schedules/:id', (req, res) => {
 });
 
 // Bulk update schedules (Genetic Algorithm optimizer)
-app.post('/api/schedules/bulk', (req, res) => {
+app.post('/api/schedules/bulk', requireRole(['admin']), (req, res) => {
   const { schedules } = req.body;
   if (!Array.isArray(schedules)) return res.status(400).json({ message: "Jadwal harus berupa array." });
 
@@ -369,16 +380,29 @@ app.post('/api/schedules/bulk', (req, res) => {
 });
 
 // ================= CHANGE REQUESTS =================
-app.post('/api/requests', (req, res) => {
+app.post('/api/requests', requireRole(['admin', 'dosen']), (req, res) => {
   const { lecturer, subject, fromTime, toTime, reason } = req.body;
   if (!lecturer || !subject || !fromTime || !toTime || !reason) {
     return res.status(400).json({ message: "Semua data permohonan wajib diisi." });
   }
 
+  const userRole = req.headers['x-user-role'];
+  const userEmail = req.headers['x-user-email'];
+
   const db = readDB();
+
+  // Enforce Dosen name matches their registered user account to prevent name spoofing
+  let finalLecturer = lecturer;
+  if (userRole === 'dosen' && userEmail) {
+    const matchedUser = db.users.find(u => u.email === userEmail);
+    if (matchedUser) {
+      finalLecturer = matchedUser.name;
+    }
+  }
+
   const newRequest = {
     id: db.requests.length > 0 ? Math.max(...db.requests.map(r => r.id)) + 1 : 1,
-    lecturer,
+    lecturer: finalLecturer,
     subject,
     fromTime,
     toTime,
@@ -391,7 +415,7 @@ app.post('/api/requests', (req, res) => {
   res.status(201).json(newRequest);
 });
 
-app.put('/api/requests/:id', (req, res) => {
+app.put('/api/requests/:id', requireRole(['admin']), (req, res) => {
   const id = parseInt(req.params.id);
   const { status } = req.body; // "approved" or "rejected"
   

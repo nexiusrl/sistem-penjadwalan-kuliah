@@ -272,6 +272,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Switch tabs
   function switchTab(tab) {
+    // Role-based route protection
+    if (tab === "master" && userRole !== "admin") {
+      switchTab("dashboard");
+      return;
+    }
+    if (tab === "requests" && userRole === "mahasiswa") {
+      switchTab("dashboard");
+      return;
+    }
+
     activeTab = tab;
     
     // Manage active sidebar classes
@@ -504,6 +514,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Schedule Submit Handler
   scheduleForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (userRole !== "admin") {
+      alert("Akses ditolak: Hanya administrator yang dapat menambah/mengubah jadwal.");
+      return;
+    }
+
     const id = schedIdInput.value;
     
     const selectedOption = schedSubjectSelect.options[schedSubjectSelect.selectedIndex];
@@ -524,7 +539,11 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "X-User-Role": userRole,
+          "X-User-Email": userEmail
+        },
         body: JSON.stringify(payload)
       });
 
@@ -540,11 +559,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Delete Schedule
   schedDeleteBtn.addEventListener("click", async () => {
+    if (userRole !== "admin") {
+      alert("Akses ditolak: Hanya administrator yang dapat menghapus jadwal.");
+      return;
+    }
+
     const id = schedIdInput.value;
     if (!id || !confirm("Apakah Anda yakin ingin menghapus jadwal ini secara permanen?")) return;
 
     try {
-      const res = await fetch(`/api/schedules/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/schedules/${id}`, { 
+        method: "DELETE",
+        headers: {
+          "X-User-Role": userRole,
+          "X-User-Email": userEmail
+        }
+      });
       if (!res.ok) throw new Error("Gagal menghapus jadwal.");
       
       scheduleModal.hide();
@@ -802,6 +832,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Master Data Add/Edit form submission handler
   masterForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (userRole !== "admin") {
+      alert("Akses ditolak: Hanya administrator yang dapat mengubah data master.");
+      return;
+    }
+
     const id = document.getElementById("master-item-id").value;
     const type = document.getElementById("master-item-type").value;
     
@@ -833,7 +868,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const method = id ? "PUT" : "POST";
       const res = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "X-User-Role": userRole,
+          "X-User-Email": userEmail
+        },
         body: JSON.stringify(payload)
       });
 
@@ -849,10 +888,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Delete master item
   async function deleteMasterItem(type, id) {
+    if (userRole !== "admin") {
+      alert("Akses ditolak: Hanya administrator yang dapat menghapus data master.");
+      return;
+    }
+
     if (!confirm("Menghapus data master ini juga akan menghapus jadwal terkait. Apakah Anda yakin?")) return;
 
     try {
-      const res = await fetch(`/api/${type}/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/${type}/${id}`, { 
+        method: "DELETE",
+        headers: {
+          "X-User-Role": userRole,
+          "X-User-Email": userEmail
+        }
+      });
       if (!res.ok) throw new Error("Gagal menghapus data master.");
       
       fetchDBState();
@@ -941,10 +991,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Handle Approve/Reject Requests
   async function handleRequestStatus(id, status) {
+    if (userRole !== "admin") {
+      alert("Akses ditolak: Hanya administrator yang dapat menyetujui/menolak permohonan.");
+      return;
+    }
+
     try {
       const res = await fetch(`/api/requests/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "X-User-Role": userRole,
+          "X-User-Email": userEmail
+        },
         body: JSON.stringify({ status })
       });
 
@@ -980,7 +1039,11 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch("/api/requests", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "X-User-Role": userRole,
+          "X-User-Email": userEmail
+        },
         body: JSON.stringify(payload)
       });
 
@@ -1112,7 +1175,11 @@ document.addEventListener("DOMContentLoaded", () => {
           // Bulk save to backend JSON db
           const res = await fetch("/api/schedules/bulk", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+              "Content-Type": "application/json",
+              "X-User-Role": userRole,
+              "X-User-Email": userEmail
+            },
             body: JSON.stringify({ schedules: result.schedules })
           });
 
