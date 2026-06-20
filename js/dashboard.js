@@ -477,7 +477,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (userRole !== "admin") return;
     
     // Populate select choices from master lists
-    schedSubjectSelect.innerHTML = mkList.map(m => `<option value="${m.name}" data-code="${m.code}">${m.code} - ${m.name}</option>`).join("");
+    schedSubjectSelect.innerHTML = mkList.map(m => `<option value="${m.name}" data-code="${m.code}" data-day="${m.day || ''}" data-timeslot="${m.timeSlot || ''}">${m.code} - ${m.name}</option>`).join("");
     schedLecturerSelect.innerHTML = dosenList.map(d => `<option value="${d.name}">${d.name} (${d.code})</option>`).join("");
     schedRoomSelect.innerHTML = ruangList.map(r => `<option value="${r.name}">${r.name} (${r.type})</option>`).join("");
 
@@ -485,6 +485,10 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Harap lengkapi Data Master (Dosen, Ruangan, Mata Kuliah) terlebih dahulu sebelum membuat Jadwal.");
       return;
     }
+
+    // Day & Slot are bound to Mata Kuliah data and cannot be overridden manually
+    schedDaySelect.disabled = true;
+    schedSlotSelect.disabled = true;
 
     if (id) {
       // Edit mode
@@ -504,6 +508,14 @@ document.addEventListener("DOMContentLoaded", () => {
       // Add mode
       schedIdInput.value = "";
       scheduleForm.reset();
+
+      // Auto pre-populate day and timeslot based on selected mata kuliah
+      const selected = schedSubjectSelect.options[schedSubjectSelect.selectedIndex];
+      if (selected) {
+        schedDaySelect.value = selected.getAttribute("data-day") || "Senin";
+        schedSlotSelect.value = selected.getAttribute("data-timeslot") || "08:00 - 10:30";
+      }
+
       document.getElementById("scheduleModalLabel").textContent = "Tambah Jadwal Kuliah";
       schedDeleteBtn.classList.add("d-none");
     }
@@ -634,8 +646,16 @@ document.addEventListener("DOMContentLoaded", () => {
     eventDetailModal.show();
   }
 
-  // Hook up Add Schedule button
   addScheduleBtn.addEventListener("click", () => openScheduleForm());
+
+  // Update Day & Slot when Mata Kuliah selection changes in schedule form
+  schedSubjectSelect.addEventListener("change", () => {
+    const selected = schedSubjectSelect.options[schedSubjectSelect.selectedIndex];
+    if (selected) {
+      schedDaySelect.value = selected.getAttribute("data-day") || "Senin";
+      schedSlotSelect.value = selected.getAttribute("data-timeslot") || "08:00 - 10:30";
+    }
+  });
 
   // ================= DATA MASTER MANAGEMENT =================
 
@@ -723,15 +743,19 @@ document.addEventListener("DOMContentLoaded", () => {
               <th>Kode MK</th>
               <th>Nama Mata Kuliah</th>
               <th>Jumlah SKS</th>
+              <th>Hari</th>
+              <th>Slot Waktu</th>
               ${userRole === "admin" ? '<th style="width: 150px;">Aksi</th>' : ""}
             </tr>
           </thead>
           <tbody>
-            ${mkList.length === 0 ? '<tr><td colspan="4" class="text-center py-4 text-muted">Belum ada data Mata Kuliah. Klik "Tambah Mata Kuliah" untuk mengisi.</td></tr>' : mkList.map(mk => `
+            ${mkList.length === 0 ? '<tr><td colspan="6" class="text-center py-4 text-muted">Belum ada data Mata Kuliah. Klik "Tambah Mata Kuliah" untuk mengisi.</td></tr>' : mkList.map(mk => `
               <tr>
                 <td><strong>${mk.code}</strong></td>
                 <td>${mk.name}</td>
                 <td class="text-tabular">${mk.sks} SKS</td>
+                <td>${mk.day || "-"}</td>
+                <td>${mk.timeSlot || "-"}</td>
                 ${userRole === "admin" ? `
                 <td>
                   <button class="btn btn-sm btn-outline-primary py-0 px-2 btn-edit-mk" data-id="${mk.id}">Edit</button>
@@ -822,6 +846,26 @@ document.addEventListener("DOMContentLoaded", () => {
           <label for="m-mk-sks" class="form-label fw-semibold text-muted small text-uppercase">Jumlah SKS</label>
           <input type="number" class="form-control" id="m-mk-sks" value="${item ? item.sks : "3"}" required />
         </div>
+        <div class="mb-3">
+          <label for="m-mk-day" class="form-label fw-semibold text-muted small text-uppercase">Hari Kuliah</label>
+          <select class="form-select" id="m-mk-day" required>
+            <option value="" disabled ${!item ? "selected" : ""}>Pilih Hari</option>
+            <option value="Senin" ${item && item.day === "Senin" ? "selected" : ""}>Senin</option>
+            <option value="Selasa" ${item && item.day === "Selasa" ? "selected" : ""}>Selasa</option>
+            <option value="Rabu" ${item && item.day === "Rabu" ? "selected" : ""}>Rabu</option>
+            <option value="Kamis" ${item && item.day === "Kamis" ? "selected" : ""}>Kamis</option>
+            <option value="Jumat" ${item && item.day === "Jumat" ? "selected" : ""}>Jumat</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="m-mk-timeslot" class="form-label fw-semibold text-muted small text-uppercase">Slot Waktu</label>
+          <select class="form-select" id="m-mk-timeslot" required>
+            <option value="" disabled ${!item ? "selected" : ""}>Pilih Slot Waktu</option>
+            <option value="08:00 - 10:30" ${item && item.timeSlot === "08:00 - 10:30" ? "selected" : ""}>08:00 - 10:30</option>
+            <option value="10:30 - 13:00" ${item && item.timeSlot === "10:30 - 13:00" ? "selected" : ""}>10:30 - 13:00</option>
+            <option value="13:00 - 15:30" ${item && item.timeSlot === "13:00 - 15:30" ? "selected" : ""}>13:00 - 15:30</option>
+          </select>
+        </div>
       `;
     }
 
@@ -860,7 +904,9 @@ document.addEventListener("DOMContentLoaded", () => {
       payload = {
         name: document.getElementById("m-mk-name").value.trim(),
         code: document.getElementById("m-mk-code").value.trim().toUpperCase(),
-        sks: parseInt(document.getElementById("m-mk-sks").value)
+        sks: parseInt(document.getElementById("m-mk-sks").value),
+        day: document.getElementById("m-mk-day").value,
+        timeSlot: document.getElementById("m-mk-timeslot").value
       };
     }
 
@@ -1087,6 +1133,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. Try to resolve each conflicted item
     newSchedules.forEach(item => {
+      // Find course to get the fixed day & slot (forcing alignment with master data)
+      const mk = mkList.find(m => m.name === item.subject || m.code === item.code);
+      const fixedDay = mk ? mk.day : item.day;
+      const fixedSlot = mk ? mk.timeSlot : item.timeSlot;
+
+      item.day = fixedDay;
+      item.timeSlot = fixedSlot;
+
       // Recalculate status for this item first
       let hasConflict = newSchedules.some(other => {
         if (other.id === item.id) return false;
@@ -1098,51 +1152,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (hasConflict) {
         let resolved = false;
         
-        // Loop over days, slots and rooms to search for a clean placement
-        for (let d of days) {
-          for (let s of timeSlots) {
-            // Respect morning preference of the lecturer if possible
-            const lecturer = dosenList.find(d => d.name === item.lecturer);
-            if (lecturer && lecturer.pref === "Mengajar Pagi" && s === "13:00 - 15:30") {
-              continue; // Skip afternoon for this search first
-            }
-            
-            for (let r of availableRooms) {
-              if (isPlacementValid(item, d, s, r, newSchedules)) {
-                item.day = d;
-                item.timeSlot = s;
-                item.room = r;
-                item.status = "validated";
-                item.details = "";
-                resolved = true;
-                solvedCount++;
-                break;
-              }
-            }
-            if (resolved) break;
-          }
-          if (resolved) break;
-        }
-        
-        // Fallback search (ignore mornings preference if completely stuck)
-        if (!resolved) {
-          for (let d of days) {
-            for (let s of timeSlots) {
-              for (let r of availableRooms) {
-                if (isPlacementValid(item, d, s, r, newSchedules)) {
-                  item.day = d;
-                  item.timeSlot = s;
-                  item.room = r;
-                  item.status = "validated";
-                  item.details = "";
-                  resolved = true;
-                  solvedCount++;
-                  break;
-                }
-              }
-              if (resolved) break;
-            }
-            if (resolved) break;
+        // Search available rooms for this specific course-bound schedule slot
+        for (let r of availableRooms) {
+          if (isPlacementValid(item, fixedDay, fixedSlot, r, newSchedules)) {
+            item.room = r;
+            item.status = "validated";
+            item.details = "";
+            resolved = true;
+            solvedCount++;
+            break;
           }
         }
       }
