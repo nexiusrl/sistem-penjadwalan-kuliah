@@ -8,7 +8,14 @@
       "role": "admin"
     }
   ],
-  "dosen": [],
+  "dosen": [
+    {
+      "id": 1,
+      "name": "Pak Reyhan",
+      "code": "RR",
+      "pref": "Bebas"
+    }
+  ],
   "ruangan": [],
   "matakuliah": [],
   "schedules": [],
