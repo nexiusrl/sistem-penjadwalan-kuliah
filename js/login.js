@@ -24,19 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const regAlertMsg = document.getElementById("register-alert-message");
   const regSubmitBtn = document.getElementById("reg-submit-btn");
 
-  // Demo buttons
-  const demoAdminBtn = document.getElementById("demo-admin-btn");
-  const demoDosenBtn = document.getElementById("demo-dosen-btn");
-  const demoMhsBtn = document.getElementById("demo-mhs-btn");
-
-  const demoAccounts = {
-    admin: { email: "admin@sisjad.ac.id", password: "admin123" },
-    dosen: { email: "dosen@sisjad.ac.id", password: "dosen123" },
-    mahasiswa: { email: "mhs@sisjad.ac.id", password: "mhs123" },
-  };
-
-  // Prefill default admin
-  prefillCredentials("admin");
 
   // Auth Tab Switchers
   tabLoginBtn.addEventListener("click", () => {
@@ -53,33 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loginSection.classList.add("d-none");
   });
 
-  // Helper to prefill inputs
-  function prefillCredentials(role) {
-    const creds = demoAccounts[role];
-    emailInput.value = creds.email;
-    passwordInput.value = creds.password;
-    errorAlert.classList.add("d-none");
-    
-    // Clear styles
-    [demoAdminBtn, demoDosenBtn, demoMhsBtn].forEach(btn => {
-      btn.classList.remove("active-demo", "btn-primary");
-      btn.classList.add("btn-outline-secondary");
-    });
 
-    // Add active styles to clicked
-    let activeBtn;
-    if (role === "admin") activeBtn = demoAdminBtn;
-    else if (role === "dosen") activeBtn = demoDosenBtn;
-    else activeBtn = demoMhsBtn;
-
-    activeBtn.classList.add("active-demo", "btn-primary");
-    activeBtn.classList.remove("btn-outline-secondary");
-  }
-
-  // Set click handlers for demo buttons
-  demoAdminBtn.addEventListener("click", () => prefillCredentials("admin"));
-  demoDosenBtn.addEventListener("click", () => prefillCredentials("dosen"));
-  demoMhsBtn.addEventListener("click", () => prefillCredentials("mahasiswa"));
 
   // Forgot password handler
   forgotLink.addEventListener("click", (e) => {
