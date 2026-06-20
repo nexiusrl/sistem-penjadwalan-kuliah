@@ -133,7 +133,6 @@ app.post("/api/auth/register", (req, res) => {
           db.dosen.length > 0 ? Math.max(...db.dosen.map((d) => d.id)) + 1 : 1,
         name: name,
         code: name.substring(0, 2).toUpperCase(),
-        pref: "Bebas",
       });
     }
   }
@@ -166,7 +165,7 @@ app.get("/api/db", (req, res) => {
 
 // ================= DOSEN CRUD =================
 app.post("/api/dosen", requireRole(["admin"]), (req, res) => {
-  const { name, code, pref } = req.body;
+  const { name, code } = req.body;
   if (!name || !code)
     return res.status(400).json({ message: "Nama dan Kode wajib diisi." });
 
@@ -175,7 +174,6 @@ app.post("/api/dosen", requireRole(["admin"]), (req, res) => {
     id: db.dosen.length > 0 ? Math.max(...db.dosen.map((d) => d.id)) + 1 : 1,
     name,
     code,
-    pref: pref || "Bebas",
   };
   db.dosen.push(newDosen);
   writeDB(db);
@@ -184,7 +182,7 @@ app.post("/api/dosen", requireRole(["admin"]), (req, res) => {
 
 app.put("/api/dosen/:id", requireRole(["admin"]), (req, res) => {
   const id = parseInt(req.params.id);
-  const { name, code, pref } = req.body;
+  const { name, code } = req.body;
 
   const db = readDB();
   const index = db.dosen.findIndex((d) => d.id === id);
@@ -192,7 +190,7 @@ app.put("/api/dosen/:id", requireRole(["admin"]), (req, res) => {
     return res.status(404).json({ message: "Dosen tidak ditemukan." });
 
   const oldName = db.dosen[index].name;
-  db.dosen[index] = { ...db.dosen[index], name, code, pref };
+  db.dosen[index] = { ...db.dosen[index], name, code };
 
   // Sync lecturer name in schedules
   db.schedules = db.schedules.map((s) => {

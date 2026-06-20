@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Days & Slots configuration
   const days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
-  const timeSlots = ["08:00 - 10:30", "10:30 - 13:00", "13:00 - 15:30"];
+  let timeSlots = ["08:00 - 10:30", "10:30 - 13:00", "13:00 - 15:30"];
 
   // State
   let dosenList = [];
@@ -218,6 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
       schedules = data.schedules || [];
       requestsList = data.requests || [];
       
+      updateDynamicTimeSlots();
       evaluateConstraints();
       
       // Re-render active view
@@ -225,6 +226,27 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (err) {
       console.error(err);
       showNotice("Koneksi server terputus. Menggunakan data lokal.");
+    }
+  }
+
+  // Recalculate dynamic time slots based on mata kuliah data
+  function updateDynamicTimeSlots() {
+    let slots = [];
+    mkList.forEach(mk => {
+      if (mk.timeSlot && !slots.includes(mk.timeSlot)) {
+        slots.push(mk.timeSlot);
+      }
+    });
+    if (slots.length === 0) {
+      timeSlots = ["08:00 - 10:30", "10:30 - 13:00", "13:00 - 15:30"];
+    } else {
+      // Sort chronologically based on start time
+      slots.sort((a, b) => {
+        const timeA = a.split(" - ")[0] || "";
+        const timeB = b.split(" - ")[0] || "";
+        return timeA.localeCompare(timeB);
+      });
+      timeSlots = slots;
     }
   }
 
@@ -237,13 +259,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     schedules.forEach((s1, index) => {
-      // Find matching lecturer preferences
-      const lecturer = dosenList.find(d => d.name === s1.lecturer);
-      if (lecturer && lecturer.pref === "Mengajar Pagi" && s1.timeSlot === "13:00 - 15:30") {
-        s1.status = "soft-warning";
-        s1.details = `Preferensi Mengajar: ${s1.lecturer} memiliki preferensi mengajar pada sesi pagi.`;
-      }
-
       // Check overlaps with other classes
       schedules.forEach(s2 => {
         if (s1.id === s2.id) return;
@@ -678,20 +693,14 @@ document.addEventListener("DOMContentLoaded", () => {
             <tr>
               <th>Kode</th>
               <th>Nama Dosen</th>
-              <th>Preferensi Waktu</th>
               ${userRole === "admin" ? '<th style="width: 150px;">Aksi</th>' : ""}
             </tr>
           </thead>
           <tbody>
-            ${dosenList.length === 0 ? '<tr><td colspan="4" class="text-center py-4 text-muted">Belum ada data Dosen. Klik "Tambah Dosen" untuk mengisi.</td></tr>' : dosenList.map(d => `
+            ${dosenList.length === 0 ? '<tr><td colspan="3" class="text-center py-4 text-muted">Belum ada data Dosen. Klik "Tambah Dosen" untuk mengisi.</td></tr>' : dosenList.map(d => `
               <tr>
                 <td><strong>${d.code}</strong></td>
                 <td>${d.name}</td>
-                <td>
-                  <span class="custom-badge ${d.pref === "Mengajar Pagi" ? "badge-soft-warning" : "badge-validated-status"}">
-                    ${d.pref}
-                  </span>
-                </td>
                 ${userRole === "admin" ? `
                 <td>
                   <button class="btn btn-sm btn-outline-primary py-0 px-2 btn-edit-dosen" data-id="${d.id}">Edit</button>
@@ -802,13 +811,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <label for="m-dosen-code" class="form-label fw-semibold text-muted small text-uppercase">Kode Singkat Dosen</label>
           <input type="text" class="form-control" id="m-dosen-code" value="${item ? item.code : ""}" maxlength="3" required placeholder="Contoh: BD" />
         </div>
-        <div class="mb-3">
-          <label for="m-dosen-pref" class="form-label fw-semibold text-muted small text-uppercase">Preferensi Waktu</label>
-          <select class="form-select" id="m-dosen-pref" required>
-            <option value="Bebas" ${item && item.pref === "Bebas" ? "selected" : ""}>Bebas</option>
-            <option value="Mengajar Pagi" ${item && item.pref === "Mengajar Pagi" ? "selected" : ""}>Mengajar Pagi</option>
-          </select>
-        </div>
+
       `;
     } else if (type === "ruang") {
       const item = id ? ruangList.find(r => r.id === id) : null;
@@ -832,6 +835,13 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     } else if (type === "mk") {
       const item = id ? mkList.find(m => m.id === id) : null;
+      let startTime = "";
+      let endTime = "";
+      if (item && item.timeSlot && item.timeSlot.includes(" - ")) {
+        const parts = item.timeSlot.split(" - ");
+        startTime = parts[0];
+        endTime = parts[1];
+      }
       masterModalLabel.textContent = id ? "Edit Mata Kuliah" : "Tambah Mata Kuliah";
       fields += `
         <div class="mb-3">
@@ -857,14 +867,15 @@ document.addEventListener("DOMContentLoaded", () => {
             <option value="Jumat" ${item && item.day === "Jumat" ? "selected" : ""}>Jumat</option>
           </select>
         </div>
-        <div class="mb-3">
-          <label for="m-mk-timeslot" class="form-label fw-semibold text-muted small text-uppercase">Slot Waktu</label>
-          <select class="form-select" id="m-mk-timeslot" required>
-            <option value="" disabled ${!item ? "selected" : ""}>Pilih Slot Waktu</option>
-            <option value="08:00 - 10:30" ${item && item.timeSlot === "08:00 - 10:30" ? "selected" : ""}>08:00 - 10:30</option>
-            <option value="10:30 - 13:00" ${item && item.timeSlot === "10:30 - 13:00" ? "selected" : ""}>10:30 - 13:00</option>
-            <option value="13:00 - 15:30" ${item && item.timeSlot === "13:00 - 15:30" ? "selected" : ""}>13:00 - 15:30</option>
-          </select>
+        <div class="row g-2 mb-3">
+          <div class="col-6">
+            <label for="m-mk-time-start" class="form-label fw-semibold text-muted small text-uppercase">Jam Mulai</label>
+            <input type="time" class="form-control" id="m-mk-time-start" value="${startTime}" required />
+          </div>
+          <div class="col-6">
+            <label for="m-mk-time-end" class="form-label fw-semibold text-muted small text-uppercase">Jam Selesai</label>
+            <input type="time" class="form-control" id="m-mk-time-end" value="${endTime}" required />
+          </div>
         </div>
       `;
     }
@@ -891,8 +902,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (type === "dosen") {
       payload = {
         name: document.getElementById("m-dosen-name").value.trim(),
-        code: document.getElementById("m-dosen-code").value.trim().toUpperCase(),
-        pref: document.getElementById("m-dosen-pref").value
+        code: document.getElementById("m-dosen-code").value.trim().toUpperCase()
       };
     } else if (type === "ruang") {
       payload = {
@@ -901,12 +911,14 @@ document.addEventListener("DOMContentLoaded", () => {
         capacity: parseInt(document.getElementById("m-ruang-capacity").value)
       };
     } else if (type === "mk") {
+      const start = document.getElementById("m-mk-time-start").value;
+      const end = document.getElementById("m-mk-time-end").value;
       payload = {
         name: document.getElementById("m-mk-name").value.trim(),
         code: document.getElementById("m-mk-code").value.trim().toUpperCase(),
         sks: parseInt(document.getElementById("m-mk-sks").value),
         day: document.getElementById("m-mk-day").value,
-        timeSlot: document.getElementById("m-mk-timeslot").value
+        timeSlot: `${start} - ${end}`
       };
     }
 
