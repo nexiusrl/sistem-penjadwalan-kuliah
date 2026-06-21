@@ -133,7 +133,7 @@
           class="d-flex justify-content-between pt-4 border-top border-secondary-subtle border-opacity-10"
           style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.45)"
         >
-          <span>Program Studi Teknik Informatika</span>
+          <span>Program Studi Sistem Informasi</span>
           <span>SISJAD v1.0.0</span>
         </div>
       </div>
@@ -142,26 +142,48 @@
       <div class="right-panel">
         <div class="custom-card-elevated form-card">
           <!-- Auth Tabs -->
-          <ul class="nav nav-pills nav-fill mb-4 p-1 bg-light rounded" id="auth-tabs" style="font-size: 0.85rem;">
+          <ul
+            class="nav nav-pills nav-fill mb-4 p-1 bg-light rounded"
+            id="auth-tabs"
+            style="font-size: 0.85rem"
+          >
             <li class="nav-item">
-              <button class="nav-link active fw-bold py-2 text-university-blue" id="tab-login-btn" type="button">Masuk</button>
+              <button
+                class="nav-link active fw-bold py-2 text-university-blue"
+                id="tab-login-btn"
+                type="button"
+              >
+                Masuk
+              </button>
             </li>
             <li class="nav-item">
-              <button class="nav-link fw-bold py-2 text-university-blue" id="tab-register-btn" type="button">Daftar</button>
+              <button
+                class="nav-link fw-bold py-2 text-university-blue"
+                id="tab-register-btn"
+                type="button"
+              >
+                Daftar
+              </button>
             </li>
           </ul>
 
           <div id="login-section">
             <div class="mb-4">
-              <h2 class="h4 fw-bold text-university-blue mb-1">Selamat Datang</h2>
+              <h2 class="h4 fw-bold text-university-blue mb-1">
+                Selamat Datang
+              </h2>
               <p class="text-muted small">
                 Silakan masuk ke akun Anda untuk melanjutkan.
               </p>
             </div>
 
-
             <!-- Alert Error -->
-            <div class="alert alert-danger d-none align-items-center gap-2 py-2 px-3 mb-3" role="alert" id="login-error-alert" style="font-size: 0.85rem; border-radius: var(--rounded-default)">
+            <div
+              class="alert alert-danger d-none align-items-center gap-2 py-2 px-3 mb-3"
+              role="alert"
+              id="login-error-alert"
+              style="font-size: 0.85rem; border-radius: var(--rounded-default)"
+            >
               <i class="bi bi-exclamation-triangle-fill flex-shrink-0"></i>
               <span id="error-message"></span>
             </div>
@@ -169,24 +191,66 @@
             <!-- Login Form -->
             <form id="login-form">
               <div class="mb-3">
-                <label for="email" class="form-label fw-semibold text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em">Alamat Email</label>
-                <input type="email" class="form-control" id="email" placeholder="nama@univ.ac.id" required />
+                <label
+                  for="email"
+                  class="form-label fw-semibold text-muted text-uppercase"
+                  style="font-size: 0.7rem; letter-spacing: 0.05em"
+                  >Alamat Email</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="nama@univ.ac.id"
+                  required
+                />
               </div>
 
               <div class="mb-3">
-                <label for="password" class="form-label fw-semibold text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="••••••••" required />
+                <label
+                  for="password"
+                  class="form-label fw-semibold text-muted text-uppercase"
+                  style="font-size: 0.7rem; letter-spacing: 0.05em"
+                  >Password</label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  placeholder="••••••••"
+                  required
+                />
               </div>
 
-              <div class="d-flex justify-content-between align-items-center mb-4" style="font-size: 0.85rem">
+              <div
+                class="d-flex justify-content-between align-items-center mb-4"
+                style="font-size: 0.85rem"
+              >
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="remember-me" checked />
-                  <label class="form-check-label text-muted" for="remember-me">Ingat saya</label>
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="remember-me"
+                    checked
+                  />
+                  <label class="form-check-label text-muted" for="remember-me"
+                    >Ingat saya</label
+                  >
                 </div>
-                <a href="#" class="text-decoration-none fw-semibold" id="forgot-password-link" style="color: var(--color-secondary)">Lupa password?</a>
+                <a
+                  href="#"
+                  class="text-decoration-none fw-semibold"
+                  id="forgot-password-link"
+                  style="color: var(--color-secondary)"
+                  >Lupa password?</a
+                >
               </div>
 
-              <button type="submit" class="btn btn-indigo w-100 py-2 d-flex align-items-center justify-content-center gap-2" id="submit-btn">
+              <button
+                type="submit"
+                class="btn btn-indigo w-100 py-2 d-flex align-items-center justify-content-center gap-2"
+                id="submit-btn"
+              >
                 <span>Masuk Ke Sistem</span>
               </button>
             </form>
@@ -194,14 +258,21 @@
 
           <div id="register-section" class="d-none">
             <div class="mb-4">
-              <h2 class="h4 fw-bold text-university-blue mb-1">Daftar Akun Baru</h2>
+              <h2 class="h4 fw-bold text-university-blue mb-1">
+                Daftar Akun Baru
+              </h2>
               <p class="text-muted small">
                 Buat akun SISJAD baru Anda untuk memulai.
               </p>
             </div>
 
             <!-- Alert Success/Error for register -->
-            <div class="alert d-none align-items-center gap-2 py-2 px-3 mb-3" role="alert" id="register-alert" style="font-size: 0.85rem; border-radius: var(--rounded-default)">
+            <div
+              class="alert d-none align-items-center gap-2 py-2 px-3 mb-3"
+              role="alert"
+              id="register-alert"
+              style="font-size: 0.85rem; border-radius: var(--rounded-default)"
+            >
               <i class="bi flex-shrink-0" id="register-alert-icon"></i>
               <span id="register-alert-message"></span>
             </div>
@@ -209,22 +280,60 @@
             <!-- Register Form -->
             <form id="register-form">
               <div class="mb-3">
-                <label for="reg-name" class="form-label fw-semibold text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em">Nama Lengkap</label>
-                <input type="text" class="form-control" id="reg-name" placeholder="Nama Lengkap / Dosen" required />
+                <label
+                  for="reg-name"
+                  class="form-label fw-semibold text-muted text-uppercase"
+                  style="font-size: 0.7rem; letter-spacing: 0.05em"
+                  >Nama Lengkap</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="reg-name"
+                  placeholder="Nama Lengkap / Dosen"
+                  required
+                />
               </div>
 
               <div class="mb-3">
-                <label for="reg-email" class="form-label fw-semibold text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em">Alamat Email</label>
-                <input type="email" class="form-control" id="reg-email" placeholder="nama@univ.ac.id" required />
+                <label
+                  for="reg-email"
+                  class="form-label fw-semibold text-muted text-uppercase"
+                  style="font-size: 0.7rem; letter-spacing: 0.05em"
+                  >Alamat Email</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="reg-email"
+                  placeholder="nama@univ.ac.id"
+                  required
+                />
               </div>
 
               <div class="mb-3">
-                <label for="reg-password" class="form-label fw-semibold text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em">Password</label>
-                <input type="password" class="form-control" id="reg-password" placeholder="••••••••" required />
+                <label
+                  for="reg-password"
+                  class="form-label fw-semibold text-muted text-uppercase"
+                  style="font-size: 0.7rem; letter-spacing: 0.05em"
+                  >Password</label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="reg-password"
+                  placeholder="••••••••"
+                  required
+                />
               </div>
 
               <div class="mb-4">
-                <label for="reg-role" class="form-label fw-semibold text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em">Pilih Peran (Role)</label>
+                <label
+                  for="reg-role"
+                  class="form-label fw-semibold text-muted text-uppercase"
+                  style="font-size: 0.7rem; letter-spacing: 0.05em"
+                  >Pilih Peran (Role)</label
+                >
                 <select class="form-select" id="reg-role" required>
                   <option value="mahasiswa">Mahasiswa</option>
                   <option value="dosen">Dosen</option>
@@ -232,7 +341,11 @@
                 </select>
               </div>
 
-              <button type="submit" class="btn btn-indigo w-100 py-2 d-flex align-items-center justify-content-center gap-2" id="reg-submit-btn">
+              <button
+                type="submit"
+                class="btn btn-indigo w-100 py-2 d-flex align-items-center justify-content-center gap-2"
+                id="reg-submit-btn"
+              >
                 <span>Daftar Akun Baru</span>
               </button>
             </form>

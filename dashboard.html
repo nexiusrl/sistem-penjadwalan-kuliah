@@ -146,12 +146,14 @@
               Dashboard Distribusi Jadwal
             </h1>
             <p class="text-muted mb-0" style="font-size: 11px">
-              Program Studi Teknik Informatika - T.A. 2026/2027
+              Program Studi Sistem Informasi. 2026/2027
             </p>
           </div>
 
           <div class="d-flex align-items-center gap-3">
-            <span class="text-muted small fw-semibold" id="navbar-greeting">Halo, Pengguna</span>
+            <span class="text-muted small fw-semibold" id="navbar-greeting"
+              >Halo, Pengguna</span
+            >
 
             <!-- Quick statistics badge list -->
             <div class="d-flex gap-2">
@@ -279,7 +281,11 @@
                     <h2 class="h6 fw-bold text-university-blue mb-0">
                       Jadwal Perkuliahan Mingguan
                     </h2>
-                    <button class="btn btn-indigo btn-sm py-1 px-2 d-none" id="add-schedule-btn" style="font-size: 0.75rem;">
+                    <button
+                      class="btn btn-indigo btn-sm py-1 px-2 d-none"
+                      id="add-schedule-btn"
+                      style="font-size: 0.75rem"
+                    >
                       <i class="bi bi-plus-lg"></i> Tambah Jadwal
                     </button>
                   </div>
@@ -361,26 +367,41 @@
           <div class="d-none" id="tab-master-view">
             <div class="custom-card mb-4">
               <!-- Navigation Subtabs inside Master Data -->
-              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4 pb-2 border-bottom">
+              <div
+                class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4 pb-2 border-bottom"
+              >
                 <ul class="nav nav-tabs border-bottom-0 mb-0">
                   <li class="nav-item">
-                    <button class="nav-link active fw-bold small text-university-blue" id="subtab-dosen-btn">
+                    <button
+                      class="nav-link active fw-bold small text-university-blue"
+                      id="subtab-dosen-btn"
+                    >
                       Dosen
                     </button>
                   </li>
                   <li class="nav-item">
-                    <button class="nav-link fw-bold small text-university-blue" id="subtab-ruang-btn">
+                    <button
+                      class="nav-link fw-bold small text-university-blue"
+                      id="subtab-ruang-btn"
+                    >
                       Ruangan
                     </button>
                   </li>
                   <li class="nav-item">
-                    <button class="nav-link fw-bold small text-university-blue" id="subtab-mk-btn">
+                    <button
+                      class="nav-link fw-bold small text-university-blue"
+                      id="subtab-mk-btn"
+                    >
                       Mata Kuliah
                     </button>
                   </li>
                 </ul>
-                <button class="btn btn-indigo btn-sm py-1 px-3" id="add-master-btn">
-                  <i class="bi bi-plus-lg"></i> Tambah <span id="add-master-type-label">Dosen</span>
+                <button
+                  class="btn btn-indigo btn-sm py-1 px-3"
+                  id="add-master-btn"
+                >
+                  <i class="bi bi-plus-lg"></i> Tambah
+                  <span id="add-master-type-label">Dosen</span>
                 </button>
               </div>
 
@@ -602,20 +623,51 @@
     </div>
 
     <!-- Master Data Add/Edit Modal -->
-    <div class="modal fade" id="masterModal" tabindex="-1" aria-labelledby="masterModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="masterModal"
+      tabindex="-1"
+      aria-labelledby="masterModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border-radius: var(--rounded-default);">
+        <div
+          class="modal-content"
+          style="border-radius: var(--rounded-default)"
+        >
           <div class="modal-header bg-light">
-            <h5 class="modal-title fw-bold text-university-blue" id="masterModalLabel">Tambah Data</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5
+              class="modal-title fw-bold text-university-blue"
+              id="masterModalLabel"
+            >
+              Tambah Data
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <form id="master-form">
             <div class="modal-body" id="master-modal-body">
               <!-- Dynamically populated based on Dosen/Ruangan/MK -->
             </div>
             <div class="modal-footer border-0">
-              <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
-              <button type="submit" class="btn btn-indigo btn-sm" id="master-submit-btn">Simpan</button>
+              <button
+                type="button"
+                class="btn btn-secondary btn-sm"
+                data-bs-dismiss="modal"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                class="btn btn-indigo btn-sm"
+                id="master-submit-btn"
+              >
+                Simpan
+              </button>
             </div>
           </form>
         </div>
@@ -623,50 +675,127 @@
     </div>
 
     <!-- Schedule Add/Edit Modal -->
-    <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="scheduleModal"
+      tabindex="-1"
+      aria-labelledby="scheduleModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border-radius: var(--rounded-default);">
+        <div
+          class="modal-content"
+          style="border-radius: var(--rounded-default)"
+        >
           <div class="modal-header bg-light">
-            <h5 class="modal-title fw-bold text-university-blue" id="scheduleModalLabel">Tambah Jadwal Kuliah</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5
+              class="modal-title fw-bold text-university-blue"
+              id="scheduleModalLabel"
+            >
+              Tambah Jadwal Kuliah
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <form id="schedule-form">
             <div class="modal-body">
               <input type="hidden" id="sched-id" />
               <div class="mb-3">
-                <label for="sched-subject" class="form-label fw-semibold text-muted small text-uppercase">Mata Kuliah</label>
-                <select class="form-select" id="sched-subject" required></select>
+                <label
+                  for="sched-subject"
+                  class="form-label fw-semibold text-muted small text-uppercase"
+                  >Mata Kuliah</label
+                >
+                <select
+                  class="form-select"
+                  id="sched-subject"
+                  required
+                ></select>
               </div>
               <div class="mb-3">
-                <label for="sched-lecturer" class="form-label fw-semibold text-muted small text-uppercase">Dosen Pengampu</label>
-                <select class="form-select" id="sched-lecturer" required></select>
+                <label
+                  for="sched-lecturer"
+                  class="form-label fw-semibold text-muted small text-uppercase"
+                  >Dosen Pengampu</label
+                >
+                <select
+                  class="form-select"
+                  id="sched-lecturer"
+                  required
+                ></select>
               </div>
               <div class="mb-3">
-                <label for="sched-room" class="form-label fw-semibold text-muted small text-uppercase">Ruangan</label>
+                <label
+                  for="sched-room"
+                  class="form-label fw-semibold text-muted small text-uppercase"
+                  >Ruangan</label
+                >
                 <select class="form-select" id="sched-room" required></select>
               </div>
               <div class="row g-2">
                 <div class="col-6">
                   <div class="mb-3">
-                    <label for="sched-day" class="form-label fw-semibold text-muted small text-uppercase">Hari</label>
-                    <input type="text" class="form-control" id="sched-day" readonly required />
+                    <label
+                      for="sched-day"
+                      class="form-label fw-semibold text-muted small text-uppercase"
+                      >Hari</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="sched-day"
+                      readonly
+                      required
+                    />
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="mb-3">
-                    <label for="sched-slot" class="form-label fw-semibold text-muted small text-uppercase">Slot Waktu</label>
-                    <input type="text" class="form-control" id="sched-slot" readonly required />
+                    <label
+                      for="sched-slot"
+                      class="form-label fw-semibold text-muted small text-uppercase"
+                      >Slot Waktu</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="sched-slot"
+                      readonly
+                      required
+                    />
                   </div>
                 </div>
               </div>
             </div>
             <div class="modal-footer border-0 d-flex justify-content-between">
               <div>
-                <button type="button" class="btn btn-outline-danger btn-sm d-none" id="sched-delete-btn">Hapus Jadwal</button>
+                <button
+                  type="button"
+                  class="btn btn-outline-danger btn-sm d-none"
+                  id="sched-delete-btn"
+                >
+                  Hapus Jadwal
+                </button>
               </div>
               <div>
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-indigo btn-sm" id="sched-submit-btn">Simpan</button>
+                <button
+                  type="button"
+                  class="btn btn-secondary btn-sm"
+                  data-bs-dismiss="modal"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-indigo btn-sm"
+                  id="sched-submit-btn"
+                >
+                  Simpan
+                </button>
               </div>
             </div>
           </form>
