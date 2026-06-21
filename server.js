@@ -449,7 +449,7 @@ app.post("/api/schedules/bulk", requireRole(["admin"]), (req, res) => {
 });
 
 // ================= CHANGE REQUESTS =================
-app.post("/api/requests", requireRole(["admin", "dosen"]), (req, res) => {
+app.post("/api/requests", requireRole(["dosen"]), (req, res) => {
   const { lecturer, subject, fromTime, toTime, reason } = req.body;
   if (!lecturer || !subject || !fromTime || !toTime || !reason) {
     return res

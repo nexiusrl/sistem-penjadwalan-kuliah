@@ -74,6 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const reqToTime = document.getElementById("req-to-time");
   const reqReason = document.getElementById("req-reason");
   const requestsHistoryList = document.getElementById("requests-history-list");
+  const reqFormCol = document.getElementById("req-form-col");
+  const reqHistoryCol = document.getElementById("req-history-col");
 
   // Modals
   const eventDetailModal = new bootstrap.Modal(document.getElementById("eventDetailModal"));
@@ -975,6 +977,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ================= SCHEDULE REQUESTS =================
   function renderRequests() {
+    // Toggle form visibility and layout based on role
+    if (userRole === "admin") {
+      if (reqFormCol) reqFormCol.classList.add("d-none");
+      if (reqHistoryCol) {
+        reqHistoryCol.classList.remove("col-md-7");
+        reqHistoryCol.classList.add("col-12");
+      }
+    } else {
+      if (reqFormCol) reqFormCol.classList.remove("d-none");
+      if (reqHistoryCol) {
+        reqHistoryCol.classList.remove("col-12");
+        reqHistoryCol.classList.add("col-md-7");
+      }
+    }
+
     // Populate dropdown for request form
     reqSubject.innerHTML = mkList.map(mk => `<option value="${mk.name}">${mk.name} (${mk.code})</option>`).join("");
 
