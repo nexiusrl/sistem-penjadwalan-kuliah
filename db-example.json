@@ -1,8 +1,133 @@
 {
-  "users": [],
-  "dosen": [],
-  "ruangan": [],
-  "matakuliah": [],
+  "users": [
+    {
+      "id": 1,
+      "name": "Administrator",
+      "email": "admin@sisjad.ac.id",
+      "password": "admin123",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "name": "Dr. Budi",
+      "email": "dosen@sisjad.ac.id",
+      "password": "dosen123",
+      "role": "dosen"
+    },
+    {
+      "id": 3,
+      "name": "Mahasiswa",
+      "email": "mhs@sisjad.ac.id",
+      "password": "mhs123",
+      "role": "mahasiswa"
+    }
+  ],
+  "dosen": [
+    {
+      "id": 1,
+      "name": "Dr. Budi",
+      "code": "BD"
+    },
+    {
+      "id": 2,
+      "name": "Pak Roni",
+      "code": "RN"
+    },
+    {
+      "id": 3,
+      "name": "Ibu Susi",
+      "code": "SS"
+    },
+    {
+      "id": 4,
+      "name": "Prof. Hermawan",
+      "code": "HW"
+    }
+  ],
+  "ruangan": [
+    {
+      "id": 1,
+      "name": "R301",
+      "type": "Teori",
+      "capacity": 40
+    },
+    {
+      "id": 2,
+      "name": "R302",
+      "type": "Teori",
+      "capacity": 40
+    },
+    {
+      "id": 3,
+      "name": "R401",
+      "type": "Teori",
+      "capacity": 60
+    },
+    {
+      "id": 4,
+      "name": "Lab Komputer",
+      "type": "Praktikum",
+      "capacity": 30
+    }
+  ],
+  "matakuliah": [
+    {
+      "id": 1,
+      "name": "Algoritma & Pemrograman",
+      "code": "SI-101",
+      "sks": 3,
+      "day": "Senin",
+      "timeSlot": "08:00 - 10:30"
+    },
+    {
+      "id": 2,
+      "name": "Struktur Data",
+      "code": "SI-102",
+      "sks": 3,
+      "day": "Selasa",
+      "timeSlot": "10:30 - 13:00"
+    },
+    {
+      "id": 3,
+      "name": "Aljabar Linear",
+      "code": "SI-103",
+      "sks": 3,
+      "day": "Rabu",
+      "timeSlot": "08:00 - 10:30"
+    },
+    {
+      "id": 4,
+      "name": "Matematika Diskrit",
+      "code": "SI-104",
+      "sks": 3,
+      "day": "Kamis",
+      "timeSlot": "13:00 - 15:30"
+    },
+    {
+      "id": 5,
+      "name": "Basis Data",
+      "code": "SI-201",
+      "sks": 4,
+      "day": "Jumat",
+      "timeSlot": "08:00 - 10:30"
+    },
+    {
+      "id": 6,
+      "name": "Jaringan Komputer",
+      "code": "SI-203",
+      "sks": 3,
+      "day": "Senin",
+      "timeSlot": "10:30 - 13:00"
+    },
+    {
+      "id": 7,
+      "name": "Kecerdasan Buatan",
+      "code": "SI-301",
+      "sks": 3,
+      "day": "Rabu",
+      "timeSlot": "13:00 - 15:30"
+    }
+  ],
   "schedules": [],
   "requests": []
 }
