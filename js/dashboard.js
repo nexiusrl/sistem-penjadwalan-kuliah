@@ -352,7 +352,7 @@ document.addEventListener("DOMContentLoaded", () => {
     days.forEach(day => {
       let events = schedules.filter(s => s.day === day);
       if (userRole === "dosen") {
-        events = events.filter(s => s.lecturer.toLowerCase() === userName.toLowerCase() || s.lecturer.toLowerCase() === "dr. budi");
+        events = events.filter(s => s.lecturer.trim().toLowerCase() === userName.trim().toLowerCase());
       }
       
       // Sort chronologically by start time
@@ -1000,7 +1000,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Populate dropdown for request form using lecturer's active schedules
     let mySchedules = schedules;
     if (userRole === "dosen") {
-      mySchedules = schedules.filter(s => s.lecturer.toLowerCase() === userName.toLowerCase() || s.lecturer.toLowerCase() === "dr. budi");
+      mySchedules = schedules.filter(s => s.lecturer.trim().toLowerCase() === userName.trim().toLowerCase());
     }
 
     // Filter unique schedule assignments to prevent duplicates
