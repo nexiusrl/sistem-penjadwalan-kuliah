@@ -72,8 +72,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const reqLecturer = document.getElementById("req-lecturer");
   const reqFromTime = document.getElementById("req-from-time");
   const reqToDate = document.getElementById("req-to-date");
-  const reqToStart = document.getElementById("req-to-start");
-  const reqToEnd = document.getElementById("req-to-end");
+  const reqToStartHour = document.getElementById("req-to-start-hour");
+  const reqToStartMinute = document.getElementById("req-to-start-minute");
+  const reqToEndHour = document.getElementById("req-to-end-hour");
+  const reqToEndMinute = document.getElementById("req-to-end-minute");
   const reqReason = document.getElementById("req-reason");
   const requestsHistoryList = document.getElementById("requests-history-list");
   const reqFormCol = document.getElementById("req-form-col");
@@ -1137,7 +1139,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (!reqToDate.value || !reqToStart.value || !reqToEnd.value) {
+    if (!reqToDate.value || !reqToStartHour.value || !reqToStartMinute.value || !reqToEndHour.value || !reqToEndMinute.value) {
       alert("Silakan pilih tanggal dan jam usulan baru.");
       return;
     }
@@ -1154,13 +1156,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const startTimeVal = `${reqToStartHour.value}:${reqToStartMinute.value}`;
+    const endTimeVal = `${reqToEndHour.value}:${reqToEndMinute.value}`;
+
     // Time range validation
-    if (reqToStart.value >= reqToEnd.value) {
+    if (startTimeVal >= endTimeVal) {
       alert("Jam mulai harus lebih awal dari jam selesai.");
       return;
     }
 
-    const toTimeStr = `${dayName}, ${reqToStart.value} - ${reqToEnd.value}`;
+    const toTimeStr = `${dayName}, ${startTimeVal} - ${endTimeVal}`;
 
     const payload = {
       lecturer: lecturer,
@@ -1185,8 +1190,10 @@ document.addEventListener("DOMContentLoaded", () => {
       
       reqFromTime.value = "";
       reqToDate.value = "";
-      reqToStart.value = "";
-      reqToEnd.value = "";
+      reqToStartHour.value = "";
+      reqToStartMinute.value = "";
+      reqToEndHour.value = "";
+      reqToEndMinute.value = "";
       reqReason.value = "";
       reqSubject.selectedIndex = 0;
       
