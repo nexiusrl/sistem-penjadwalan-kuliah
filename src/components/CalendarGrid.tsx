@@ -52,7 +52,7 @@ export default function CalendarGrid({
             01 // Kalender Distribusi
           </span>
           <h2 className="text-2xl font-bold tracking-tight text-slate-900 mt-0.5 flex items-center gap-2">
-            <Calendar className="h-5.5 w-5.5 text-indigo-650" strokeWidth={1.5} />
+            <Calendar className="h-5.5 w-5.5 text-blue-600" strokeWidth={1.5} />
             <span>
               {userRole === 'admin'
                 ? 'Distribusi Jadwal Kuliah'
@@ -66,7 +66,7 @@ export default function CalendarGrid({
         {userRole === 'admin' && (
           <button
             onClick={onAddScheduleClick}
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-slate-900 px-4 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer"
+            className="flex items-center gap-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-xs font-bold text-white shadow-[0_4px_12px_rgba(37,99,235,0.15)] active:scale-[0.98] transition-all duration-300 cursor-pointer"
           >
             <PlusCircle className="h-4 w-4" strokeWidth={1.5} />
             <span>Tambah Jadwal Kuliah</span>
@@ -105,8 +105,8 @@ export default function CalendarGrid({
                   </div>
                 ) : (
                   events.map((evt) => {
-                    let cardBorder = 'border-l-2 border-l-emerald-500';
-                    let cardBg = 'bg-white hover:bg-slate-50/50';
+                    let cardBorder = 'border-l-2 border-l-blue-600';
+                    let cardBg = 'bg-white hover:bg-blue-50/15';
                     
                     if (evt.status === 'hard-conflict') {
                       cardBorder = 'border-l-2 border-l-rose-500';
@@ -120,14 +120,14 @@ export default function CalendarGrid({
                       <div
                         key={evt.id}
                         onClick={() => setSelectedEvent(evt)}
-                        className={`group cursor-pointer rounded-xl border border-slate-150 p-3.5 transition-all shadow-[0_2px_8px_rgba(0,0,0,0.01)] hover:shadow-xs active:scale-[0.98] ${cardBorder} ${cardBg}`}
+                        className={`group cursor-pointer rounded-xl border border-slate-150 p-3.5 shadow-[0_2px_8px_rgba(0,0,0,0.01)] hover:shadow-[0_8px_25px_rgba(37,99,235,0.06)] hover:-translate-y-[2px] transition-all duration-300 active:scale-[0.98] ${cardBorder} ${cardBg}`}
                       >
-                        <h3 className="font-bold text-xs leading-snug text-slate-900 group-hover:text-indigo-650 transition-colors">
-                          {evt.subject}
+                        <h3 className="font-bold text-xs leading-snug text-slate-900 group-hover:text-blue-600 transition-colors">
+                           {evt.subject}
                         </h3>
                         
                         <div className="mt-3 space-y-1 text-[10px] text-slate-500 font-mono font-semibold">
-                          <div className="flex items-center gap-1.5 font-bold text-indigo-650">
+                          <div className="flex items-center gap-1.5 font-bold text-blue-600">
                             <Clock className="h-3.5 w-3.5 shrink-0 text-slate-400" strokeWidth={1.5} />
                             <span>{evt.timeSlot}</span>
                           </div>
@@ -200,7 +200,7 @@ export default function CalendarGrid({
                 </div>
                 <div>
                   <div className="text-[9px] text-slate-400 uppercase tracking-wider font-bold">Hari & Jam</div>
-                  <div className="text-indigo-650 font-bold text-xs">
+                  <div className="text-blue-600 font-bold text-xs">
                     {selectedEvent.day}, {selectedEvent.timeSlot}
                   </div>
                 </div>
@@ -261,7 +261,7 @@ export default function CalendarGrid({
                     setSelectedEvent(null);
                     openEditModal(evt);
                   }}
-                  className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-bold text-white hover:bg-slate-800 active:scale-95 transition-all cursor-pointer"
+                  className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-700 active:scale-95 transition-all duration-300 cursor-pointer shadow-sm"
                 >
                   <Edit3 className="h-3.5 w-3.5" strokeWidth={1.5} />
                   <span>Edit Jadwal</span>

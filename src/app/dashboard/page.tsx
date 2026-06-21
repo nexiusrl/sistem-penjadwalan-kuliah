@@ -313,7 +313,7 @@ export default function DashboardPage() {
       {/* Top Banner Navigation Header */}
       <header className="sticky top-0 z-40 flex h-18 w-full items-center justify-between border-b border-slate-200/60 bg-white/80 backdrop-blur-md px-6 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 font-extrabold text-white text-base shadow-xs">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 font-extrabold text-white text-base shadow-sm transition-transform duration-300 hover:scale-105">
             S
           </div>
           <span className="text-xl font-bold tracking-tight text-slate-900">
@@ -364,10 +364,10 @@ export default function DashboardPage() {
           <div className="space-y-2.5 flex-1">
             <button
               onClick={() => setActiveTab('dashboard')}
-              className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-xs font-semibold tracking-tight transition-all duration-200 active:scale-[0.98] cursor-pointer ${
+              className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-xs font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
                 activeTab === 'dashboard'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'bg-transparent text-slate-650 hover:bg-slate-50 hover:text-slate-905'
+                  ? 'bg-blue-600 text-white shadow-[0_4px_15px_rgba(37,99,235,0.18)]'
+                  : 'bg-transparent text-slate-600 hover:bg-blue-50/50 hover:text-blue-600'
               }`}
             >
               <Calendar className="h-4 w-4" strokeWidth={1.5} />
@@ -377,10 +377,10 @@ export default function DashboardPage() {
             {userRole !== 'mahasiswa' && (
               <button
                 onClick={() => setActiveTab('requests')}
-                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-xs font-semibold tracking-tight transition-all duration-200 active:scale-[0.98] cursor-pointer ${
+                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-xs font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
                   activeTab === 'requests'
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-transparent text-slate-650 hover:bg-slate-50 hover:text-slate-905'
+                    ? 'bg-blue-600 text-white shadow-[0_4px_15px_rgba(37,99,235,0.18)]'
+                    : 'bg-transparent text-slate-600 hover:bg-blue-50/50 hover:text-blue-600'
                 }`}
               >
                 <FileText className="h-4 w-4" strokeWidth={1.5} />
@@ -391,10 +391,10 @@ export default function DashboardPage() {
             {userRole === 'admin' && (
               <button
                 onClick={() => setActiveTab('master')}
-                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-xs font-semibold tracking-tight transition-all duration-200 active:scale-[0.98] cursor-pointer ${
+                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-xs font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
                   activeTab === 'master'
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-transparent text-slate-650 hover:bg-slate-50 hover:text-slate-905'
+                    ? 'bg-blue-600 text-white shadow-[0_4px_15px_rgba(37,99,235,0.18)]'
+                    : 'bg-transparent text-slate-600 hover:bg-blue-50/50 hover:text-blue-600'
                 }`}
               >
                 <Settings className="h-4 w-4" strokeWidth={1.5} />
@@ -467,7 +467,7 @@ export default function DashboardPage() {
                   </div>
                   <button
                     onClick={triggerGASolver}
-                    className="flex items-center gap-2 shrink-0 rounded-xl bg-slate-900 hover:bg-slate-800 px-5 py-3 text-xs font-semibold text-white shadow-xs active:scale-[0.98] transition-all cursor-pointer animate-pulse"
+                    className="flex items-center gap-2 shrink-0 rounded-xl bg-blue-600 hover:bg-blue-700 px-5 py-3 text-xs font-semibold text-white shadow-[0_4px_15px_rgba(37,99,235,0.15)] active:scale-[0.98] transition-all duration-300 cursor-pointer"
                   >
                     <Play className="h-4 w-4 shrink-0 fill-current" strokeWidth={1.5} />
                     <span>Jalankan GA Solver</span>
@@ -536,7 +536,7 @@ export default function DashboardPage() {
 
       {/* Floating Notice Toast */}
       {notice && (
-        <div className="fixed bottom-8 right-8 z-50 flex items-center gap-2.5 rounded-xl bg-slate-900 border border-slate-800 px-5 py-3.5 text-xs font-semibold text-white shadow-xl animate-in slide-in-from-bottom-5 duration-200">
+        <div className="fixed bottom-8 right-8 z-50 flex items-center gap-2.5 rounded-xl bg-slate-900 border border-slate-800 px-5 py-3.5 text-xs font-semibold text-white shadow-[0_10px_30px_rgba(15,23,42,0.15)] animate-in slide-in-from-bottom-5 duration-300">
           <CheckCircle className="h-4.5 w-4.5 text-emerald-400 shrink-0" strokeWidth={1.5} />
           <span>{notice}</span>
         </div>
@@ -544,24 +544,24 @@ export default function DashboardPage() {
 
       {/* Dynamic Solver (GA) Progress Overlay */}
       {isSolving && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/40 p-6 text-white backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="w-full max-w-sm text-center border border-slate-200 bg-white p-8 text-slate-900 rounded-2xl shadow-xl">
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/40 p-6 text-white backdrop-blur-md animate-in fade-in duration-300">
+          <div className="w-full max-w-sm text-center border border-slate-200 bg-white p-8 text-slate-900 rounded-2xl shadow-[0_20px_50px_rgba(30,41,59,0.08)]">
             <h3 className="text-base font-bold text-slate-900 mb-2 flex items-center justify-center gap-2">
-              <RefreshCw className="h-5 w-5 animate-spin text-slate-800" strokeWidth={1.5} />
-              <span>GA SOLVER AKTIF</span>
+              <RefreshCw className="h-5 w-5 animate-spin text-blue-600" strokeWidth={1.5} />
+              <span className="text-blue-600 font-semibold tracking-tight">GA SOLVER AKTIF</span>
             </h3>
             <p className="text-[10px] text-slate-500 max-w-[280px] mx-auto leading-relaxed mb-6 font-semibold">
               Mengevaluasi alokasi constraint ruang & waktu dosen. Menghitung mutasi kecocokan penjadwalan optimal...
             </p>
 
             {/* Progress Bar Container */}
-            <div className="w-full bg-slate-100 border border-slate-200/60 rounded-full h-3 overflow-hidden mb-3">
+            <div className="w-full bg-slate-100 border border-slate-250 rounded-full h-3 overflow-hidden mb-3">
               <div
-                className="bg-slate-900 h-full transition-all duration-150 rounded-full"
+                className="bg-blue-600 h-full transition-all duration-300 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.4)]"
                 style={{ width: `${solveProgress}%` }}
               />
             </div>
-            <span className="text-xs font-mono font-bold text-slate-850">{solveProgress}% SELESAI</span>
+            <span className="text-xs font-mono font-bold text-blue-600">{solveProgress}% SELESAI</span>
           </div>
         </div>
       )}
@@ -593,7 +593,7 @@ export default function DashboardPage() {
                   value={schedSubject}
                   onChange={(e) => handleSubjectChange(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-slate-400 transition-all font-sans font-medium text-slate-800"
+                  className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800"
                 >
                   {dbData.matakuliah.map((m) => (
                     <option key={m.id} value={m.name}>
@@ -611,7 +611,7 @@ export default function DashboardPage() {
                   value={schedLecturer}
                   onChange={(e) => setSchedLecturer(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-slate-400 transition-all font-sans font-medium text-slate-800"
+                  className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800"
                 >
                   {dbData.dosen.map((d) => (
                     <option key={d.id} value={d.name}>
@@ -654,7 +654,7 @@ export default function DashboardPage() {
                   value={schedRoom}
                   onChange={(e) => setSchedRoom(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-slate-400 transition-all font-sans font-medium text-slate-800"
+                  className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800"
                 >
                   {dbData.ruangan.map((r) => (
                     <option key={r.id} value={r.name}>
@@ -691,7 +691,7 @@ export default function DashboardPage() {
                   <button
                     type="submit"
                     disabled={schedLoading}
-                    className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer"
+                    className="flex items-center gap-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-xs font-semibold text-white shadow-xs active:scale-[0.98] transition-all duration-300 cursor-pointer"
                   >
                     {schedLoading ? (
                       <>

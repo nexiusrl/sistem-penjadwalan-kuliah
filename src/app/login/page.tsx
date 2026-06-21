@@ -113,7 +113,7 @@ export default function LoginPage() {
       {/* Left Panel: Branding & Information */}
       <div className="relative hidden w-[45%] flex-col justify-between overflow-hidden bg-slate-50 p-14 border-r border-slate-200/60 lg:flex before:absolute before:inset-0 before:bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] before:bg-[size:24px_24px] before:pointer-events-none">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 font-bold text-white text-base shadow-xs">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 font-bold text-white text-base shadow-xs">
             S
           </div>
           <span className="text-xl font-bold tracking-tight text-slate-900">
@@ -148,20 +148,20 @@ export default function LoginPage() {
           <div className="mb-8 flex rounded-xl bg-slate-100/80 p-1 border border-slate-200/40">
             <button
               onClick={() => setActiveTab('login')}
-              className={`w-1/2 rounded-lg py-2.5 text-xs font-semibold tracking-tight transition-all duration-200 active:scale-[0.98] cursor-pointer ${
+              className={`w-1/2 rounded-lg py-2.5 text-xs font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
                 activeTab === 'login'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'text-slate-500 hover:text-blue-600'
               }`}
             >
               MASUK
             </button>
             <button
               onClick={() => setActiveTab('register')}
-              className={`w-1/2 rounded-lg py-2.5 text-xs font-semibold tracking-tight transition-all duration-200 active:scale-[0.98] cursor-pointer ${
+              className={`w-1/2 rounded-lg py-2.5 text-xs font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
                 activeTab === 'register'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'text-slate-500 hover:text-blue-600'
               }`}
             >
               DAFTAR
@@ -200,7 +200,7 @@ export default function LoginPage() {
                       onChange={(e) => setLoginEmail(e.target.value)}
                       placeholder="nama@univ.ac.id"
                       required
-                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
                 </div>
@@ -217,7 +217,7 @@ export default function LoginPage() {
                       onChange={(e) => setLoginPassword(e.target.value)}
                       placeholder="••••••••"
                       required
-                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
                 </div>
@@ -227,7 +227,7 @@ export default function LoginPage() {
                     <input
                       type="checkbox"
                       defaultChecked
-                      className="rounded border-slate-300 text-slate-900 focus:ring-slate-400/20 focus:ring-opacity-50"
+                      className="rounded border-slate-350 text-blue-600 focus:ring-blue-500/20 focus:ring-opacity-50"
                     />
                     <span>Ingat saya</span>
                   </label>
@@ -237,7 +237,7 @@ export default function LoginPage() {
                       e.preventDefault();
                       alert('Silakan hubungi Admin Prodi untuk reset password.');
                     }}
-                    className="text-slate-650 hover:text-slate-905 hover:underline"
+                    className="text-slate-600 hover:text-blue-600 hover:underline"
                   >
                     Lupa password?
                   </a>
@@ -246,7 +246,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loginLoading}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-2.5 font-semibold text-white hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer shadow-xs"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 py-2.5 font-semibold text-white shadow-[0_4px_12px_rgba(37,99,235,0.15)] active:scale-[0.98] transition-all duration-300 cursor-pointer shadow-xs"
                 >
                   {loginLoading ? (
                     <>
@@ -303,7 +303,7 @@ export default function LoginPage() {
                       onChange={(e) => setRegName(e.target.value)}
                       placeholder="Nama Lengkap / Dosen"
                       required
-                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
                 </div>
@@ -320,7 +320,7 @@ export default function LoginPage() {
                       onChange={(e) => setRegEmail(e.target.value)}
                       placeholder="nama@univ.ac.id"
                       required
-                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
                 </div>
@@ -337,7 +337,7 @@ export default function LoginPage() {
                       onChange={(e) => setRegPassword(e.target.value)}
                       placeholder="••••••••"
                       required
-                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
                 </div>
@@ -350,7 +350,7 @@ export default function LoginPage() {
                     value={regRole}
                     onChange={(e) => setRegRole(e.target.value as any)}
                     required
-                    className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-slate-400 transition-all font-sans font-medium text-slate-800"
+                    className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 transition-all font-sans font-medium text-slate-800"
                   >
                     <option value="mahasiswa">Mahasiswa</option>
                     <option value="dosen">Dosen</option>
@@ -361,7 +361,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={regLoading}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-2.5 font-semibold text-white hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer shadow-xs"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 py-2.5 font-semibold text-white shadow-[0_4px_12px_rgba(37,99,235,0.15)] active:scale-[0.98] transition-all duration-300 cursor-pointer shadow-xs"
                 >
                   {regLoading ? (
                     <>

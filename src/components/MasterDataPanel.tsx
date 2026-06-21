@@ -173,10 +173,10 @@ export default function MasterDataPanel({
         <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100/80 border border-slate-200/40">
           <button
             onClick={() => setActiveTab('dosen')}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition-all duration-200 active:scale-[0.98] cursor-pointer ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
               activeTab === 'dosen'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-500 hover:text-slate-900 hover:bg-white/40'
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'text-slate-500 hover:text-blue-600 hover:bg-white/40'
             }`}
           >
             <Users className="h-4 w-4" strokeWidth={1.5} />
@@ -184,10 +184,10 @@ export default function MasterDataPanel({
           </button>
           <button
             onClick={() => setActiveTab('ruang')}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition-all duration-200 active:scale-[0.98] cursor-pointer ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
               activeTab === 'ruang'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-500 hover:text-slate-900 hover:bg-white/40'
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'text-slate-500 hover:text-blue-600 hover:bg-white/40'
             }`}
           >
             <Layers className="h-4 w-4" strokeWidth={1.5} />
@@ -195,10 +195,10 @@ export default function MasterDataPanel({
           </button>
           <button
             onClick={() => setActiveTab('mk')}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition-all duration-200 active:scale-[0.98] cursor-pointer ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
               activeTab === 'mk'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-500 hover:text-slate-900 hover:bg-white/40'
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'text-slate-500 hover:text-blue-600 hover:bg-white/40'
             }`}
           >
             <BookOpen className="h-4 w-4" strokeWidth={1.5} />
@@ -209,7 +209,7 @@ export default function MasterDataPanel({
         {userRole === 'admin' && (
           <button
             onClick={openAddModal}
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer"
+            className="flex items-center gap-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-xs font-semibold text-white shadow-[0_4px_12px_rgba(37,99,235,0.15)] active:scale-[0.98] transition-all duration-300 cursor-pointer"
           >
             <PlusCircle className="h-4 w-4" strokeWidth={1.5} />
             <span>
@@ -415,7 +415,7 @@ export default function MasterDataPanel({
                       onChange={(e) => setDosenName(e.target.value)}
                       required
                       placeholder="Nama Lengkap Beserta Gelar"
-                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
 
@@ -430,7 +430,7 @@ export default function MasterDataPanel({
                       required
                       maxLength={3}
                       placeholder="Contoh: BD"
-                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-mono font-medium text-slate-800 placeholder-slate-400"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-slate-400/20 transition-all font-mono font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
 
@@ -441,7 +441,7 @@ export default function MasterDataPanel({
                     <select
                       value={dosenPref}
                       onChange={(e) => setDosenPref(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-slate-400 transition-all font-sans font-medium text-slate-800"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 transition-all font-sans font-medium text-slate-800"
                     >
                       <option value="Bebas">Bebas</option>
                       <option value="Senin">Senin</option>
@@ -466,7 +466,7 @@ export default function MasterDataPanel({
                       onChange={(e) => setRuangName(e.target.value)}
                       required
                       placeholder="Contoh: R301"
-                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
 
@@ -478,7 +478,7 @@ export default function MasterDataPanel({
                       value={ruangType}
                       onChange={(e) => setRuangType(e.target.value)}
                       required
-                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-slate-400 transition-all font-sans font-medium text-slate-800"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 transition-all font-sans font-medium text-slate-800"
                     >
                       <option value="Teori">Teori</option>
                       <option value="Praktikum">Praktikum</option>
@@ -494,7 +494,7 @@ export default function MasterDataPanel({
                       value={ruangCapacity}
                       onChange={(e) => setRuangCapacity(Number(e.target.value))}
                       required
-                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-mono font-medium text-slate-800 placeholder-slate-400"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-slate-400/20 transition-all font-mono font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
                 </>
@@ -511,7 +511,7 @@ export default function MasterDataPanel({
                       value={mkName}
                       onChange={(e) => setMkName(e.target.value)}
                       required
-                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800"
                     />
                   </div>
 
@@ -525,7 +525,7 @@ export default function MasterDataPanel({
                       onChange={(e) => setMkCode(e.target.value)}
                       required
                       placeholder="Contoh: SI-101"
-                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-mono font-medium text-slate-800 placeholder-slate-400"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-slate-400/20 transition-all font-mono font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
 
@@ -538,7 +538,7 @@ export default function MasterDataPanel({
                       value={mkSks}
                       onChange={(e) => setMkSks(Number(e.target.value))}
                       required
-                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-mono font-medium text-slate-800"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3.5 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-slate-400/20 transition-all font-mono font-medium text-slate-800"
                     />
                   </div>
 
@@ -550,7 +550,7 @@ export default function MasterDataPanel({
                       value={mkDay}
                       onChange={(e) => setMkDay(e.target.value)}
                       required
-                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-slate-400 transition-all font-sans font-medium text-slate-800"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 transition-all font-sans font-medium text-slate-800"
                     >
                       <option value="Senin">Senin</option>
                       <option value="Selasa">Selasa</option>
@@ -570,7 +570,7 @@ export default function MasterDataPanel({
                         value={mkTimeStart}
                         onChange={(e) => setMkTimeStart(e.target.value)}
                         required
-                        className="w-full rounded-xl border border-slate-200 py-2 px-3 bg-white outline-none focus:border-slate-400 transition-all font-mono font-medium text-slate-800"
+                        className="w-full rounded-xl border border-slate-200 py-2 px-3 bg-white outline-none focus:border-blue-500 transition-all font-mono font-medium text-slate-800"
                       />
                     </div>
                     <div className="flex flex-col gap-1.5">
@@ -582,7 +582,7 @@ export default function MasterDataPanel({
                         value={mkTimeEnd}
                         onChange={(e) => setMkTimeEnd(e.target.value)}
                         required
-                        className="w-full rounded-xl border border-slate-200 py-2 px-3 bg-white outline-none focus:border-slate-400 transition-all font-mono font-medium text-slate-800"
+                        className="w-full rounded-xl border border-slate-200 py-2 px-3 bg-white outline-none focus:border-blue-500 transition-all font-mono font-medium text-slate-800"
                       />
                     </div>
                   </div>
@@ -601,7 +601,7 @@ export default function MasterDataPanel({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer"
+                  className="flex items-center gap-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-xs font-semibold text-white shadow-xs active:scale-[0.98] transition-all duration-300 cursor-pointer"
                 >
                   {loading ? (
                     <>

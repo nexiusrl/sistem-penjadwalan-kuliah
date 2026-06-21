@@ -80,7 +80,7 @@ export default function ConflictPanel({
                     {userRole === 'admin' && (
                       <button
                         onClick={() => onResolveClick(c)}
-                        className="mt-3.5 flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 font-bold px-3 py-1.5 text-[9px] uppercase transition-all cursor-pointer active:scale-95"
+                        className="mt-3.5 flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white hover:bg-blue-50/50 hover:text-blue-600 hover:border-blue-200/60 font-bold px-3 py-1.5 text-[9px] uppercase transition-all duration-300 cursor-pointer active:scale-[0.97]"
                       >
                         <RefreshCw className="h-3 w-3 shrink-0 text-slate-600 stroke-[1.5]" />
                         <span>Pindahkan / Reschedule</span>
@@ -118,7 +118,7 @@ export default function ConflictPanel({
                     {userRole === 'admin' && (
                       <button
                         onClick={() => onResolveClick(w)}
-                        className="mt-3.5 flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 font-bold px-3 py-1.5 text-[9px] uppercase transition-all cursor-pointer active:scale-95"
+                        className="mt-3.5 flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white hover:bg-blue-50/50 hover:text-blue-600 hover:border-blue-200/60 font-bold px-3 py-1.5 text-[9px] uppercase transition-all duration-300 cursor-pointer active:scale-[0.97]"
                       >
                         <RefreshCw className="h-3 w-3 shrink-0 text-slate-600 stroke-[1.5]" />
                         <span>Pindahkan Pagi</span>

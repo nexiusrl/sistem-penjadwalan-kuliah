@@ -171,7 +171,7 @@ export default function RequestPanel({
       {userRole === 'dosen' && (
         <div className="xl:col-span-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_8px_30px_rgb(0,0,0,0.02)]">
           <h3 className="font-bold text-sm text-slate-800 pb-3 border-b border-slate-100 mb-4 flex items-center gap-2">
-            <Send className="h-4.5 w-4.5 text-indigo-650" strokeWidth={1.5} />
+            <Send className="h-4.5 w-4.5 text-blue-600" strokeWidth={1.5} />
             <span>Ajukan Perubahan Jadwal</span>
           </h3>
           <p className="text-[11px] text-slate-400 mb-4 leading-relaxed">
@@ -201,7 +201,7 @@ export default function RequestPanel({
                 value={subject}
                 onChange={(e) => handleSubjectChange(e.target.value)}
                 required
-                className="w-full rounded-xl border border-slate-200 py-2.5 px-3 text-xs outline-none bg-white focus:border-indigo-500"
+                className="w-full rounded-xl border border-slate-200 py-2.5 px-3 text-xs outline-none bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans text-slate-800"
               >
                 <option value="" disabled>
                   Pilih mata kuliah & jadwal...
@@ -255,7 +255,7 @@ export default function RequestPanel({
                 value={toDate}
                 onChange={(e) => setToDate(e.target.value)}
                 required
-                className="w-full rounded-xl border border-slate-200 py-2.5 px-3 text-xs outline-none bg-white focus:border-indigo-500"
+                className="w-full rounded-xl border border-slate-200 py-2.5 px-3 text-xs outline-none bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans text-slate-800"
               />
             </div>
 
@@ -269,7 +269,7 @@ export default function RequestPanel({
                     value={startHour}
                     onChange={(e) => setStartHour(e.target.value)}
                     required
-                    className="w-1/2 rounded-xl border border-slate-200 py-2.5 px-1.5 text-xs bg-white outline-none focus:border-indigo-500"
+                    className="w-1/2 rounded-xl border border-slate-200 py-2.5 px-1.5 text-xs bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all text-slate-800"
                   >
                     <option value="" disabled>
                       Jam
@@ -284,7 +284,7 @@ export default function RequestPanel({
                     value={startMinute}
                     onChange={(e) => setStartMinute(e.target.value)}
                     required
-                    className="w-1/2 rounded-xl border border-slate-200 py-2.5 px-1.5 text-xs bg-white outline-none focus:border-indigo-500"
+                    className="w-1/2 rounded-xl border border-slate-200 py-2.5 px-1.5 text-xs bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all text-slate-800"
                   >
                     <option value="" disabled>
                       Mnt
@@ -307,7 +307,7 @@ export default function RequestPanel({
                     value={endHour}
                     onChange={(e) => setEndHour(e.target.value)}
                     required
-                    className="w-1/2 rounded-xl border border-slate-200 py-2.5 px-1.5 text-xs bg-white outline-none focus:border-indigo-500"
+                    className="w-1/2 rounded-xl border border-slate-200 py-2.5 px-1.5 text-xs bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all text-slate-800"
                   >
                     <option value="" disabled>
                       Jam
@@ -322,7 +322,7 @@ export default function RequestPanel({
                     value={endMinute}
                     onChange={(e) => setEndMinute(e.target.value)}
                     required
-                    className="w-1/2 rounded-xl border border-slate-200 py-2.5 px-1.5 text-xs bg-white outline-none focus:border-indigo-500"
+                    className="w-1/2 rounded-xl border border-slate-200 py-2.5 px-1.5 text-xs bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all text-slate-800"
                   >
                     <option value="" disabled>
                       Mnt
@@ -347,14 +347,14 @@ export default function RequestPanel({
                 rows={3}
                 required
                 placeholder="Alasan pemindahan jadwal..."
-                className="w-full rounded-xl border border-slate-200 py-2.5 px-3 text-xs outline-none bg-white focus:border-indigo-500"
+                className="w-full rounded-xl border border-slate-200 py-2.5 px-3 text-xs outline-none bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans text-slate-800"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-2.5 text-xs font-bold text-white shadow-md shadow-slate-900/10 hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-blue-700 active:scale-[0.98] transition-all duration-300 cursor-pointer"
             >
               {loading ? (
                 <>
@@ -376,7 +376,7 @@ export default function RequestPanel({
         } rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_8px_30px_rgb(0,0,0,0.02)]`}
       >
         <h3 className="font-bold text-sm text-slate-800 pb-3 border-b border-slate-100 mb-4 flex items-center gap-2">
-          <FileText className="h-4.5 w-4.5 text-indigo-650" strokeWidth={1.5} />
+          <FileText className="h-4.5 w-4.5 text-blue-600" strokeWidth={1.5} />
           <span>Riwayat Pengajuan Pergeseran Jadwal</span>
         </h3>
 
@@ -393,7 +393,7 @@ export default function RequestPanel({
                 className="rounded-xl border border-slate-100 bg-slate-50/50 p-4 transition-all hover:bg-slate-50"
               >
                 <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-2">
-                  <span className="font-bold text-xs text-indigo-750">
+                  <span className="font-bold text-xs text-blue-600">
                     {req.subject}
                   </span>
                   <div>
@@ -418,7 +418,7 @@ export default function RequestPanel({
                     Dosen Pemohon: <span className="font-bold text-slate-800">{req.lecturer}</span>
                   </div>
                   <div className="leading-relaxed">
-                    Pengajuan geser jadwal dari <code className="bg-slate-100 px-1 py-0.5 rounded-sm">{req.fromTime}</code> ke <code className="bg-indigo-50 px-1 py-0.5 rounded-sm text-indigo-750">{req.toTime}</code>.
+                    Pengajuan geser jadwal dari <code className="bg-slate-100 px-1 py-0.5 rounded-sm">{req.fromTime}</code> ke <code className="bg-blue-50 px-1 py-0.5 rounded-sm text-blue-600">{req.toTime}</code>.
                   </div>
                   <div className="text-[10px] text-slate-400 border-t border-slate-100/50 pt-2 mt-2 leading-relaxed">
                     Alasan: &ldquo;{req.reason}&rdquo;
@@ -437,7 +437,7 @@ export default function RequestPanel({
                     <button
                       onClick={() => handleRequestStatus(req.id, 'approved')}
                       disabled={actionLoading !== null}
-                      className="rounded-lg bg-slate-900 text-white font-bold px-3.5 py-1.5 text-[10px] hover:bg-slate-800 transition-colors disabled:opacity-50 active:scale-95 cursor-pointer"
+                      className="rounded-lg bg-blue-600 text-white font-bold px-3.5 py-1.5 text-[10px] hover:bg-blue-700 transition-all duration-300 disabled:opacity-50 active:scale-[0.98] cursor-pointer"
                     >
                       {actionLoading === req.id ? 'Memproses' : 'Setujui'}
                     </button>
