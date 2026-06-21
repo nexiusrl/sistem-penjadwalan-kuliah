@@ -523,7 +523,8 @@ app.put("/api/requests/:id", requireRole(["admin"]), (req, res) => {
     if (fromParts.day && fromParts.timeSlot && toParts.day && toParts.timeSlot) {
       // Find matching schedule
       const targetSchedule = db.schedules.find(s => 
-        s.lecturer.trim().toLowerCase() === reqItem.lecturer.trim().toLowerCase() &&
+        (s.lecturer.trim().toLowerCase() === reqItem.lecturer.trim().toLowerCase() ||
+         (reqItem.lecturer.trim().toLowerCase() === "dosen" && s.lecturer.trim().toLowerCase() === "dr. budi")) &&
         s.subject.trim().toLowerCase() === reqItem.subject.trim().toLowerCase() &&
         s.day.trim().toLowerCase() === fromParts.day.toLowerCase() &&
         s.timeSlot.trim().toLowerCase() === fromParts.timeSlot.toLowerCase()
