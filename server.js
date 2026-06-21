@@ -489,6 +489,17 @@ app.post("/api/requests", requireRole(["dosen"]), (req, res) => {
   res.status(201).json(newRequest);
 });
 
+function parseTimeString(timeStr) {
+  if (!timeStr || !timeStr.includes(",")) {
+    return { day: "", timeSlot: "" };
+  }
+  const parts = timeStr.split(",");
+  return {
+    day: parts[0].trim(),
+    timeSlot: parts.slice(1).join(",").trim()
+  };
+}
+
 app.put("/api/requests/:id", requireRole(["admin"]), (req, res) => {
   const id = parseInt(req.params.id);
   const { status } = req.body; // "approved" or "rejected"
@@ -502,9 +513,38 @@ app.put("/api/requests/:id", requireRole(["admin"]), (req, res) => {
   if (!reqItem)
     return res.status(404).json({ message: "Permohonan tidak ditemukan." });
 
+  let scheduleUpdated = false;
+  const isTransitionToApproved = status === "approved" && reqItem.status !== "approved";
+
+  if (isTransitionToApproved) {
+    const fromParts = parseTimeString(reqItem.fromTime);
+    const toParts = parseTimeString(reqItem.toTime);
+
+    if (fromParts.day && fromParts.timeSlot && toParts.day && toParts.timeSlot) {
+      // Find matching schedule
+      const targetSchedule = db.schedules.find(s => 
+        s.lecturer.trim().toLowerCase() === reqItem.lecturer.trim().toLowerCase() &&
+        s.subject.trim().toLowerCase() === reqItem.subject.trim().toLowerCase() &&
+        s.day.trim().toLowerCase() === fromParts.day.toLowerCase() &&
+        s.timeSlot.trim().toLowerCase() === fromParts.timeSlot.toLowerCase()
+      );
+
+      if (targetSchedule) {
+        targetSchedule.day = toParts.day;
+        targetSchedule.timeSlot = toParts.timeSlot;
+        scheduleUpdated = true;
+      }
+    }
+  }
+
   reqItem.status = status;
   writeDB(db);
-  res.json(reqItem);
+
+  const responseData = { ...reqItem };
+  if (isTransitionToApproved && !scheduleUpdated) {
+    responseData.warning = "Jadwal kuliah asal tidak ditemukan di database. Status permohonan tetap disetujui.";
+  }
+  res.json(responseData);
 });
 
 // Catch-all for Frontend Routing (Serve index.html as fallback)

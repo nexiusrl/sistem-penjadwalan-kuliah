@@ -144,46 +144,44 @@ body {
 }
 
 /* Weekly calendar grid */
+/* Weekly calendar grid */
 .weekly-calendar-grid {
   display: grid;
-  grid-template-columns: 80px repeat(5, 1fr);
-  background-color: var(--color-outline-variant);
-  gap: 1px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  background-color: transparent;
   border-radius: var(--rounded-default);
-  overflow: hidden;
-  border: 1px solid var(--color-outline-variant);
 }
 
-.grid-header-time, .grid-header-day {
+.day-column {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--rounded-default);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.grid-header-day {
   background-color: #efedf1;
-  padding: 10px 6px;
+  padding: 12px 8px;
   font-size: 0.75rem;
   font-weight: 700;
   color: #43474e;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-}
-
-.grid-cell-time {
-  background-color: #f4f3f7;
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #43474e;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  border-right: 1px solid var(--color-outline-variant);
+  border-bottom: 1px solid var(--color-outline-variant);
 }
 
 .grid-cell-day {
   background-color: var(--color-surface);
-  min-height: 110px;
-  padding: 6px;
+  min-height: 400px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 
 /* Calendar Event Card (Ghost Border Style) */

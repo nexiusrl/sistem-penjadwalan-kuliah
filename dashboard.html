@@ -462,9 +462,11 @@
                     >
                     <input
                       type="text"
-                      class="form-control"
+                      class="form-control bg-light"
                       id="req-from-time"
-                      placeholder="Contoh: Selasa, 13:00 - 15:30"
+                      placeholder="Pilih mata kuliah untuk memuat jadwal asal"
+                      readonly
+                      disabled
                       required
                     />
                   </div>
@@ -473,15 +475,43 @@
                     <label
                       class="form-label fw-semibold text-muted text-uppercase"
                       style="font-size: 0.7rem; letter-spacing: 0.05em"
-                      >Usulan Jadwal Baru</label
+                      >Tanggal Usulan Baru</label
                     >
                     <input
-                      type="text"
+                      type="date"
                       class="form-control"
-                      id="req-to-time"
-                      placeholder="Contoh: Senin, 10:30 - 13:00"
+                      id="req-to-date"
                       required
                     />
+                  </div>
+
+                  <div class="row g-2 mb-3">
+                    <div class="col-6">
+                      <label
+                        class="form-label fw-semibold text-muted text-uppercase"
+                        style="font-size: 0.7rem; letter-spacing: 0.05em"
+                        >Jam Mulai Baru</label
+                      >
+                      <input
+                        type="time"
+                        class="form-control"
+                        id="req-to-start"
+                        required
+                      />
+                    </div>
+                    <div class="col-6">
+                      <label
+                        class="form-label fw-semibold text-muted text-uppercase"
+                        style="font-size: 0.7rem; letter-spacing: 0.05em"
+                        >Jam Selesai Baru</label
+                      >
+                      <input
+                        type="time"
+                        class="form-control"
+                        id="req-to-end"
+                        required
+                      />
+                    </div>
                   </div>
 
                   <div class="mb-3">

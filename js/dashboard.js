@@ -71,7 +71,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const reqSubject = document.getElementById("req-subject");
   const reqLecturer = document.getElementById("req-lecturer");
   const reqFromTime = document.getElementById("req-from-time");
-  const reqToTime = document.getElementById("req-to-time");
+  const reqToDate = document.getElementById("req-to-date");
+  const reqToStart = document.getElementById("req-to-start");
+  const reqToEnd = document.getElementById("req-to-end");
   const reqReason = document.getElementById("req-reason");
   const requestsHistoryList = document.getElementById("requests-history-list");
   const reqFormCol = document.getElementById("req-form-col");
@@ -345,44 +347,45 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderCalendar() {
     let html = "";
     
-    // Header row
-    html += '<div class="grid-header-time">Jam</div>';
     days.forEach(day => {
-      html += `<div class="grid-header-day">${day}</div>`;
-    });
-
-    // Time Slices
-    timeSlots.forEach(slot => {
-      // Time cell
-      html += `<div class="grid-cell-time">${slot}</div>`;
+      let events = schedules.filter(s => s.day === day);
+      if (userRole === "dosen") {
+        events = events.filter(s => s.lecturer.toLowerCase() === userName.toLowerCase() || s.lecturer.toLowerCase() === "dr. budi");
+      }
       
-      // Days cells
-      days.forEach(day => {
-        let events = schedules.filter(s => s.day === day && s.timeSlot === slot);
-        
-        // If dosen, filter only their classes
-        if (userRole === "dosen") {
-          events = events.filter(s => s.lecturer.toLowerCase() === userName.toLowerCase() || s.lecturer.toLowerCase() === "dr. budi");
-        }
-        
-        html += `<div class="grid-cell-day">`;
-        events.forEach(evt => {
-          let statusClass = "calendar-event-validated";
-          if (evt.status === "hard-conflict") statusClass = "calendar-event-hard";
-          else if (evt.status === "soft-warning") statusClass = "calendar-event-soft";
-
-          html += `
-            <div class="calendar-event ${statusClass}" data-id="${evt.id}">
-              <div class="event-title">${evt.subject}</div>
-              <div class="event-details">
-                <div>👤 ${evt.lecturer}</div>
-                <div>📍 Ruang ${evt.room}</div>
-              </div>
-            </div>
-          `;
-        });
-        html += `</div>`;
+      // Sort chronologically by start time
+      events.sort((a, b) => {
+        const timeA = (a.timeSlot || "").split(" - ")[0] || "";
+        const timeB = (b.timeSlot || "").split(" - ")[0] || "";
+        return timeA.localeCompare(timeB);
       });
+
+      let htmlCards = "";
+      events.forEach(evt => {
+        let statusClass = "calendar-event-validated";
+        if (evt.status === "hard-conflict") statusClass = "calendar-event-hard";
+        else if (evt.status === "soft-warning") statusClass = "calendar-event-soft";
+
+        htmlCards += `
+          <div class="calendar-event ${statusClass}" data-id="${evt.id}">
+            <div class="event-title">${evt.subject}</div>
+            <div class="event-details">
+              <div class="fw-semibold text-indigo mb-1" style="font-size: 0.7rem;">🕒 ${evt.timeSlot}</div>
+              <div>👤 ${evt.lecturer}</div>
+              <div>📍 Ruang ${evt.room}</div>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `
+        <div class="day-column">
+          <div class="grid-header-day">${day}</div>
+          <div class="grid-cell-day">
+            ${htmlCards || '<div class="text-muted small text-center my-auto py-3">Tidak ada perkuliahan</div>'}
+          </div>
+        </div>
+      `;
     });
 
     calendarGridContainer.innerHTML = html;
@@ -992,8 +995,25 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Populate dropdown for request form
-    reqSubject.innerHTML = mkList.map(mk => `<option value="${mk.name}">${mk.name} (${mk.code})</option>`).join("");
+    // Populate dropdown for request form using lecturer's active schedules
+    let mySchedules = schedules;
+    if (userRole === "dosen") {
+      mySchedules = schedules.filter(s => s.lecturer.toLowerCase() === userName.toLowerCase() || s.lecturer.toLowerCase() === "dr. budi");
+    }
+
+    // Filter unique schedule assignments to prevent duplicates
+    const uniqueSchedules = [];
+    const seen = new Set();
+    mySchedules.forEach(s => {
+      const key = `${s.subject}|${s.day}|${s.timeSlot}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        uniqueSchedules.push(s);
+      }
+    });
+
+    reqSubject.innerHTML = '<option value="" disabled selected>Pilih mata kuliah & jadwal...</option>' + 
+      uniqueSchedules.map(s => `<option value="${s.subject}" data-day="${s.day}" data-timeslot="${s.timeSlot}">${s.subject} (${s.day}, ${s.timeSlot})</option>`).join("");
 
     let myRequests = requestsList;
     
@@ -1091,6 +1111,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Auto-populate fromTime when a subject/schedule is selected
+  reqSubject.addEventListener("change", () => {
+    const selectedOption = reqSubject.options[reqSubject.selectedIndex];
+    if (selectedOption) {
+      const day = selectedOption.getAttribute("data-day") || "";
+      const timeSlot = selectedOption.getAttribute("data-timeslot") || "";
+      if (day && timeSlot) {
+        reqFromTime.value = `${day}, ${timeSlot}`;
+      } else {
+        reqFromTime.value = "";
+      }
+    }
+  });
+
   // Handle Request Change Submission
   requestForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -1098,16 +1132,41 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputLecturer = document.getElementById("req-lecturer");
     const lecturer = inputLecturer ? inputLecturer.value : userName;
     
-    if (mkList.length === 0) {
-      alert("Belum ada mata kuliah terdaftar.");
+    if (schedules.length === 0) {
+      alert("Belum ada jadwal mengajar terdaftar.");
       return;
     }
+
+    if (!reqToDate.value || !reqToStart.value || !reqToEnd.value) {
+      alert("Silakan pilih tanggal dan jam usulan baru.");
+      return;
+    }
+
+    // Safely parse date using local timezone components to avoid timezone shift
+    const [year, month, day] = reqToDate.value.split("-").map(Number);
+    const dateObj = new Date(year, month - 1, day);
+    const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    const dayName = dayNames[dateObj.getDay()];
+
+    // Weekend validation
+    if (dateObj.getDay() === 0 || dateObj.getDay() === 6) {
+      alert("Jadwal perkuliahan hanya tersedia pada hari kerja (Senin - Jumat).");
+      return;
+    }
+
+    // Time range validation
+    if (reqToStart.value >= reqToEnd.value) {
+      alert("Jam mulai harus lebih awal dari jam selesai.");
+      return;
+    }
+
+    const toTimeStr = `${dayName}, ${reqToStart.value} - ${reqToEnd.value}`;
 
     const payload = {
       lecturer: lecturer,
       subject: reqSubject.value,
       fromTime: reqFromTime.value.trim(),
-      toTime: reqToTime.value.trim(),
+      toTime: toTimeStr,
       reason: reqReason.value.trim()
     };
 
@@ -1125,8 +1184,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!res.ok) throw new Error("Gagal mengirim permohonan.");
       
       reqFromTime.value = "";
-      reqToTime.value = "";
+      reqToDate.value = "";
+      reqToStart.value = "";
+      reqToEnd.value = "";
       reqReason.value = "";
+      reqSubject.selectedIndex = 0;
       
       fetchDBState();
       showNotice("Permohonan berhasil dikirim ke Admin Prodi.");
