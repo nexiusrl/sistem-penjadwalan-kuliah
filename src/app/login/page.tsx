@@ -22,7 +22,6 @@ export default function LoginPage() {
   const [regMessage, setRegMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
   const [regLoading, setRegLoading] = useState(false);
 
-  // Clear errors when switching tabs
   useEffect(() => {
     setLoginError('');
     setRegMessage(null);
@@ -50,13 +49,11 @@ export default function LoginPage() {
         throw new Error(data.message || 'Kombinasi email atau password salah.');
       }
 
-      // Save auth data to localStorage for client-side legacy sync/convenience
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userRole', data.role);
       localStorage.setItem('userEmail', data.email);
       localStorage.setItem('userName', data.name);
       
-      // Redirect to dashboard
       router.push('/dashboard');
       router.refresh();
     } catch (err: any) {
@@ -94,14 +91,11 @@ export default function LoginPage() {
       }
 
       setRegMessage({ text: 'Registrasi sukses! Akun Anda siap digunakan.', type: 'success' });
-      
-      // Reset register forms
       setRegName('');
       setRegEmail('');
       setRegPassword('');
       setRegRole('mahasiswa');
 
-      // Auto redirect to login and fill email
       setTimeout(() => {
         setActiveTab('login');
         setLoginEmail(regEmail.trim());
@@ -115,120 +109,125 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen w-full bg-slate-50 font-sans text-slate-800 dark:bg-slate-950 dark:text-slate-200">
+    <div className="flex min-h-screen w-full bg-white font-sans text-neutral-900 border-4 border-black">
       {/* Left Panel: Branding & Information */}
-      <div className="relative hidden w-[45%] flex-col justify-between overflow-hidden bg-gradient-to-br from-indigo-700 to-violet-900 p-14 text-white lg:flex before:absolute before:inset-0 before:bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] before:bg-[size:24px_24px] before:pointer-events-none">
+      <div className="relative hidden w-[45%] flex-col justify-between overflow-hidden bg-neutral-50 p-14 border-r-4 border-black lg:flex before:absolute before:inset-0 before:bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] before:bg-[size:24px_24px] before:pointer-events-none">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500 font-extrabold text-white shadow-lg shadow-indigo-500/40">
+          <div className="flex h-9 w-9 items-center justify-center rounded-none border-2 border-black bg-black font-extrabold text-white text-base shadow-[2px_2px_0px_0px_rgba(200,200,200,1)]">
             S
           </div>
-          <span className="text-xl font-bold tracking-wide">SISJAD</span>
+          <span className="text-xl font-display font-extrabold italic tracking-tight text-neutral-900">
+            SISJAD
+          </span>
         </div>
 
-        <div className="my-auto py-10">
-          <h1 className="text-4xl font-extrabold leading-tight text-white mb-6">
+        <div className="my-auto py-10 max-w-md">
+          <span className="font-mono text-xs font-bold uppercase tracking-widest text-neutral-500">
+            PRODI SISTEM INFORMASI
+          </span>
+          <h1 className="text-4xl font-display font-extrabold italic leading-tight text-neutral-950 mt-2 mb-6">
             Sistem Penjadwalan Kuliah Prodi
           </h1>
-          <p className="text-lg text-indigo-100/80 leading-relaxed max-w-md">
+          <p className="text-sm font-mono font-medium text-neutral-600 leading-relaxed">
             Platform otomasi penjadwalan kuliah berbasis constraint.
             Meminimalisir bentrok jadwal dosen, ruang kelas, dan waktu secara
             real-time.
           </p>
         </div>
 
-        <div className="flex justify-between border-t border-indigo-500/20 pt-6 text-xs text-indigo-200/50">
-          <span>Program Studi Sistem Informasi</span>
+        <div className="flex justify-between border-t-2 border-black pt-6 font-mono text-[9px] text-neutral-500 font-bold uppercase tracking-wider">
+          <span>SISTEM INFORMASI</span>
           <span>SISJAD v1.0.0</span>
         </div>
       </div>
 
       {/* Right Panel: Login Form */}
       <div className="flex w-full items-center justify-center p-6 lg:w-[55%]">
-        <div className="w-full max-w-[440px] rounded-2xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none">
+        <div className="w-full max-w-[440px] rounded-none border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           {/* Auth Tabs */}
-          <div className="mb-6 flex rounded-lg bg-slate-100 p-1 dark:bg-slate-800">
+          <div className="mb-8 flex rounded-none border-2 border-black bg-neutral-50 p-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             <button
               onClick={() => setActiveTab('login')}
-              className={`w-1/2 rounded-md py-2 text-sm font-bold transition-all ${
+              className={`w-1/2 rounded-none py-2 text-xs font-mono font-bold transition-all cursor-pointer ${
                 activeTab === 'login'
-                  ? 'bg-white text-indigo-600 shadow-sm dark:bg-slate-700 dark:text-white'
-                  : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'
+                  ? 'bg-black text-white'
+                  : 'text-neutral-500 hover:text-black'
               }`}
             >
-              Masuk
+              MASUK
             </button>
             <button
               onClick={() => setActiveTab('register')}
-              className={`w-1/2 rounded-md py-2 text-sm font-bold transition-all ${
+              className={`w-1/2 rounded-none py-2 text-xs font-mono font-bold transition-all cursor-pointer ${
                 activeTab === 'register'
-                  ? 'bg-white text-indigo-600 shadow-sm dark:bg-slate-700 dark:text-white'
-                  : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'
+                  ? 'bg-black text-white'
+                  : 'text-neutral-500 hover:text-black'
               }`}
             >
-              Daftar
+              DAFTAR
             </button>
           </div>
 
           {/* Login Section */}
           {activeTab === 'login' && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+              <div className="mb-6 border-b-2 border-black pb-4">
+                <h2 className="text-2xl font-display font-extrabold italic text-neutral-950">
                   Selamat Datang
                 </h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-xs font-mono font-medium text-neutral-500 mt-1">
                   Silakan masuk ke akun Anda untuk melanjutkan.
                 </p>
               </div>
 
               {loginError && (
-                <div className="mb-4 flex items-center gap-2 rounded-lg bg-rose-50 p-3 text-sm text-rose-600 dark:bg-rose-950/30 dark:text-rose-400">
-                  <AlertCircle className="h-4 w-4 shrink-0" />
+                <div className="mb-4 flex items-start gap-2 rounded-none border-2 border-black bg-rose-50 p-3 text-xs font-mono text-rose-900">
+                  <AlertCircle className="h-4.5 w-4.5 shrink-0 text-black mt-0.5" />
                   <span>{loginError}</span>
                 </div>
               )}
 
-              <form onSubmit={handleLoginSubmit} className="space-y-4">
+              <form onSubmit={handleLoginSubmit} className="space-y-4 font-mono text-xs font-semibold">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
                     Alamat Email
                   </label>
                   <div className="relative">
-                    <Mail className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-slate-400" />
+                    <Mail className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-black stroke-2" />
                     <input
                       type="email"
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
                       placeholder="nama@univ.ac.id"
                       required
-                      className="w-full rounded-lg border border-slate-200 py-2.5 pr-4 pl-10 text-sm outline-none transition-all focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 dark:border-slate-800 dark:bg-slate-950 dark:focus:border-indigo-500"
+                      className="w-full rounded-none border-2 border-black py-2.5 pr-4 pl-10 bg-white outline-none focus:bg-neutral-50"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
                     Password
                   </label>
                   <div className="relative">
-                    <Lock className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-slate-400" />
+                    <Lock className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-black stroke-2" />
                     <input
                       type="password"
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
                       placeholder="••••••••"
                       required
-                      className="w-full rounded-lg border border-slate-200 py-2.5 pr-4 pl-10 text-sm outline-none transition-all focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 dark:border-slate-800 dark:bg-slate-950 dark:focus:border-indigo-500"
+                      className="w-full rounded-none border-2 border-black py-2.5 pr-4 pl-10 bg-white outline-none focus:bg-neutral-50"
                     />
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-sm">
-                  <label className="flex items-center gap-2 text-slate-600 dark:text-slate-400 select-none cursor-pointer">
+                <div className="flex items-center justify-between text-[11px] font-bold">
+                  <label className="flex items-center gap-2 text-neutral-600 select-none cursor-pointer">
                     <input
                       type="checkbox"
                       defaultChecked
-                      className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 dark:border-slate-700"
+                      className="rounded-none border-2 border-black text-black focus:ring-0 focus:ring-offset-0"
                     />
                     <span>Ingat saya</span>
                   </label>
@@ -238,7 +237,7 @@ export default function LoginPage() {
                       e.preventDefault();
                       alert('Silakan hubungi Admin Prodi untuk reset password.');
                     }}
-                    className="font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400"
+                    className="text-black underline decoration-2 hover:text-neutral-700"
                   >
                     Lupa password?
                   </a>
@@ -247,15 +246,15 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loginLoading}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-75 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:shadow-none"
+                  className="flex w-full items-center justify-center gap-2 rounded-none border-2 border-black bg-black py-2.5 font-bold text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
                 >
                   {loginLoading ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      <span>Memproses...</span>
+                      <span>MEMPROSES...</span>
                     </>
                   ) : (
-                    <span>Masuk Ke Sistem</span>
+                    <span>MASUK KE SISTEM</span>
                   )}
                 </button>
               </form>
@@ -265,93 +264,93 @@ export default function LoginPage() {
           {/* Register Section */}
           {activeTab === 'register' && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+              <div className="mb-6 border-b-2 border-black pb-4">
+                <h2 className="text-2xl font-display font-extrabold italic text-neutral-950">
                   Daftar Akun Baru
                 </h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-xs font-mono font-medium text-neutral-500 mt-1">
                   Buat akun SISJAD baru Anda untuk memulai.
                 </p>
               </div>
 
               {regMessage && (
                 <div
-                  className={`mb-4 flex items-center gap-2 rounded-lg p-3 text-sm ${
+                  className={`mb-4 flex items-start gap-2 rounded-none border-2 border-black p-3 text-xs font-mono ${
                     regMessage.type === 'success'
-                      ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400'
-                      : 'bg-rose-50 text-rose-600 dark:bg-rose-950/30 dark:text-rose-400'
+                      ? 'bg-emerald-50 text-emerald-950 border-emerald-500'
+                      : 'bg-rose-50 text-rose-900 border-rose-500'
                   }`}
                 >
                   {regMessage.type === 'success' ? (
-                    <CheckCircle className="h-4 w-4 shrink-0" />
+                    <CheckCircle className="h-4.5 w-4.5 shrink-0 text-black mt-0.5" />
                   ) : (
-                    <AlertCircle className="h-4 w-4 shrink-0" />
+                    <AlertCircle className="h-4.5 w-4.5 shrink-0 text-black mt-0.5" />
                   )}
                   <span>{regMessage.text}</span>
                 </div>
               )}
 
-              <form onSubmit={handleRegisterSubmit} className="space-y-4">
+              <form onSubmit={handleRegisterSubmit} className="space-y-4 font-mono text-xs font-semibold">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
                     Nama Lengkap
                   </label>
                   <div className="relative">
-                    <UserIcon className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-slate-400" />
+                    <UserIcon className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-black stroke-2" />
                     <input
                       type="text"
                       value={regName}
                       onChange={(e) => setRegName(e.target.value)}
                       placeholder="Nama Lengkap / Dosen"
                       required
-                      className="w-full rounded-lg border border-slate-200 py-2.5 pr-4 pl-10 text-sm outline-none transition-all focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 dark:border-slate-800 dark:bg-slate-950 dark:focus:border-indigo-500"
+                      className="w-full rounded-none border-2 border-black py-2.5 pr-4 pl-10 bg-white outline-none focus:bg-neutral-50"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
                     Alamat Email
                   </label>
                   <div className="relative">
-                    <Mail className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-slate-400" />
+                    <Mail className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-black stroke-2" />
                     <input
                       type="email"
                       value={regEmail}
                       onChange={(e) => setRegEmail(e.target.value)}
                       placeholder="nama@univ.ac.id"
                       required
-                      className="w-full rounded-lg border border-slate-200 py-2.5 pr-4 pl-10 text-sm outline-none transition-all focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 dark:border-slate-800 dark:bg-slate-950 dark:focus:border-indigo-500"
+                      className="w-full rounded-none border-2 border-black py-2.5 pr-4 pl-10 bg-white outline-none focus:bg-neutral-50"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
                     Password
                   </label>
                   <div className="relative">
-                    <Lock className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-slate-400" />
+                    <Lock className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-black stroke-2" />
                     <input
                       type="password"
                       value={regPassword}
                       onChange={(e) => setRegPassword(e.target.value)}
                       placeholder="••••••••"
                       required
-                      className="w-full rounded-lg border border-slate-200 py-2.5 pr-4 pl-10 text-sm outline-none transition-all focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 dark:border-slate-800 dark:bg-slate-950 dark:focus:border-indigo-500"
+                      className="w-full rounded-none border-2 border-black py-2.5 pr-4 pl-10 bg-white outline-none focus:bg-neutral-50"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
                     Pilih Peran (Role)
                   </label>
                   <select
                     value={regRole}
                     onChange={(e) => setRegRole(e.target.value as any)}
                     required
-                    className="w-full rounded-lg border border-slate-200 py-2.5 px-3 text-sm outline-none transition-all focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 dark:border-slate-800 dark:bg-slate-950"
+                    className="w-full rounded-none border-2 border-black py-2.5 px-3 bg-white outline-none"
                   >
                     <option value="mahasiswa">Mahasiswa</option>
                     <option value="dosen">Dosen</option>
@@ -362,15 +361,15 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={regLoading}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-75 dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:shadow-none"
+                  className="flex w-full items-center justify-center gap-2 rounded-none border-2 border-black bg-black py-2.5 font-bold text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
                 >
                   {regLoading ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      <span>Mendaftar...</span>
+                      <span>MENDAFTAR...</span>
                     </>
                   ) : (
-                    <span>Daftar Akun Baru</span>
+                    <span>DAFTAR AKUN BARU</span>
                   )}
                 </button>
               </form>

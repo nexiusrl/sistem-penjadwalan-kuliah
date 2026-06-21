@@ -21,9 +21,8 @@ import {
   Play,
   X,
   Loader2,
-  BookOpen,
-  Settings,
   Trash2,
+  Settings,
 } from 'lucide-react';
 
 export default function DashboardPage() {
@@ -73,7 +72,6 @@ export default function DashboardPage() {
     schedules,
     stats,
     solveConflicts,
-    setSchedules,
   } = useSolver(dbData.schedules, dbData.dosen, dbData.ruangan, dbData.matakuliah);
 
   // Load auth state and fetch database on mount
@@ -203,7 +201,6 @@ export default function DashboardPage() {
     }
 
     if (sched) {
-      // Edit mode
       setEditScheduleId(sched.id);
       setSchedSubject(sched.subject);
       setSchedLecturer(sched.lecturer);
@@ -211,10 +208,7 @@ export default function DashboardPage() {
       setSchedDay(sched.day);
       setSchedSlot(sched.timeSlot);
     } else {
-      // Add mode
       setEditScheduleId(null);
-      
-      // Prefill with first mata kuliah data
       const firstMK = dbData.matakuliah[0];
       setSchedSubject(firstMK.name);
       setSchedLecturer(dbData.dosen[0]?.name || '');
@@ -306,10 +300,10 @@ export default function DashboardPage() {
 
   if (!isMounted || dbLoading) {
     return (
-      <div className="flex min-h-screen w-full items-center justify-center bg-slate-50 dark:bg-slate-950">
+      <div className="flex min-h-screen w-full items-center justify-center bg-white font-mono border-4 border-black">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-9 w-9 animate-spin text-indigo-600 dark:text-indigo-400" />
-          <span className="text-sm font-semibold text-slate-500">Memuat SISJAD...</span>
+          <Loader2 className="h-9 w-9 animate-spin text-black stroke-2" />
+          <span className="text-xs font-bold uppercase tracking-widest">MEMUAT SISJAD...</span>
         </div>
       </div>
     );
@@ -318,50 +312,50 @@ export default function DashboardPage() {
   const hasConflicts = stats.conflictCount > 0;
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-200">
+    <div className="flex min-h-screen w-full flex-col bg-white font-sans text-neutral-900 border-4 border-black">
       {/* Top Banner Navigation Header */}
-      <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/80 px-6 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80 shadow-xs">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 font-extrabold text-white">
+      <header className="sticky top-0 z-40 flex h-18 w-full items-center justify-between border-b-4 border-black bg-white px-6">
+        <div className="flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-none border-2 border-black bg-black font-extrabold text-white text-base shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
             S
           </div>
-          <span className="text-base font-extrabold tracking-wide text-slate-900 dark:text-white">
+          <span className="text-xl font-display font-extrabold italic tracking-tight text-neutral-900">
             SISJAD
           </span>
         </div>
 
         {/* Dynamic Navbar Statistics Counter */}
-        <div className="hidden md:flex items-center gap-5 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-          <div className="flex items-center gap-1">
-            <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+        <div className="hidden md:flex items-center gap-6 text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500">
+          <div className="flex items-center gap-1.5 border border-black/10 px-2 py-1 bg-neutral-50">
+            <span className="h-2 w-2 bg-emerald-500 rounded-none border border-black" />
             <span>{stats.validCount} Valid</span>
           </div>
           {stats.conflictCount > 0 && (
-            <div className="flex items-center gap-1 rounded bg-rose-50 px-2 py-0.5 font-bold text-rose-600 dark:bg-rose-950/20 dark:text-rose-400">
-              <span className="h-2 w-2 rounded-full bg-rose-500 animate-ping" />
+            <div className="flex items-center gap-1.5 border-2 border-black bg-rose-50 px-2.5 py-1 text-rose-700 font-extrabold">
+              <span className="h-2 w-2 bg-rose-500 rounded-none border border-black animate-ping" />
               <span>{stats.conflictCount} Bentrok</span>
             </div>
           )}
-          <div className="flex items-center gap-1">
-            <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
+          <div className="flex items-center gap-1.5 border border-black/10 px-2 py-1 bg-neutral-50">
+            <span className="h-2 w-2 bg-amber-500 rounded-none border border-black" />
             <span>{stats.warningCount} Peringatan</span>
           </div>
         </div>
 
         {/* User Identity Details & Logout */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <div className="text-right">
-            <div className="text-xs font-bold text-slate-800 dark:text-slate-200">{userName}</div>
-            <div className="text-[9px] font-bold uppercase tracking-wider text-slate-400">
+            <div className="text-xs font-display font-extrabold italic text-neutral-900 leading-none">{userName}</div>
+            <div className="text-[9px] font-mono font-bold uppercase tracking-wider text-neutral-500 mt-1">
               {userRole === 'admin' ? 'Administrator' : userRole === 'dosen' ? 'Dosen' : 'Mahasiswa'}
             </div>
           </div>
           <button
             onClick={handleLogout}
             title="Keluar sistem"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-100 hover:text-rose-650 transition-colors dark:border-slate-800 dark:text-slate-400 dark:hover:bg-slate-800"
+            className="flex h-9 w-9 items-center justify-center rounded-none border-2 border-black bg-white text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
           >
-            <LogOut className="h-4.5 w-4.5" />
+            <LogOut className="h-4.5 w-4.5 stroke-2" />
           </button>
         </div>
       </header>
@@ -369,123 +363,123 @@ export default function DashboardPage() {
       {/* Main Panel Layout */}
       <div className="flex flex-1 w-full">
         {/* Sidebar Nav */}
-        <aside className="hidden md:flex w-64 flex-col border-r border-slate-200 bg-white py-6 px-4 dark:border-slate-800 dark:bg-slate-900/40">
-          <div className="space-y-1.5 flex-1">
+        <aside className="hidden md:flex w-64 flex-col border-r-4 border-black bg-neutral-50 py-6 px-4">
+          <div className="space-y-3 flex-1">
             <button
               onClick={() => setActiveTab('dashboard')}
-              className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-xs font-bold transition-all ${
+              className={`flex w-full items-center gap-3 rounded-none border-2 border-black px-4 py-3 text-xs font-mono font-bold transition-all ${
                 activeTab === 'dashboard'
-                  ? 'bg-indigo-50 text-indigo-650 dark:bg-indigo-950/20 dark:text-indigo-400'
-                  : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800'
+                  ? 'bg-black text-white shadow-[2px_2px_0px_0px_rgba(150,150,150,1)]'
+                  : 'bg-white text-neutral-700 hover:bg-neutral-100 hover:text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
               }`}
             >
-              <Calendar className="h-4.5 w-4.5" />
-              <span>Dashboard Jadwal</span>
+              <Calendar className="h-4.5 w-4.5 stroke-2" />
+              <span>DASHBOARD JADWAL</span>
             </button>
 
             {userRole !== 'mahasiswa' && (
               <button
                 onClick={() => setActiveTab('requests')}
-                className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-xs font-bold transition-all ${
+                className={`flex w-full items-center gap-3 rounded-none border-2 border-black px-4 py-3 text-xs font-mono font-bold transition-all ${
                   activeTab === 'requests'
-                    ? 'bg-indigo-50 text-indigo-650 dark:bg-indigo-950/20 dark:text-indigo-400'
-                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800'
+                    ? 'bg-black text-white shadow-[2px_2px_0px_0px_rgba(150,150,150,1)]'
+                    : 'bg-white text-neutral-700 hover:bg-neutral-100 hover:text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
                 }`}
               >
-                <FileText className="h-4.5 w-4.5" />
-                <span>Pergeseran Jadwal</span>
+                <FileText className="h-4.5 w-4.5 stroke-2" />
+                <span>PERGESERAN JADWAL</span>
               </button>
             )}
 
             {userRole === 'admin' && (
               <button
                 onClick={() => setActiveTab('master')}
-                className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-xs font-bold transition-all ${
+                className={`flex w-full items-center gap-3 rounded-none border-2 border-black px-4 py-3 text-xs font-mono font-bold transition-all ${
                   activeTab === 'master'
-                    ? 'bg-indigo-50 text-indigo-650 dark:bg-indigo-950/20 dark:text-indigo-400'
-                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800'
+                    ? 'bg-black text-white shadow-[2px_2px_0px_0px_rgba(150,150,150,1)]'
+                    : 'bg-white text-neutral-700 hover:bg-neutral-100 hover:text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
                 }`}
               >
-                <Settings className="h-4.5 w-4.5" />
-                <span>Data Master</span>
+                <Settings className="h-4.5 w-4.5 stroke-2" />
+                <span>DATA MASTER</span>
               </button>
             )}
           </div>
 
-          <div className="border-t border-slate-200 dark:border-slate-800 pt-6 px-4 text-[10px] text-slate-400 dark:text-slate-500 leading-relaxed">
-            &copy; 2026 Program Studi Sistem Informasi. SISJAD refactored to Next.js + Tailwind.
+          <div className="border-t-2 border-black pt-6 px-2 font-mono text-[9px] text-neutral-500 leading-relaxed font-semibold">
+            &copy; 2026 PRODI SISTEM INFORMASI. REFAC. TO BRUTALIST LIGHT.
           </div>
         </aside>
 
         {/* Content Body Container */}
-        <main className="flex-1 p-6 overflow-y-auto">
+        <main className="flex-1 p-6 overflow-y-auto bg-white">
           {/* Mobile Tab Swapping */}
-          <div className="flex md:hidden mb-6 rounded-lg bg-slate-100 p-1 dark:bg-slate-800 text-[10px] font-bold">
+          <div className="flex md:hidden mb-6 rounded-none border-2 border-black bg-neutral-100 p-1 text-[10px] font-mono font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             <button
               onClick={() => setActiveTab('dashboard')}
-              className={`flex-1 rounded-md py-2 transition-all ${
+              className={`flex-1 rounded-none py-2 transition-all ${
                 activeTab === 'dashboard'
-                  ? 'bg-white text-indigo-600 shadow-xs dark:bg-slate-700 dark:text-white'
-                  : 'text-slate-500 dark:text-slate-400'
+                  ? 'bg-black text-white'
+                  : 'text-neutral-500'
               }`}
             >
-              Dashboard
+              DASHBOARD
             </button>
             {userRole !== 'mahasiswa' && (
               <button
                 onClick={() => setActiveTab('requests')}
-                className={`flex-1 rounded-md py-2 transition-all ${
+                className={`flex-1 rounded-none py-2 transition-all ${
                   activeTab === 'requests'
-                    ? 'bg-white text-indigo-600 shadow-xs dark:bg-slate-700 dark:text-white'
-                    : 'text-slate-500 dark:text-slate-400'
+                    ? 'bg-black text-white'
+                    : 'text-neutral-500'
                 }`}
               >
-                Requests
+                REQUESTS
               </button>
             )}
             {userRole === 'admin' && (
               <button
                 onClick={() => setActiveTab('master')}
-                className={`flex-1 rounded-md py-2 transition-all ${
+                className={`flex-1 rounded-none py-2 transition-all ${
                   activeTab === 'master'
-                    ? 'bg-white text-indigo-600 shadow-xs dark:bg-slate-700 dark:text-white'
-                    : 'text-slate-500 dark:text-slate-400'
+                    ? 'bg-black text-white'
+                    : 'text-neutral-500'
                 }`}
               >
-                Master
+                MASTER
               </button>
             )}
           </div>
 
           {activeTab === 'dashboard' && (
-            <div className="flex flex-col gap-6 animate-in fade-in duration-300">
+            <div className="flex flex-col gap-8 animate-in fade-in duration-300">
               {/* Conflict Header Alert Banner */}
               {hasConflicts && userRole === 'admin' && (
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-rose-200 bg-rose-50/40 p-5 dark:border-rose-950/20 dark:bg-rose-950/10">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 rounded-none border-2 border-black bg-rose-50 p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                   <div className="flex gap-3">
-                    <AlertTriangle className="h-5.5 w-5.5 text-rose-500 dark:text-rose-455 shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="font-bold text-xs text-rose-800 dark:text-rose-350">
-                        Peringatan Bentrok Hard Constraint Dideteksi
+                    <AlertTriangle className="h-6 w-6 text-rose-600 shrink-0 mt-0.5 stroke-2" />
+                    <div className="font-mono text-xs text-neutral-800">
+                      <h4 className="font-display font-extrabold italic text-sm text-neutral-900 uppercase">
+                        Deteksi Bentrok Jadwal Kuliah
                       </h4>
-                      <p className="text-[11px] text-rose-700 dark:text-rose-400/80 mt-1 max-w-[580px] leading-relaxed">
-                        Terdapat {stats.conflictCount} bentrok jadwal kuliah. Selesaikan secara manual atau jalankan
+                      <p className="mt-2 text-neutral-600 font-semibold leading-relaxed max-w-[620px]">
+                        Terdapat {stats.conflictCount} bentrok hard-constraint. Selesaikan secara manual atau jalankan
                         Constraint Solver otomatis berbasis Algoritma Genetika untuk mengalokasi ulang ruangan secara bebas tumpang tindih.
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={triggerGASolver}
-                    className="flex items-center gap-1.5 shrink-0 rounded-lg bg-rose-600 px-4.5 py-2.5 text-xs font-semibold text-white shadow-md shadow-rose-600/10 hover:bg-rose-700 transition-all dark:bg-rose-500 dark:hover:bg-rose-600 dark:shadow-none"
+                    className="flex items-center gap-2 shrink-0 rounded-none border-2 border-black bg-neutral-900 px-5 py-3 text-xs font-mono font-bold text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
                   >
-                    <Play className="h-4 w-4 shrink-0 fill-current" />
-                    <span>Jalankan Solusi Otomatis (GA)</span>
+                    <Play className="h-4.5 w-4.5 shrink-0 fill-current" />
+                    <span>JALANKAN GA SOLVER</span>
                   </button>
                 </div>
               )}
 
               {/* Split Calendar grid / evaluation panel */}
-              <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
+              <div className="grid grid-cols-1 gap-8 xl:grid-cols-12">
                 <div
                   className={`${
                     userRole === 'admin' ? 'xl:col-span-8' : 'xl:col-span-12'
@@ -505,7 +499,7 @@ export default function DashboardPage() {
                 </div>
 
                 {userRole === 'admin' && (
-                  <div className="xl:col-span-4">
+                  <div className="xl:col-span-4 font-sans">
                     <ConflictPanel
                       schedules={schedules}
                       userRole={userRole}
@@ -545,7 +539,7 @@ export default function DashboardPage() {
 
       {/* Floating Notice Toast */}
       {notice && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-3.5 text-xs font-semibold text-white shadow-xl dark:bg-indigo-950 animate-in slide-in-from-bottom-5 duration-200">
+        <div className="fixed bottom-8 right-8 z-50 flex items-center gap-2 rounded-none border-2 border-black bg-black px-5 py-3 text-xs font-mono font-bold text-white shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] animate-in slide-in-from-bottom-5 duration-200">
           <CheckCircle className="h-4.5 w-4.5 text-emerald-400 shrink-0" />
           <span>{notice}</span>
         </div>
@@ -553,56 +547,56 @@ export default function DashboardPage() {
 
       {/* Dynamic Solver (GA) Progress Overlay */}
       {isSolving && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950/80 p-6 text-white backdrop-blur-md animate-in fade-in duration-200">
-          <div className="w-full max-w-sm text-center">
-            <h3 className="text-lg font-extrabold tracking-wide mb-2 flex items-center justify-center gap-2">
-              <RefreshCw className="h-5.5 w-5.5 animate-spin text-indigo-400" />
-              <span>ALGORITMA GENETIKA AKTIF</span>
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60 p-6 text-white backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-sm text-center border-4 border-black bg-white p-8 text-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="text-lg font-display font-extrabold italic text-neutral-900 mb-2 flex items-center justify-center gap-2">
+              <RefreshCw className="h-5.5 w-5.5 animate-spin text-black stroke-2" />
+              <span>GA SOLVER AKTIF</span>
             </h3>
-            <p className="text-[11px] text-slate-400 max-w-[280px] mx-auto leading-relaxed mb-6">
+            <p className="text-[10px] font-mono text-neutral-500 max-w-[280px] mx-auto leading-relaxed mb-6 font-bold">
               Mengevaluasi alokasi constraint ruang & waktu dosen. Menghitung mutasi kecocokan penjadwalan optimal...
             </p>
 
             {/* Progress Bar Container */}
-            <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden shadow-inner mb-2">
+            <div className="w-full bg-neutral-100 border-2 border-black rounded-none h-4 overflow-hidden mb-3">
               <div
-                className="bg-indigo-500 h-2.5 rounded-full transition-all duration-150"
+                className="bg-black h-full transition-all duration-150"
                 style={{ width: `${solveProgress}%` }}
               />
             </div>
-            <span className="text-xs font-bold text-indigo-400">{solveProgress}% Selesai</span>
+            <span className="text-xs font-mono font-extrabold text-black">{solveProgress}% SELESAI</span>
           </div>
         </div>
       )}
 
       {/* Schedule Form Modal */}
       {isScheduleOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs transition-opacity animate-in fade-in duration-200">
-          <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-2xl animate-in zoom-in-95 duration-200 dark:border-slate-800 dark:bg-slate-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-xs transition-opacity animate-in fade-in duration-200">
+          <div className="w-full max-w-md rounded-none border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] animate-in zoom-in-95 duration-200">
             {/* Header */}
-            <div className="flex items-start justify-between">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+            <div className="flex items-start justify-between border-b-2 border-black pb-3">
+              <h3 className="text-lg font-display font-extrabold italic text-neutral-900">
                 {editScheduleId ? 'Edit Jadwal Kuliah' : 'Tambah Jadwal Kuliah'}
               </h3>
               <button
                 onClick={() => setIsScheduleOpen(false)}
-                className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                className="rounded-none border-2 border-black p-1 hover:bg-neutral-100 text-black active:translate-x-0.5 active:translate-y-0.5"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {/* Form */}
-            <form onSubmit={handleScheduleSubmit} className="mt-4 space-y-4">
+            <form onSubmit={handleScheduleSubmit} className="mt-4 space-y-4 font-mono text-xs font-semibold">
               <div>
-                <label className="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
                   Mata Kuliah
                 </label>
                 <select
                   value={schedSubject}
                   onChange={(e) => handleSubjectChange(e.target.value)}
                   required
-                  className="w-full rounded-lg border border-slate-200 py-2 px-3 text-xs outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 dark:border-slate-800 dark:bg-slate-950"
+                  className="w-full rounded-none border-2 border-black py-2.5 px-3 bg-white outline-none"
                 >
                   {dbData.matakuliah.map((m) => (
                     <option key={m.id} value={m.name}>
@@ -613,14 +607,14 @@ export default function DashboardPage() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
                   Dosen Pengampu
                 </label>
                 <select
                   value={schedLecturer}
                   onChange={(e) => setSchedLecturer(e.target.value)}
                   required
-                  className="w-full rounded-lg border border-slate-200 py-2 px-3 text-xs outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 dark:border-slate-800 dark:bg-slate-950"
+                  className="w-full rounded-none border-2 border-black py-2.5 px-3 bg-white outline-none"
                 >
                   {dbData.dosen.map((d) => (
                     <option key={d.id} value={d.name}>
@@ -632,38 +626,38 @@ export default function DashboardPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
                     Hari Kuliah (Sesuai MK)
                   </label>
                   <input
                     type="text"
                     value={schedDay}
                     disabled
-                    className="w-full rounded-lg border border-slate-200 bg-slate-50 py-2 px-3 text-xs outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400"
+                    className="w-full rounded-none border-2 border-black bg-neutral-100 py-2.5 px-3 text-neutral-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
                     Waktu Jam (Sesuai MK)
                   </label>
                   <input
                     type="text"
                     value={schedSlot}
                     disabled
-                    className="w-full rounded-lg border border-slate-200 bg-slate-50 py-2 px-3 text-xs outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400"
+                    className="w-full rounded-none border-2 border-black bg-neutral-100 py-2.5 px-3 text-neutral-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
                   Ruangan Kelas
                 </label>
                 <select
                   value={schedRoom}
                   onChange={(e) => setSchedRoom(e.target.value)}
                   required
-                  className="w-full rounded-lg border border-slate-200 py-2 px-3 text-xs outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 dark:border-slate-800 dark:bg-slate-950"
+                  className="w-full rounded-none border-2 border-black py-2.5 px-3 bg-white outline-none"
                 >
                   {dbData.ruangan.map((r) => (
                     <option key={r.id} value={r.name}>
@@ -674,17 +668,17 @@ export default function DashboardPage() {
               </div>
 
               {/* Action buttons */}
-              <div className="flex justify-between items-center border-t border-slate-100 dark:border-slate-800 pt-4 mt-2">
+              <div className="flex justify-between items-center border-t-2 border-black pt-4 mt-2">
                 <div>
                   {editScheduleId && (
                     <button
                       type="button"
                       onClick={handleScheduleDelete}
                       disabled={schedLoading}
-                      className="flex items-center gap-1 rounded bg-rose-50 text-rose-650 hover:bg-rose-100 font-bold px-3.5 py-2 text-xs transition-colors dark:bg-rose-950/20 dark:text-rose-400"
+                      className="flex items-center gap-1.5 rounded-none border-2 border-black bg-white text-rose-650 hover:bg-rose-50 font-bold px-3.5 py-2 text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
-                      <span>Hapus</span>
+                      <Trash2 className="h-4 w-4 stroke-2" />
+                      <span>HAPUS</span>
                     </button>
                   )}
                 </div>
@@ -693,22 +687,22 @@ export default function DashboardPage() {
                   <button
                     type="button"
                     onClick={() => setIsScheduleOpen(false)}
-                    className="rounded-lg border border-slate-200 px-4 py-2 text-xs font-semibold hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800"
+                    className="rounded-none border-2 border-black bg-white px-4 py-2 text-xs font-bold text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
                   >
-                    Batal
+                    BATAL
                   </button>
                   <button
                     type="submit"
                     disabled={schedLoading}
-                    className="flex items-center gap-1.5 rounded-lg bg-indigo-650 px-4 py-2 text-xs font-semibold text-white hover:bg-indigo-700 disabled:opacity-75 dark:bg-indigo-50 dark:hover:bg-indigo-600"
+                    className="flex items-center gap-1.5 rounded-none border-2 border-black bg-black px-4 py-2 text-xs font-bold text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
                   >
                     {schedLoading ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        <span>Menyimpan...</span>
+                        <span>MENYIMPAN...</span>
                       </>
                     ) : (
-                      <span>Simpan</span>
+                      <span>SIMPAN</span>
                     )}
                   </button>
                 </div>
