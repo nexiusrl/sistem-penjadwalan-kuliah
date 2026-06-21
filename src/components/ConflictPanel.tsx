@@ -6,13 +6,53 @@ interface ConflictPanelProps {
   schedules: Schedule[];
   userRole: 'admin' | 'dosen' | 'mahasiswa';
   onResolveClick: (sched: Schedule) => void;
+  loading?: boolean;
+}
+
+// Skeleton placeholder for the conflict panel while data is loading
+function ConflictSkeleton() {
+  return (
+    <div className="flex flex-col h-full bg-white border border-slate-200/60 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] overflow-hidden">
+      <div className="bg-slate-50/50 border-b border-slate-100 px-5 py-4 flex items-center justify-between">
+        <div>
+          <div className="animate-pulse rounded-md bg-slate-100 h-2.5 w-28 mb-2" />
+          <div className="animate-pulse rounded-md bg-slate-100 h-4 w-24" />
+        </div>
+        <div className="animate-pulse rounded-full bg-slate-100 h-5 w-12" />
+      </div>
+      <div className="flex-1 p-4 space-y-3.5">
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="rounded-xl border border-slate-100 p-4">
+            <div className="flex items-start gap-2.5">
+              <div className="animate-pulse rounded-full bg-slate-100 h-4 w-4 shrink-0 mt-0.5" />
+              <div className="flex-1 space-y-2">
+                <div className="flex items-center justify-between gap-2 border-b border-slate-50 pb-1.5 mb-2">
+                  <div className="animate-pulse rounded-md bg-slate-100 h-2.5 w-20" />
+                  <div className="animate-pulse rounded-md bg-slate-100 h-2.5 w-24" />
+                </div>
+                <div className="animate-pulse rounded-md bg-slate-100 h-3.5 w-36" />
+                <div className="animate-pulse rounded-md bg-slate-100 h-8 w-full" />
+                <div className="animate-pulse rounded-lg bg-slate-100 h-7 w-36 mt-2" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function ConflictPanel({
   schedules,
   userRole,
   onResolveClick,
+  loading = false,
 }: ConflictPanelProps) {
+  // Show skeleton while data is loading
+  if (loading) {
+    return <ConflictSkeleton />;
+  }
+
   const hardConflicts = schedules.filter((s) => s.status === 'hard-conflict');
   const softWarnings = schedules.filter((s) => s.status === 'soft-warning');
 

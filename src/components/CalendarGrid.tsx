@@ -12,6 +12,47 @@ interface CalendarGridProps {
   onRefresh: () => void;
   onAddScheduleClick: () => void;
   openEditModal: (sched: Schedule) => void;
+  loading?: boolean;
+}
+
+// Skeleton placeholder for the calendar grid while data is loading
+function CalendarSkeleton() {
+  const skeletonDays = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+  const cardHeights = [
+    ['h-24', 'h-20', 'h-28'],
+    ['h-28', 'h-24'],
+    ['h-20', 'h-28', 'h-24'],
+    ['h-24', 'h-20'],
+    ['h-28', 'h-24', 'h-20'],
+  ];
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200/60">
+        <div>
+          <div className="animate-pulse rounded-md bg-slate-100 h-3 w-32 mb-2" />
+          <div className="animate-pulse rounded-md bg-slate-100 h-6 w-52" />
+        </div>
+        <div className="animate-pulse rounded-xl bg-slate-100 h-10 w-40" />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-5">
+        {skeletonDays.map((day, i) => (
+          <div key={day} className="flex flex-col rounded-2xl border border-slate-200/60 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)]">
+            <div className="border-b border-slate-100 bg-slate-50/50 px-4 py-3.5 flex items-center justify-between rounded-t-2xl">
+              <div className="animate-pulse rounded-md bg-slate-200 h-3.5 w-14" />
+              <div className="animate-pulse rounded-full bg-slate-100 h-5 w-5" />
+            </div>
+            <div className="flex flex-1 flex-col gap-3 p-3 min-h-[260px]">
+              {cardHeights[i].map((h, j) => (
+                <div key={j} className={`animate-pulse rounded-xl bg-slate-50 border border-slate-100 ${h} w-full`} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 const DAYS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
@@ -26,8 +67,14 @@ export default function CalendarGrid({
   onRefresh,
   onAddScheduleClick,
   openEditModal,
+  loading = false,
 }: CalendarGridProps) {
   const [selectedEvent, setSelectedEvent] = useState<Schedule | null>(null);
+
+  // Show skeleton while data is loading
+  if (loading) {
+    return <CalendarSkeleton />;
+  }
 
   const getFilteredEvents = (day: string) => {
     let events = schedules.filter((s) => s.day === day);

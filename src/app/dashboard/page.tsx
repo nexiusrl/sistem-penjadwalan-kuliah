@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSolver } from '@/hooks/useSolver';
-import { Schedule, Lecturer, Room, Subject, ChangeRequest } from '@/lib/db';
+import { useStore } from '@/hooks/useStore';
+import { Schedule } from '@/lib/db';
 import CalendarGrid from '@/components/CalendarGrid';
 import ConflictPanel from '@/components/ConflictPanel';
 import RequestPanel from '@/components/RequestPanel';
@@ -22,22 +22,136 @@ import {
   Settings,
 } from 'lucide-react';
 
+// ─── Skeleton Components ─────────────────────────────────────────────────────
+function SkeletonPulse({ className = '' }: { className?: string }) {
+  return (
+    <div className={`animate-pulse rounded-xl bg-slate-100 ${className}`} />
+  );
+}
+
+function DashboardSkeleton() {
+  return (
+    <div className="flex min-h-[100dvh] w-full flex-col bg-[#f9fafb] font-sans">
+      {/* Skeleton Header */}
+      <header className="sticky top-0 z-40 flex h-18 w-full items-center justify-between border-b border-slate-200/60 bg-white/80 backdrop-blur-md px-6 shadow-xs">
+        <div className="flex items-center gap-3">
+          <SkeletonPulse className="h-9 w-9 rounded-xl" />
+          <SkeletonPulse className="h-5 w-20" />
+        </div>
+        <div className="hidden md:flex items-center gap-4">
+          <SkeletonPulse className="h-7 w-20 rounded-lg" />
+          <SkeletonPulse className="h-7 w-24 rounded-lg" />
+          <SkeletonPulse className="h-7 w-28 rounded-lg" />
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="text-right">
+            <SkeletonPulse className="h-3.5 w-24 mb-1.5" />
+            <SkeletonPulse className="h-2.5 w-16" />
+          </div>
+          <SkeletonPulse className="h-9 w-9 rounded-xl" />
+        </div>
+      </header>
+
+      <div className="flex flex-1 w-full">
+        {/* Skeleton Sidebar */}
+        <aside className="hidden md:flex w-64 flex-col border-r border-slate-200/60 bg-white py-6 px-4">
+          <div className="space-y-3 flex-1">
+            <SkeletonPulse className="h-11 w-full rounded-xl" />
+            <SkeletonPulse className="h-11 w-full rounded-xl" />
+            <SkeletonPulse className="h-11 w-full rounded-xl" />
+          </div>
+        </aside>
+
+        {/* Skeleton Content */}
+        <main className="flex-1 p-6 overflow-y-auto">
+          <div className="grid grid-cols-1 gap-8 xl:grid-cols-12">
+            {/* Calendar Skeleton */}
+            <div className="xl:col-span-8">
+              <div className="bg-white border border-slate-200/60 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] p-5">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <SkeletonPulse className="h-3 w-28 mb-2" />
+                    <SkeletonPulse className="h-5 w-40" />
+                  </div>
+                  <SkeletonPulse className="h-9 w-36 rounded-xl" />
+                </div>
+                <div className="grid grid-cols-5 gap-3">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="space-y-3">
+                      <SkeletonPulse className="h-8 w-full rounded-lg" />
+                      <SkeletonPulse className="h-24 w-full rounded-xl" />
+                      <SkeletonPulse className="h-20 w-full rounded-xl" />
+                      <SkeletonPulse className="h-28 w-full rounded-xl" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Conflict Panel Skeleton */}
+            <div className="xl:col-span-4">
+              <div className="bg-white border border-slate-200/60 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] overflow-hidden">
+                <div className="bg-slate-50/50 border-b border-slate-100 px-5 py-4">
+                  <SkeletonPulse className="h-2.5 w-32 mb-2" />
+                  <SkeletonPulse className="h-4 w-28" />
+                </div>
+                <div className="p-4 space-y-3.5">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="rounded-xl border border-slate-100 p-4">
+                      <div className="flex items-start gap-2.5">
+                        <SkeletonPulse className="h-4.5 w-4.5 rounded-full shrink-0 mt-0.5" />
+                        <div className="flex-1 space-y-2">
+                          <SkeletonPulse className="h-2.5 w-24" />
+                          <SkeletonPulse className="h-3.5 w-36" />
+                          <SkeletonPulse className="h-8 w-full" />
+                          <SkeletonPulse className="h-7 w-32 rounded-lg" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
+
+
+// ─── Main Dashboard Page ─────────────────────────────────────────────────────
 export default function DashboardPage() {
   const router = useRouter();
   
-  // Client auth states (loaded from localStorage on mount)
-  const [isMounted, setIsMounted] = useState(false);
-  const [userRole, setUserRole] = useState<'admin' | 'dosen' | 'mahasiswa'>('mahasiswa');
-  const [userEmail, setUserEmail] = useState('');
-  const [userName, setUserName] = useState('');
+  // Zustand global state
+  const isMounted = useStore((s) => s.isMounted);
+  const userRole = useStore((s) => s.userRole);
+  const userEmail = useStore((s) => s.userEmail);
+  const userName = useStore((s) => s.userName);
+  const dosen = useStore((s) => s.dosen);
+  const ruangan = useStore((s) => s.ruangan);
+  const matakuliah = useStore((s) => s.matakuliah);
+  const schedules = useStore((s) => s.schedules);
+  const requests = useStore((s) => s.requests);
+  const dbLoading = useStore((s) => s.dbLoading);
+  const activeTab = useStore((s) => s.activeTab);
+  const isSolving = useStore((s) => s.isSolving);
+  const solveProgress = useStore((s) => s.solveProgress);
+  const notice = useStore((s) => s.notice);
 
-  // UI state
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'requests' | 'master'>('dashboard');
-  const [isSolving, setIsSolving] = useState(false);
-  const [solveProgress, setSolveProgress] = useState(0);
-  const [notice, setNotice] = useState<string | null>(null);
-  
-  // Schedule Form Modal States
+  const setMounted = useStore((s) => s.setMounted);
+  const setUserSession = useStore((s) => s.setUserSession);
+  const setActiveTab = useStore((s) => s.setActiveTab);
+  const showNotice = useStore((s) => s.showNotice);
+  const fetchDBState = useStore((s) => s.fetchDBState);
+  const triggerGASolver = useStore((s) => s.triggerGASolver);
+  const deleteSchedule = useStore((s) => s.deleteSchedule);
+  const submitSchedule = useStore((s) => s.submitSchedule);
+  const getStats = useStore((s) => s.getStats);
+  const getEvaluatedSchedules = useStore((s) => s.getEvaluatedSchedules);
+
+  // Schedule Form Modal States (local UI state, not global)
   const [isScheduleOpen, setIsScheduleOpen] = useState(false);
   const [editScheduleId, setEditScheduleId] = useState<number | null>(null);
   const [schedSubject, setSchedSubject] = useState('');
@@ -47,45 +161,22 @@ export default function DashboardPage() {
   const [schedSlot, setSchedSlot] = useState('08:00 - 10:30');
   const [schedLoading, setSchedLoading] = useState(false);
 
-  // Raw Database States
-  const [dbData, setDbData] = useState<{
-    dosen: Lecturer[];
-    ruangan: Room[];
-    matakuliah: Subject[];
-    schedules: Schedule[];
-    requests: ChangeRequest[];
-  }>({
-    dosen: [],
-    ruangan: [],
-    matakuliah: [],
-    schedules: [],
-    requests: [],
-  });
-
-  const [dbLoading, setDbLoading] = useState(true);
-
-  // Initialize browser solver hook
-  const {
-    schedules,
-    stats,
-    solveConflicts,
-  } = useSolver(dbData.schedules, dbData.dosen, dbData.ruangan, dbData.matakuliah);
-
   // Load auth state and fetch database on mount
   useEffect(() => {
-    setIsMounted(true);
+    setMounted(true);
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     if (!isLoggedIn) {
       router.push('/login');
       return;
     }
     
-    setUserRole((localStorage.getItem('userRole') as any) || 'mahasiswa');
-    setUserEmail(localStorage.getItem('userEmail') || '');
-    setUserName(localStorage.getItem('userName') || 'User');
+    const role = (localStorage.getItem('userRole') as 'admin' | 'dosen' | 'mahasiswa') || 'mahasiswa';
+    const email = localStorage.getItem('userEmail') || '';
+    const name = localStorage.getItem('userName') || 'User';
+    setUserSession(role, email, name);
     
     fetchDBState();
-  }, [router]);
+  }, [router, setMounted, setUserSession, fetchDBState]);
 
   // Synchronize dynamic tab selection from query params (e.g. ?tab=master)
   useEffect(() => {
@@ -98,83 +189,7 @@ export default function DashboardPage() {
         setActiveTab('requests');
       }
     }
-  }, [userRole]);
-
-  // Fetch complete database state
-  const fetchDBState = useCallback(async () => {
-    setDbLoading(true);
-    try {
-      const res = await fetch('/api/db');
-      if (!res.ok) throw new Error('Gagal mengambil data database.');
-      const data = await res.json();
-      setDbData({
-        dosen: data.dosen || [],
-        ruangan: data.ruangan || [],
-        matakuliah: data.matakuliah || [],
-        schedules: data.schedules || [],
-        requests: data.requests || [],
-      });
-    } catch (err: any) {
-      console.error(err.message);
-    } finally {
-      setDbLoading(false);
-    }
-  }, []);
-
-  // Show auto-dismissing notice toast
-  const showNotice = (msg: string) => {
-    setNotice(msg);
-    setTimeout(() => {
-      setNotice(null);
-    }, 4000);
-  };
-
-  // Trigger Genetic Algorithm solver simulation
-  const triggerGASolver = async () => {
-    if (userRole !== 'admin') return;
-
-    setIsSolving(true);
-    setSolveProgress(0);
-
-    // Progress Bar Animation (1.5 seconds total)
-    const interval = setInterval(() => {
-      setSolveProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return prev + 20;
-      });
-    }, 150);
-
-    // Wait for animation to finish
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    try {
-      // Run solver algorithm client-side
-      const result = await solveConflicts();
-      
-      // Save results back to backend JSON db in bulk
-      const res = await fetch('/api/schedules/bulk', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-User-Role': userRole,
-          'X-User-Email': userEmail,
-        },
-        body: JSON.stringify({ schedules: result.schedules }),
-      });
-
-      if (!res.ok) throw new Error('Gagal sinkronisasi data GA ke database.');
-
-      setIsSolving(false);
-      fetchDBState();
-      showNotice(`Penjadwalan otomatis sukses! Berhasil merelokasi ${result.solvedCount} bentrok.`);
-    } catch (err: any) {
-      setIsSolving(false);
-      alert(err.message || 'Terjadi kesalahan saat memproses solusi.');
-    }
-  };
+  }, [userRole, setActiveTab]);
 
   // Handle Logout
   const handleLogout = async () => {
@@ -192,7 +207,7 @@ export default function DashboardPage() {
   const openScheduleForm = (sched: Schedule | null = null) => {
     if (userRole !== 'admin') return;
     
-    if (dbData.matakuliah.length === 0 || dbData.dosen.length === 0 || dbData.ruangan.length === 0) {
+    if (matakuliah.length === 0 || dosen.length === 0 || ruangan.length === 0) {
       alert('Harap lengkapi Data Master (Dosen, Ruangan, Mata Kuliah) terlebih dahulu sebelum membuat Jadwal.');
       return;
     }
@@ -206,10 +221,10 @@ export default function DashboardPage() {
       setSchedSlot(sched.timeSlot);
     } else {
       setEditScheduleId(null);
-      const firstMK = dbData.matakuliah[0];
+      const firstMK = matakuliah[0];
       setSchedSubject(firstMK.name);
-      setSchedLecturer(dbData.dosen[0]?.name || '');
-      setSchedRoom(dbData.ruangan[0]?.name || '');
+      setSchedLecturer(dosen[0]?.name || '');
+      setSchedRoom(ruangan[0]?.name || '');
       setSchedDay(firstMK.day || 'Senin');
       setSchedSlot(firstMK.timeSlot || '08:00 - 10:30');
     }
@@ -220,7 +235,7 @@ export default function DashboardPage() {
   // Update day and timeslot automatically based on selected subject in schedule form
   const handleSubjectChange = (subjectName: string) => {
     setSchedSubject(subjectName);
-    const selected = dbData.matakuliah.find((m) => m.name === subjectName);
+    const selected = matakuliah.find((m) => m.name === subjectName);
     if (selected) {
       setSchedDay(selected.day || 'Senin');
       setSchedSlot(selected.timeSlot || '08:00 - 10:30');
@@ -232,7 +247,7 @@ export default function DashboardPage() {
     if (userRole !== 'admin') return;
 
     setSchedLoading(true);
-    const code = dbData.matakuliah.find((m) => m.name === schedSubject)?.code || '';
+    const code = matakuliah.find((m) => m.name === schedSubject)?.code || '';
 
     const payload = {
       subject: schedSubject,
@@ -243,30 +258,11 @@ export default function DashboardPage() {
       timeSlot: schedSlot,
     };
 
-    const url = editScheduleId ? `/api/schedules/${editScheduleId}` : '/api/schedules';
-    const method = editScheduleId ? 'PUT' : 'POST';
-
-    try {
-      const res = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          'X-User-Role': userRole,
-          'X-User-Email': userEmail,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error('Gagal menyimpan jadwal perkuliahan.');
-
+    const success = await submitSchedule(payload, editScheduleId);
+    if (success) {
       setIsScheduleOpen(false);
-      fetchDBState();
-      showNotice(editScheduleId ? 'Jadwal berhasil diperbarui!' : 'Jadwal baru berhasil dibuat!');
-    } catch (err: any) {
-      alert(err.message || 'Kesalahan sistem.');
-    } finally {
-      setSchedLoading(false);
     }
+    setSchedLoading(false);
   };
 
   const handleScheduleDelete = async () => {
@@ -274,38 +270,20 @@ export default function DashboardPage() {
     if (!confirm('Apakah Anda yakin ingin menghapus jadwal ini secara permanen?')) return;
 
     setSchedLoading(true);
-    try {
-      const res = await fetch(`/api/schedules/${editScheduleId}`, {
-        method: 'DELETE',
-        headers: {
-          'X-User-Role': userRole,
-          'X-User-Email': userEmail,
-        },
-      });
-
-      if (!res.ok) throw new Error('Gagal menghapus jadwal.');
-
+    const success = await deleteSchedule(editScheduleId);
+    if (success) {
       setIsScheduleOpen(false);
-      fetchDBState();
-      showNotice('Jadwal sukses dihapus.');
-    } catch (err: any) {
-      alert(err.message || 'Gagal menghapus.');
-    } finally {
-      setSchedLoading(false);
     }
+    setSchedLoading(false);
   };
 
+  // Show premium skeleton loader while data is loading
   if (!isMounted || dbLoading) {
-    return (
-      <div className="flex min-h-[100dvh] w-full items-center justify-center bg-white font-sans">
-        <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-9 w-9 animate-spin text-slate-800" strokeWidth={1.5} />
-          <span className="text-xs font-bold uppercase tracking-widest text-slate-400">MEMUAT SISJAD...</span>
-        </div>
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
+  const stats = getStats();
+  const evaluatedSchedules = getEvaluatedSchedules();
   const hasConflicts = stats.conflictCount > 0;
 
   return (
@@ -483,10 +461,10 @@ export default function DashboardPage() {
                   }`}
                 >
                   <CalendarGrid
-                    schedules={schedules}
-                    dosen={dbData.dosen}
-                    ruangan={dbData.ruangan}
-                    matakuliah={dbData.matakuliah}
+                    schedules={evaluatedSchedules}
+                    dosen={dosen}
+                    ruangan={ruangan}
+                    matakuliah={matakuliah}
                     userRole={userRole}
                     userName={userName}
                     onRefresh={fetchDBState}
@@ -498,7 +476,7 @@ export default function DashboardPage() {
                 {userRole === 'admin' && (
                   <div className="xl:col-span-4 font-sans">
                     <ConflictPanel
-                      schedules={schedules}
+                      schedules={evaluatedSchedules}
                       userRole={userRole}
                       onResolveClick={(s) => openScheduleForm(s)}
                     />
@@ -511,8 +489,8 @@ export default function DashboardPage() {
           {activeTab === 'requests' && (
             <div className="animate-in fade-in duration-300">
               <RequestPanel
-                schedules={dbData.schedules}
-                requests={dbData.requests}
+                schedules={schedules}
+                requests={requests}
                 userRole={userRole}
                 userName={userName}
                 onRefresh={fetchDBState}
@@ -523,9 +501,9 @@ export default function DashboardPage() {
           {activeTab === 'master' && userRole === 'admin' && (
             <div className="animate-in fade-in duration-300">
               <MasterDataPanel
-                dosen={dbData.dosen}
-                ruangan={dbData.ruangan}
-                matakuliah={dbData.matakuliah}
+                dosen={dosen}
+                ruangan={ruangan}
+                matakuliah={matakuliah}
                 userRole={userRole}
                 onRefresh={fetchDBState}
               />
@@ -595,7 +573,7 @@ export default function DashboardPage() {
                   required
                   className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800"
                 >
-                  {dbData.matakuliah.map((m) => (
+                  {matakuliah.map((m) => (
                     <option key={m.id} value={m.name}>
                       {m.code} - {m.name}
                     </option>
@@ -613,7 +591,7 @@ export default function DashboardPage() {
                   required
                   className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800"
                 >
-                  {dbData.dosen.map((d) => (
+                  {dosen.map((d) => (
                     <option key={d.id} value={d.name}>
                       {d.name} ({d.code})
                     </option>
@@ -656,7 +634,7 @@ export default function DashboardPage() {
                   required
                   className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800"
                 >
-                  {dbData.ruangan.map((r) => (
+                  {ruangan.map((r) => (
                     <option key={r.id} value={r.name}>
                       {r.name} ({r.type})
                     </option>
