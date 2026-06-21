@@ -287,11 +287,11 @@ export default function DashboardPage() {
   const hasConflicts = stats.conflictCount > 0;
 
   return (
-    <div className="flex min-h-[100dvh] w-full flex-col bg-[#f9fafb] font-sans text-slate-900">
+    <div className="flex min-h-[100dvh] w-full flex-col bg-gradient-to-br from-slate-50 to-slate-100 font-sans text-slate-900">
       {/* Top Banner Navigation Header */}
-      <header className="sticky top-0 z-40 flex h-18 w-full items-center justify-between border-b border-slate-200/60 bg-white/80 backdrop-blur-md px-6 shadow-xs">
+      <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/90 backdrop-blur-md px-6 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 font-extrabold text-white text-base shadow-sm transition-transform duration-300 hover:scale-105">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary font-extrabold text-white text-lg shadow-primary transition-transform duration-300 hover:scale-105">
             S
           </div>
           <span className="text-xl font-bold tracking-tight text-slate-900">
@@ -300,19 +300,19 @@ export default function DashboardPage() {
         </div>
 
         {/* Dynamic Navbar Statistics Counter */}
-        <div className="hidden md:flex items-center gap-4 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500">
-          <div className="flex items-center gap-1.5 rounded-lg border border-slate-200/60 px-3 py-1 bg-slate-50">
-            <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full" />
+        <div className="hidden md:flex items-center gap-3 text-xs font-semibold text-slate-600">
+          <div className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 bg-white">
+            <span className="h-2 w-2 bg-emerald-500 rounded-full" />
             <span>{stats.validCount} Valid</span>
           </div>
           {stats.conflictCount > 0 && (
-            <div className="flex items-center gap-1.5 rounded-lg border border-rose-200 bg-rose-50/50 px-3 py-1 text-rose-600">
-              <span className="h-1.5 w-1.5 bg-rose-500 rounded-full animate-pulse" />
+            <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 px-3 py-1.5 text-rose-600">
+              <span className="h-2 w-2 bg-rose-500 rounded-full animate-pulse" />
               <span>{stats.conflictCount} Bentrok</span>
             </div>
           )}
-          <div className="flex items-center gap-1.5 rounded-lg border border-slate-200/60 px-3 py-1 bg-slate-50">
-            <span className="h-1.5 w-1.5 bg-amber-500 rounded-full" />
+          <div className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 bg-white">
+            <span className="h-2 w-2 bg-amber-500 rounded-full" />
             <span>{stats.warningCount} Peringatan</span>
           </div>
         </div>
@@ -320,17 +320,17 @@ export default function DashboardPage() {
         {/* User Identity Details & Logout */}
         <div className="flex items-center gap-4">
           <div className="text-right">
-            <div className="text-xs font-semibold text-slate-805 leading-none">{userName}</div>
-            <div className="text-[9px] font-mono font-bold uppercase tracking-wider text-slate-400 mt-1">
+            <div className="text-sm font-semibold text-slate-900 leading-none">{userName}</div>
+            <div className="text-xs text-slate-500 mt-1">
               {userRole === 'admin' ? 'Administrator' : userRole === 'dosen' ? 'Dosen' : 'Mahasiswa'}
             </div>
           </div>
           <button
             onClick={handleLogout}
             title="Keluar sistem"
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] transition-all cursor-pointer"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 active:scale-[0.98] transition-all cursor-pointer"
           >
-            <LogOut className="h-4 w-4" strokeWidth={1.5} />
+            <LogOut className="h-5 w-5" strokeWidth={2} />
           </button>
         </div>
       </header>
@@ -338,106 +338,106 @@ export default function DashboardPage() {
       {/* Main Panel Layout */}
       <div className="flex flex-1 w-full">
         {/* Sidebar Nav */}
-        <aside className="hidden md:flex w-64 flex-col border-r border-slate-200/60 bg-white py-6 px-4">
-          <div className="space-y-2.5 flex-1">
+        <aside className="hidden md:flex w-64 flex-col border-r border-slate-200 bg-white py-6 px-4">
+          <div className="space-y-2 flex-1">
             <button
               onClick={() => setActiveTab('dashboard')}
-              className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-xs font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
+              className={`flex w-full items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
                 activeTab === 'dashboard'
-                  ? 'bg-blue-600 text-white shadow-[0_4px_15px_rgba(37,99,235,0.18)]'
-                  : 'bg-transparent text-slate-600 hover:bg-blue-50/50 hover:text-blue-600'
+                  ? 'bg-primary text-white shadow-primary'
+                  : 'bg-transparent text-slate-600 hover:bg-primary/10 hover:text-primary'
               }`}
             >
-              <Calendar className="h-4 w-4" strokeWidth={1.5} />
-              <span>DASHBOARD JADWAL</span>
+              <Calendar className="h-5 w-5" strokeWidth={2} />
+              <span>Dashboard Jadwal</span>
             </button>
 
             {userRole !== 'mahasiswa' && (
               <button
                 onClick={() => setActiveTab('requests')}
-                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-xs font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
+                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
                   activeTab === 'requests'
-                    ? 'bg-blue-600 text-white shadow-[0_4px_15px_rgba(37,99,235,0.18)]'
-                    : 'bg-transparent text-slate-600 hover:bg-blue-50/50 hover:text-blue-600'
+                    ? 'bg-primary text-white shadow-primary'
+                    : 'bg-transparent text-slate-600 hover:bg-primary/10 hover:text-primary'
                 }`}
               >
-                <FileText className="h-4 w-4" strokeWidth={1.5} />
-                <span>PERGESERAN JADWAL</span>
+                <FileText className="h-5 w-5" strokeWidth={2} />
+                <span>Pergeseran Jadwal</span>
               </button>
             )}
 
             {userRole === 'admin' && (
               <button
                 onClick={() => setActiveTab('master')}
-                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-xs font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
+                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-semibold tracking-tight transition-all duration-300 active:scale-[0.98] cursor-pointer ${
                   activeTab === 'master'
-                    ? 'bg-blue-600 text-white shadow-[0_4px_15px_rgba(37,99,235,0.18)]'
-                    : 'bg-transparent text-slate-600 hover:bg-blue-50/50 hover:text-blue-600'
+                    ? 'bg-primary text-white shadow-primary'
+                    : 'bg-transparent text-slate-600 hover:bg-primary/10 hover:text-primary'
                 }`}
               >
-                <Settings className="h-4 w-4" strokeWidth={1.5} />
-                <span>DATA MASTER</span>
+                <Settings className="h-5 w-5" strokeWidth={2} />
+                <span>Data Master</span>
               </button>
             )}
           </div>
 
-          <div className="border-t border-slate-100 pt-6 px-2 font-mono text-[9px] text-slate-400 leading-relaxed font-semibold uppercase tracking-wider">
-            &copy; 2026 PRODI SISTEM INFORMASI.
+          <div className="border-t border-slate-100 pt-6 px-2 text-xs text-slate-400 leading-relaxed font-medium">
+            &copy; 2026 PRODI SISTEM INFORMASI
           </div>
         </aside>
 
         {/* Content Body Container */}
-        <main className="flex-1 p-6 overflow-y-auto bg-transparent">
+        <main className="flex-1 p-6 overflow-y-auto">
           {/* Mobile Tab Swapping */}
-          <div className="flex md:hidden mb-6 rounded-xl bg-slate-100 p-1 text-[10px] font-bold border border-slate-200/40">
+          <div className="flex md:hidden mb-6 rounded-xl bg-slate-100 p-1.5 text-xs font-semibold">
             <button
               onClick={() => setActiveTab('dashboard')}
-              className={`flex-1 rounded-lg py-2 text-center transition-all ${
+              className={`flex-1 rounded-lg py-2.5 text-center transition-all ${
                 activeTab === 'dashboard'
-                  ? 'bg-white text-slate-905 shadow-xs'
+                  ? 'bg-white text-slate-900 shadow-sm'
                   : 'text-slate-500'
               }`}
             >
-              DASHBOARD
+              Dashboard
             </button>
             {userRole !== 'mahasiswa' && (
               <button
                 onClick={() => setActiveTab('requests')}
-                className={`flex-1 rounded-lg py-2 text-center transition-all ${
+                className={`flex-1 rounded-lg py-2.5 text-center transition-all ${
                   activeTab === 'requests'
-                    ? 'bg-white text-slate-905 shadow-xs'
+                    ? 'bg-white text-slate-900 shadow-sm'
                     : 'text-slate-500'
                 }`}
               >
-                REQUESTS
+                Requests
               </button>
             )}
             {userRole === 'admin' && (
               <button
                 onClick={() => setActiveTab('master')}
-                className={`flex-1 rounded-lg py-2 text-center transition-all ${
+                className={`flex-1 rounded-lg py-2.5 text-center transition-all ${
                   activeTab === 'master'
-                    ? 'bg-white text-slate-905 shadow-xs'
+                    ? 'bg-white text-slate-900 shadow-sm'
                     : 'text-slate-500'
                 }`}
               >
-                MASTER
+                Master
               </button>
             )}
           </div>
 
           {activeTab === 'dashboard' && (
-            <div className="flex flex-col gap-8 animate-in fade-in duration-300">
+            <div className="flex flex-col gap-6 animate-in fade-in duration-300">
               {/* Conflict Header Alert Banner */}
               {hasConflicts && userRole === 'admin' && (
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 rounded-2xl border border-rose-200/80 bg-rose-50/40 p-5 shadow-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border border-rose-200 bg-rose-50 p-5 shadow-sm">
                   <div className="flex gap-3">
-                    <AlertTriangle className="h-6 w-6 text-rose-500 shrink-0 mt-0.5" strokeWidth={1.5} />
-                    <div className="text-xs text-slate-800">
+                    <AlertTriangle className="h-6 w-6 text-rose-500 shrink-0 mt-0.5" strokeWidth={2} />
+                    <div className="text-sm text-slate-800">
                       <h4 className="font-bold text-slate-900 uppercase tracking-tight">
                         Deteksi Bentrok Jadwal Kuliah
                       </h4>
-                      <p className="mt-1 text-slate-500 font-semibold leading-relaxed max-w-[620px]">
+                      <p className="mt-1 text-slate-600 font-medium leading-relaxed max-w-[620px]">
                         Terdapat {stats.conflictCount} bentrok hard-constraint. Selesaikan secara manual atau jalankan
                         Constraint Solver otomatis berbasis Algoritma Genetika untuk mengalokasi ulang ruangan secara bebas bentrok.
                       </p>
@@ -445,16 +445,16 @@ export default function DashboardPage() {
                   </div>
                   <button
                     onClick={triggerGASolver}
-                    className="flex items-center gap-2 shrink-0 rounded-xl bg-blue-600 hover:bg-blue-700 px-5 py-3 text-xs font-semibold text-white shadow-[0_4px_15px_rgba(37,99,235,0.15)] active:scale-[0.98] transition-all duration-300 cursor-pointer"
+                    className="flex items-center gap-2 shrink-0 rounded-xl bg-primary hover:bg-primary-hover px-5 py-3 text-sm font-semibold text-white shadow-primary active:scale-[0.98] transition-all duration-300 cursor-pointer"
                   >
-                    <Play className="h-4 w-4 shrink-0 fill-current" strokeWidth={1.5} />
+                    <Play className="h-5 w-5 shrink-0 fill-current" strokeWidth={2} />
                     <span>Jalankan GA Solver</span>
                   </button>
                 </div>
               )}
 
               {/* Split Calendar grid / evaluation panel */}
-              <div className="grid grid-cols-1 gap-8 xl:grid-cols-12">
+              <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
                 <div
                   className={`${
                     userRole === 'admin' ? 'xl:col-span-8' : 'xl:col-span-12'
@@ -514,64 +514,64 @@ export default function DashboardPage() {
 
       {/* Floating Notice Toast */}
       {notice && (
-        <div className="fixed bottom-8 right-8 z-50 flex items-center gap-2.5 rounded-xl bg-slate-900 border border-slate-800 px-5 py-3.5 text-xs font-semibold text-white shadow-[0_10px_30px_rgba(15,23,42,0.15)] animate-in slide-in-from-bottom-5 duration-300">
-          <CheckCircle className="h-4.5 w-4.5 text-emerald-400 shrink-0" strokeWidth={1.5} />
+        <div className="fixed bottom-8 right-8 z-50 flex items-center gap-3 rounded-xl bg-slate-900 border border-slate-700 px-5 py-4 text-sm font-medium text-white shadow-lg animate-in slide-in-from-bottom-5 duration-300">
+          <CheckCircle className="h-5 w-5 text-emerald-400 shrink-0" strokeWidth={2} />
           <span>{notice}</span>
         </div>
       )}
 
       {/* Dynamic Solver (GA) Progress Overlay */}
       {isSolving && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/40 p-6 text-white backdrop-blur-md animate-in fade-in duration-300">
-          <div className="w-full max-w-sm text-center border border-slate-200 bg-white p-8 text-slate-900 rounded-2xl shadow-[0_20px_50px_rgba(30,41,59,0.08)]">
-            <h3 className="text-base font-bold text-slate-900 mb-2 flex items-center justify-center gap-2">
-              <RefreshCw className="h-5 w-5 animate-spin text-blue-600" strokeWidth={1.5} />
-              <span className="text-blue-600 font-semibold tracking-tight">GA SOLVER AKTIF</span>
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/50 p-6 text-white backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="w-full max-w-md text-center border border-slate-200 bg-white p-8 text-slate-900 rounded-2xl shadow-xl">
+            <h3 className="text-lg font-bold text-slate-900 mb-3 flex items-center justify-center gap-2">
+              <RefreshCw className="h-6 w-6 animate-spin text-primary" strokeWidth={2} />
+              <span className="text-primary font-semibold tracking-tight">GA SOLVER AKTIF</span>
             </h3>
-            <p className="text-[10px] text-slate-500 max-w-[280px] mx-auto leading-relaxed mb-6 font-semibold">
+            <p className="text-sm text-slate-600 max-w-[320px] mx-auto leading-relaxed mb-6 font-medium">
               Mengevaluasi alokasi constraint ruang & waktu dosen. Menghitung mutasi kecocokan penjadwalan optimal...
             </p>
 
             {/* Progress Bar Container */}
-            <div className="w-full bg-slate-100 border border-slate-250 rounded-full h-3 overflow-hidden mb-3">
+            <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden mb-3">
               <div
-                className="bg-blue-600 h-full transition-all duration-300 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.4)]"
+                className="bg-primary h-full transition-all duration-300 rounded-full shadow-[0_0_12px_rgba(37,99,235,0.4)]"
                 style={{ width: `${solveProgress}%` }}
               />
             </div>
-            <span className="text-xs font-mono font-bold text-blue-600">{solveProgress}% SELESAI</span>
+            <span className="text-sm font-semibold text-primary">{solveProgress}% SELESAI</span>
           </div>
         </div>
       )}
 
       {/* Schedule Form Modal */}
       {isScheduleOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs transition-opacity animate-in fade-in duration-200">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm transition-opacity animate-in fade-in duration-200">
+          <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-xl animate-in zoom-in-95 duration-200">
             {/* Header */}
-            <div className="flex items-start justify-between border-b border-slate-100 pb-3">
-              <h3 className="text-base font-bold text-slate-900">
+            <div className="flex items-start justify-between border-b border-slate-100 pb-4">
+              <h3 className="text-lg font-bold text-slate-900">
                 {editScheduleId ? 'Edit Jadwal Kuliah' : 'Tambah Jadwal Kuliah'}
               </h3>
               <button
                 onClick={() => setIsScheduleOpen(false)}
-                className="rounded-lg border border-slate-250 p-1.5 hover:bg-slate-50 text-slate-500 active:scale-95 transition-all cursor-pointer"
+                className="rounded-lg border border-slate-200 p-2 hover:bg-slate-50 text-slate-500 hover:text-slate-700 active:scale-95 transition-all cursor-pointer"
               >
-                <X className="h-4 w-4" strokeWidth={1.5} />
+                <X className="h-5 w-5" strokeWidth={2} />
               </button>
             </div>
 
             {/* Form */}
-            <form onSubmit={handleScheduleSubmit} className="mt-4 space-y-4 text-xs font-semibold">
-              <div className="flex flex-col gap-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            <form onSubmit={handleScheduleSubmit} className="mt-5 space-y-5">
+              <div className="flex flex-col gap-2">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
                   Mata Kuliah
                 </label>
                 <select
                   value={schedSubject}
                   onChange={(e) => handleSubjectChange(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800"
+                  className="w-full rounded-xl border border-slate-200 py-3 px-4 bg-white text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-sans font-medium text-slate-800"
                 >
                   {matakuliah.map((m) => (
                     <option key={m.id} value={m.name}>
@@ -581,15 +581,15 @@ export default function DashboardPage() {
                 </select>
               </div>
 
-              <div className="flex flex-col gap-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              <div className="flex flex-col gap-2">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
                   Dosen Pengampu
                 </label>
                 <select
                   value={schedLecturer}
                   onChange={(e) => setSchedLecturer(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800"
+                  className="w-full rounded-xl border border-slate-200 py-3 px-4 bg-white text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-sans font-medium text-slate-800"
                 >
                   {dosen.map((d) => (
                     <option key={d.id} value={d.name}>
@@ -599,40 +599,40 @@ export default function DashboardPage() {
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="flex flex-col gap-1.5">
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col gap-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
                     Hari Kuliah (Sesuai MK)
                   </label>
                   <input
                     type="text"
                     value={schedDay}
                     disabled
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3.5 font-sans font-medium text-slate-500"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 px-4 text-sm font-medium text-slate-500"
                   />
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                <div className="flex flex-col gap-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
                     Waktu Jam (Sesuai MK)
                   </label>
                   <input
                     type="text"
                     value={schedSlot}
                     disabled
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3.5 font-sans font-medium text-slate-500"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 px-4 text-sm font-medium text-slate-500"
                   />
                 </div>
               </div>
 
-              <div className="flex flex-col gap-1.5">
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              <div className="flex flex-col gap-2">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
                   Ruangan Kelas
                 </label>
                 <select
                   value={schedRoom}
                   onChange={(e) => setSchedRoom(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all font-sans font-medium text-slate-800"
+                  className="w-full rounded-xl border border-slate-200 py-3 px-4 bg-white text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-sans font-medium text-slate-800"
                 >
                   {ruangan.map((r) => (
                     <option key={r.id} value={r.name}>
@@ -643,41 +643,41 @@ export default function DashboardPage() {
               </div>
 
               {/* Action buttons */}
-              <div className="flex justify-between items-center border-t border-slate-100 pt-4 mt-2">
+              <div className="flex justify-between items-center border-t border-slate-100 pt-5 mt-3">
                 <div>
                   {editScheduleId && (
                     <button
                       type="button"
                       onClick={handleScheduleDelete}
                       disabled={schedLoading}
-                      className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white text-rose-600 hover:bg-rose-50 hover:border-rose-200 font-bold px-3.5 py-2 text-xs shadow-xs active:scale-[0.98] cursor-pointer transition-all"
+                      className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white text-rose-600 hover:bg-rose-50 hover:border-rose-200 font-semibold px-4 py-2.5 text-sm active:scale-[0.98] cursor-pointer transition-all"
                     >
-                      <Trash2 className="h-4 w-4" strokeWidth={1.5} />
-                      <span>HAPUS</span>
+                      <Trash2 className="h-5 w-5" strokeWidth={2} />
+                      <span>Hapus</span>
                     </button>
                   )}
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   <button
                     type="button"
                     onClick={() => setIsScheduleOpen(false)}
-                    className="rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-semibold text-slate-650 hover:bg-slate-50 active:scale-[0.98] transition-all cursor-pointer"
+                    className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 active:scale-[0.98] transition-all cursor-pointer"
                   >
-                    BATAL
+                    Batal
                   </button>
                   <button
                     type="submit"
                     disabled={schedLoading}
-                    className="flex items-center gap-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-xs font-semibold text-white shadow-xs active:scale-[0.98] transition-all duration-300 cursor-pointer"
+                    className="flex items-center gap-2 rounded-xl bg-primary hover:bg-primary-hover px-5 py-2.5 text-sm font-semibold text-white shadow-primary active:scale-[0.98] transition-all duration-300 cursor-pointer"
                   >
                     {schedLoading ? (
                       <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        <span>MENYIMPAN...</span>
+                        <Loader2 className="h-5 w-5 animate-spin" strokeWidth={2} />
+                        <span>Menyimpan...</span>
                       </>
                     ) : (
-                      <span>SIMPAN</span>
+                      <span>Simpan</span>
                     )}
                   </button>
                 </div>
