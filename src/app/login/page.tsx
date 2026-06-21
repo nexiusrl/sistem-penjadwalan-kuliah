@@ -109,33 +109,33 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen w-full bg-white font-sans text-neutral-900 border-4 border-black">
+    <div className="flex min-h-[100dvh] w-full bg-[#f9fafb] font-sans text-slate-900">
       {/* Left Panel: Branding & Information */}
-      <div className="relative hidden w-[45%] flex-col justify-between overflow-hidden bg-neutral-50 p-14 border-r-4 border-black lg:flex before:absolute before:inset-0 before:bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] before:bg-[size:24px_24px] before:pointer-events-none">
+      <div className="relative hidden w-[45%] flex-col justify-between overflow-hidden bg-slate-50 p-14 border-r border-slate-200/60 lg:flex before:absolute before:inset-0 before:bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] before:bg-[size:24px_24px] before:pointer-events-none">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-none border-2 border-black bg-black font-extrabold text-white text-base shadow-[2px_2px_0px_0px_rgba(200,200,200,1)]">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 font-bold text-white text-base shadow-xs">
             S
           </div>
-          <span className="text-xl font-display font-extrabold italic tracking-tight text-neutral-900">
+          <span className="text-xl font-bold tracking-tight text-slate-900">
             SISJAD
           </span>
         </div>
 
-        <div className="my-auto py-10 max-w-md">
-          <span className="font-mono text-xs font-bold uppercase tracking-widest text-neutral-500">
+        <div className="my-auto py-10 max-w-sm">
+          <span className="font-mono text-xs font-bold uppercase tracking-widest text-slate-400">
             PRODI SISTEM INFORMASI
           </span>
-          <h1 className="text-4xl font-display font-extrabold italic leading-tight text-neutral-950 mt-2 mb-6">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900 mt-2 mb-6 leading-tight">
             Sistem Penjadwalan Kuliah Prodi
           </h1>
-          <p className="text-sm font-mono font-medium text-neutral-600 leading-relaxed">
+          <p className="text-sm text-slate-500 font-medium leading-relaxed">
             Platform otomasi penjadwalan kuliah berbasis constraint.
             Meminimalisir bentrok jadwal dosen, ruang kelas, dan waktu secara
             real-time.
           </p>
         </div>
 
-        <div className="flex justify-between border-t-2 border-black pt-6 font-mono text-[9px] text-neutral-500 font-bold uppercase tracking-wider">
+        <div className="flex justify-between border-t border-slate-200/40 pt-6 font-mono text-[9px] text-slate-400 font-bold uppercase tracking-wider">
           <span>SISTEM INFORMASI</span>
           <span>SISJAD v1.0.0</span>
         </div>
@@ -143,25 +143,25 @@ export default function LoginPage() {
 
       {/* Right Panel: Login Form */}
       <div className="flex w-full items-center justify-center p-6 lg:w-[55%]">
-        <div className="w-full max-w-[440px] rounded-none border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div className="w-full max-w-[440px] rounded-2xl border border-slate-200/60 bg-white p-8 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)]">
           {/* Auth Tabs */}
-          <div className="mb-8 flex rounded-none border-2 border-black bg-neutral-50 p-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <div className="mb-8 flex rounded-xl bg-slate-100/80 p-1 border border-slate-200/40">
             <button
               onClick={() => setActiveTab('login')}
-              className={`w-1/2 rounded-none py-2 text-xs font-mono font-bold transition-all cursor-pointer ${
+              className={`w-1/2 rounded-lg py-2.5 text-xs font-semibold tracking-tight transition-all duration-200 active:scale-[0.98] cursor-pointer ${
                 activeTab === 'login'
-                  ? 'bg-black text-white'
-                  : 'text-neutral-500 hover:text-black'
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900'
               }`}
             >
               MASUK
             </button>
             <button
               onClick={() => setActiveTab('register')}
-              className={`w-1/2 rounded-none py-2 text-xs font-mono font-bold transition-all cursor-pointer ${
+              className={`w-1/2 rounded-lg py-2.5 text-xs font-semibold tracking-tight transition-all duration-200 active:scale-[0.98] cursor-pointer ${
                 activeTab === 'register'
-                  ? 'bg-black text-white'
-                  : 'text-neutral-500 hover:text-black'
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900'
               }`}
             >
               DAFTAR
@@ -171,63 +171,63 @@ export default function LoginPage() {
           {/* Login Section */}
           {activeTab === 'login' && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-6 border-b-2 border-black pb-4">
-                <h2 className="text-2xl font-display font-extrabold italic text-neutral-950">
+              <div className="mb-6 border-b border-slate-100 pb-4">
+                <h2 className="text-2xl font-bold text-slate-900">
                   Selamat Datang
                 </h2>
-                <p className="text-xs font-mono font-medium text-neutral-500 mt-1">
+                <p className="text-xs font-mono font-medium text-slate-400 mt-1">
                   Silakan masuk ke akun Anda untuk melanjutkan.
                 </p>
               </div>
 
               {loginError && (
-                <div className="mb-4 flex items-start gap-2 rounded-none border-2 border-black bg-rose-50 p-3 text-xs font-mono text-rose-900">
-                  <AlertCircle className="h-4.5 w-4.5 shrink-0 text-black mt-0.5" />
+                <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-rose-250 bg-rose-50/40 p-3.5 text-xs text-rose-700">
+                  <AlertCircle className="h-4.5 w-4.5 shrink-0 text-rose-500 mt-0.5" strokeWidth={1.5} />
                   <span>{loginError}</span>
                 </div>
               )}
 
-              <form onSubmit={handleLoginSubmit} className="space-y-4 font-mono text-xs font-semibold">
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
+              <form onSubmit={handleLoginSubmit} className="space-y-4 text-xs font-semibold">
+                <div className="flex flex-col gap-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Alamat Email
                   </label>
                   <div className="relative">
-                    <Mail className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-black stroke-2" />
+                    <Mail className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-slate-400" strokeWidth={1.5} />
                     <input
                       type="email"
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
                       placeholder="nama@univ.ac.id"
                       required
-                      className="w-full rounded-none border-2 border-black py-2.5 pr-4 pl-10 bg-white outline-none focus:bg-neutral-50"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
+                <div className="flex flex-col gap-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Password
                   </label>
                   <div className="relative">
-                    <Lock className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-black stroke-2" />
+                    <Lock className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-slate-400" strokeWidth={1.5} />
                     <input
                       type="password"
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
                       placeholder="••••••••"
                       required
-                      className="w-full rounded-none border-2 border-black py-2.5 pr-4 pl-10 bg-white outline-none focus:bg-neutral-50"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between text-[11px] font-bold">
-                  <label className="flex items-center gap-2 text-neutral-600 select-none cursor-pointer">
+                  <label className="flex items-center gap-2 text-slate-500 select-none cursor-pointer">
                     <input
                       type="checkbox"
                       defaultChecked
-                      className="rounded-none border-2 border-black text-black focus:ring-0 focus:ring-offset-0"
+                      className="rounded border-slate-300 text-slate-900 focus:ring-slate-400/20 focus:ring-opacity-50"
                     />
                     <span>Ingat saya</span>
                   </label>
@@ -237,7 +237,7 @@ export default function LoginPage() {
                       e.preventDefault();
                       alert('Silakan hubungi Admin Prodi untuk reset password.');
                     }}
-                    className="text-black underline decoration-2 hover:text-neutral-700"
+                    className="text-slate-650 hover:text-slate-905 hover:underline"
                   >
                     Lupa password?
                   </a>
@@ -246,11 +246,11 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loginLoading}
-                  className="flex w-full items-center justify-center gap-2 rounded-none border-2 border-black bg-black py-2.5 font-bold text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-2.5 font-semibold text-white hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer shadow-xs"
                 >
                   {loginLoading ? (
                     <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.5} />
                       <span>MEMPROSES...</span>
                     </>
                   ) : (
@@ -264,93 +264,93 @@ export default function LoginPage() {
           {/* Register Section */}
           {activeTab === 'register' && (
             <div className="animate-in fade-in duration-300">
-              <div className="mb-6 border-b-2 border-black pb-4">
-                <h2 className="text-2xl font-display font-extrabold italic text-neutral-950">
+              <div className="mb-6 border-b border-slate-100 pb-4">
+                <h2 className="text-2xl font-bold text-slate-900">
                   Daftar Akun Baru
                 </h2>
-                <p className="text-xs font-mono font-medium text-neutral-500 mt-1">
+                <p className="text-xs font-mono font-medium text-slate-400 mt-1">
                   Buat akun SISJAD baru Anda untuk memulai.
                 </p>
               </div>
 
               {regMessage && (
                 <div
-                  className={`mb-4 flex items-start gap-2 rounded-none border-2 border-black p-3 text-xs font-mono ${
+                  className={`mb-4 flex items-start gap-2.5 rounded-xl p-3.5 text-xs ${
                     regMessage.type === 'success'
-                      ? 'bg-emerald-50 text-emerald-950 border-emerald-500'
-                      : 'bg-rose-50 text-rose-900 border-rose-500'
+                      ? 'bg-emerald-50/50 text-emerald-700 border border-emerald-250'
+                      : 'bg-rose-50/50 text-rose-700 border border-rose-250'
                   }`}
                 >
                   {regMessage.type === 'success' ? (
-                    <CheckCircle className="h-4.5 w-4.5 shrink-0 text-black mt-0.5" />
+                    <CheckCircle className="h-4.5 w-4.5 shrink-0 text-emerald-550 mt-0.5" strokeWidth={1.5} />
                   ) : (
-                    <AlertCircle className="h-4.5 w-4.5 shrink-0 text-black mt-0.5" />
+                    <AlertCircle className="h-4.5 w-4.5 shrink-0 text-rose-500 mt-0.5" strokeWidth={1.5} />
                   )}
                   <span>{regMessage.text}</span>
                 </div>
               )}
 
-              <form onSubmit={handleRegisterSubmit} className="space-y-4 font-mono text-xs font-semibold">
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
+              <form onSubmit={handleRegisterSubmit} className="space-y-4 text-xs font-semibold">
+                <div className="flex flex-col gap-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Nama Lengkap
                   </label>
                   <div className="relative">
-                    <UserIcon className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-black stroke-2" />
+                    <UserIcon className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-slate-400" strokeWidth={1.5} />
                     <input
                       type="text"
                       value={regName}
                       onChange={(e) => setRegName(e.target.value)}
                       placeholder="Nama Lengkap / Dosen"
                       required
-                      className="w-full rounded-none border-2 border-black py-2.5 pr-4 pl-10 bg-white outline-none focus:bg-neutral-50"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
+                <div className="flex flex-col gap-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Alamat Email
                   </label>
                   <div className="relative">
-                    <Mail className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-black stroke-2" />
+                    <Mail className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-slate-400" strokeWidth={1.5} />
                     <input
                       type="email"
                       value={regEmail}
                       onChange={(e) => setRegEmail(e.target.value)}
                       placeholder="nama@univ.ac.id"
                       required
-                      className="w-full rounded-none border-2 border-black py-2.5 pr-4 pl-10 bg-white outline-none focus:bg-neutral-50"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
+                <div className="flex flex-col gap-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Password
                   </label>
                   <div className="relative">
-                    <Lock className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-black stroke-2" />
+                    <Lock className="absolute top-1/2 left-3 h-4.5 w-4.5 -translate-y-1/2 text-slate-400" strokeWidth={1.5} />
                     <input
                       type="password"
                       value={regPassword}
                       onChange={(e) => setRegPassword(e.target.value)}
                       placeholder="••••••••"
                       required
-                      className="w-full rounded-none border-2 border-black py-2.5 pr-4 pl-10 bg-white outline-none focus:bg-neutral-50"
+                      className="w-full rounded-xl border border-slate-200 py-2.5 pr-4 pl-10 bg-white outline-none focus:border-slate-400 focus:ring-1 focus:ring-slate-400/20 transition-all font-sans font-medium text-slate-800 placeholder-slate-400"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
+                <div className="flex flex-col gap-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Pilih Peran (Role)
                   </label>
                   <select
                     value={regRole}
                     onChange={(e) => setRegRole(e.target.value as any)}
                     required
-                    className="w-full rounded-none border-2 border-black py-2.5 px-3 bg-white outline-none"
+                    className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-slate-400 transition-all font-sans font-medium text-slate-800"
                   >
                     <option value="mahasiswa">Mahasiswa</option>
                     <option value="dosen">Dosen</option>
@@ -361,11 +361,11 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={regLoading}
-                  className="flex w-full items-center justify-center gap-2 rounded-none border-2 border-black bg-black py-2.5 font-bold text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-2.5 font-semibold text-white hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer shadow-xs"
                 >
                   {regLoading ? (
                     <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.5} />
                       <span>MENDAFTAR...</span>
                     </>
                   ) : (

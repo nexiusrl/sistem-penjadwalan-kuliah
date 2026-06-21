@@ -10,13 +10,10 @@ import RequestPanel from '@/components/RequestPanel';
 import MasterDataPanel from '@/components/MasterDataPanel';
 import {
   Calendar,
-  Users,
   FileText,
-  Layers,
   LogOut,
   AlertTriangle,
   CheckCircle,
-  Clock,
   RefreshCw,
   Play,
   X,
@@ -300,10 +297,10 @@ export default function DashboardPage() {
 
   if (!isMounted || dbLoading) {
     return (
-      <div className="flex min-h-screen w-full items-center justify-center bg-white font-mono border-4 border-black">
+      <div className="flex min-h-[100dvh] w-full items-center justify-center bg-white font-sans">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-9 w-9 animate-spin text-black stroke-2" />
-          <span className="text-xs font-bold uppercase tracking-widest">MEMUAT SISJAD...</span>
+          <Loader2 className="h-9 w-9 animate-spin text-slate-800" strokeWidth={1.5} />
+          <span className="text-xs font-bold uppercase tracking-widest text-slate-400">MEMUAT SISJAD...</span>
         </div>
       </div>
     );
@@ -312,32 +309,32 @@ export default function DashboardPage() {
   const hasConflicts = stats.conflictCount > 0;
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-white font-sans text-neutral-900 border-4 border-black">
+    <div className="flex min-h-[100dvh] w-full flex-col bg-[#f9fafb] font-sans text-slate-900">
       {/* Top Banner Navigation Header */}
-      <header className="sticky top-0 z-40 flex h-18 w-full items-center justify-between border-b-4 border-black bg-white px-6">
+      <header className="sticky top-0 z-40 flex h-18 w-full items-center justify-between border-b border-slate-200/60 bg-white/80 backdrop-blur-md px-6 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-none border-2 border-black bg-black font-extrabold text-white text-base shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 font-extrabold text-white text-base shadow-xs">
             S
           </div>
-          <span className="text-xl font-display font-extrabold italic tracking-tight text-neutral-900">
+          <span className="text-xl font-bold tracking-tight text-slate-900">
             SISJAD
           </span>
         </div>
 
         {/* Dynamic Navbar Statistics Counter */}
-        <div className="hidden md:flex items-center gap-6 text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500">
-          <div className="flex items-center gap-1.5 border border-black/10 px-2 py-1 bg-neutral-50">
-            <span className="h-2 w-2 bg-emerald-500 rounded-none border border-black" />
+        <div className="hidden md:flex items-center gap-4 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500">
+          <div className="flex items-center gap-1.5 rounded-lg border border-slate-200/60 px-3 py-1 bg-slate-50">
+            <span className="h-1.5 w-1.5 bg-emerald-500 rounded-full" />
             <span>{stats.validCount} Valid</span>
           </div>
           {stats.conflictCount > 0 && (
-            <div className="flex items-center gap-1.5 border-2 border-black bg-rose-50 px-2.5 py-1 text-rose-700 font-extrabold">
-              <span className="h-2 w-2 bg-rose-500 rounded-none border border-black animate-ping" />
+            <div className="flex items-center gap-1.5 rounded-lg border border-rose-200 bg-rose-50/50 px-3 py-1 text-rose-600">
+              <span className="h-1.5 w-1.5 bg-rose-500 rounded-full animate-pulse" />
               <span>{stats.conflictCount} Bentrok</span>
             </div>
           )}
-          <div className="flex items-center gap-1.5 border border-black/10 px-2 py-1 bg-neutral-50">
-            <span className="h-2 w-2 bg-amber-500 rounded-none border border-black" />
+          <div className="flex items-center gap-1.5 rounded-lg border border-slate-200/60 px-3 py-1 bg-slate-50">
+            <span className="h-1.5 w-1.5 bg-amber-500 rounded-full" />
             <span>{stats.warningCount} Peringatan</span>
           </div>
         </div>
@@ -345,17 +342,17 @@ export default function DashboardPage() {
         {/* User Identity Details & Logout */}
         <div className="flex items-center gap-4">
           <div className="text-right">
-            <div className="text-xs font-display font-extrabold italic text-neutral-900 leading-none">{userName}</div>
-            <div className="text-[9px] font-mono font-bold uppercase tracking-wider text-neutral-500 mt-1">
+            <div className="text-xs font-semibold text-slate-805 leading-none">{userName}</div>
+            <div className="text-[9px] font-mono font-bold uppercase tracking-wider text-slate-400 mt-1">
               {userRole === 'admin' ? 'Administrator' : userRole === 'dosen' ? 'Dosen' : 'Mahasiswa'}
             </div>
           </div>
           <button
             onClick={handleLogout}
             title="Keluar sistem"
-            className="flex h-9 w-9 items-center justify-center rounded-none border-2 border-black bg-white text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] transition-all cursor-pointer"
           >
-            <LogOut className="h-4.5 w-4.5 stroke-2" />
+            <LogOut className="h-4 w-4" strokeWidth={1.5} />
           </button>
         </div>
       </header>
@@ -363,30 +360,30 @@ export default function DashboardPage() {
       {/* Main Panel Layout */}
       <div className="flex flex-1 w-full">
         {/* Sidebar Nav */}
-        <aside className="hidden md:flex w-64 flex-col border-r-4 border-black bg-neutral-50 py-6 px-4">
-          <div className="space-y-3 flex-1">
+        <aside className="hidden md:flex w-64 flex-col border-r border-slate-200/60 bg-white py-6 px-4">
+          <div className="space-y-2.5 flex-1">
             <button
               onClick={() => setActiveTab('dashboard')}
-              className={`flex w-full items-center gap-3 rounded-none border-2 border-black px-4 py-3 text-xs font-mono font-bold transition-all ${
+              className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-xs font-semibold tracking-tight transition-all duration-200 active:scale-[0.98] cursor-pointer ${
                 activeTab === 'dashboard'
-                  ? 'bg-black text-white shadow-[2px_2px_0px_0px_rgba(150,150,150,1)]'
-                  : 'bg-white text-neutral-700 hover:bg-neutral-100 hover:text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
+                  ? 'bg-slate-900 text-white shadow-xs'
+                  : 'bg-transparent text-slate-650 hover:bg-slate-50 hover:text-slate-905'
               }`}
             >
-              <Calendar className="h-4.5 w-4.5 stroke-2" />
+              <Calendar className="h-4 w-4" strokeWidth={1.5} />
               <span>DASHBOARD JADWAL</span>
             </button>
 
             {userRole !== 'mahasiswa' && (
               <button
                 onClick={() => setActiveTab('requests')}
-                className={`flex w-full items-center gap-3 rounded-none border-2 border-black px-4 py-3 text-xs font-mono font-bold transition-all ${
+                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-xs font-semibold tracking-tight transition-all duration-200 active:scale-[0.98] cursor-pointer ${
                   activeTab === 'requests'
-                    ? 'bg-black text-white shadow-[2px_2px_0px_0px_rgba(150,150,150,1)]'
-                    : 'bg-white text-neutral-700 hover:bg-neutral-100 hover:text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
+                    ? 'bg-slate-900 text-white shadow-xs'
+                    : 'bg-transparent text-slate-650 hover:bg-slate-50 hover:text-slate-905'
                 }`}
               >
-                <FileText className="h-4.5 w-4.5 stroke-2" />
+                <FileText className="h-4 w-4" strokeWidth={1.5} />
                 <span>PERGESERAN JADWAL</span>
               </button>
             )}
@@ -394,33 +391,33 @@ export default function DashboardPage() {
             {userRole === 'admin' && (
               <button
                 onClick={() => setActiveTab('master')}
-                className={`flex w-full items-center gap-3 rounded-none border-2 border-black px-4 py-3 text-xs font-mono font-bold transition-all ${
+                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-xs font-semibold tracking-tight transition-all duration-200 active:scale-[0.98] cursor-pointer ${
                   activeTab === 'master'
-                    ? 'bg-black text-white shadow-[2px_2px_0px_0px_rgba(150,150,150,1)]'
-                    : 'bg-white text-neutral-700 hover:bg-neutral-100 hover:text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
+                    ? 'bg-slate-900 text-white shadow-xs'
+                    : 'bg-transparent text-slate-650 hover:bg-slate-50 hover:text-slate-905'
                 }`}
               >
-                <Settings className="h-4.5 w-4.5 stroke-2" />
+                <Settings className="h-4 w-4" strokeWidth={1.5} />
                 <span>DATA MASTER</span>
               </button>
             )}
           </div>
 
-          <div className="border-t-2 border-black pt-6 px-2 font-mono text-[9px] text-neutral-500 leading-relaxed font-semibold">
-            &copy; 2026 PRODI SISTEM INFORMASI. REFAC. TO BRUTALIST LIGHT.
+          <div className="border-t border-slate-100 pt-6 px-2 font-mono text-[9px] text-slate-400 leading-relaxed font-semibold uppercase tracking-wider">
+            &copy; 2026 PRODI SISTEM INFORMASI.
           </div>
         </aside>
 
         {/* Content Body Container */}
-        <main className="flex-1 p-6 overflow-y-auto bg-white">
+        <main className="flex-1 p-6 overflow-y-auto bg-transparent">
           {/* Mobile Tab Swapping */}
-          <div className="flex md:hidden mb-6 rounded-none border-2 border-black bg-neutral-100 p-1 text-[10px] font-mono font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <div className="flex md:hidden mb-6 rounded-xl bg-slate-100 p-1 text-[10px] font-bold border border-slate-200/40">
             <button
               onClick={() => setActiveTab('dashboard')}
-              className={`flex-1 rounded-none py-2 transition-all ${
+              className={`flex-1 rounded-lg py-2 text-center transition-all ${
                 activeTab === 'dashboard'
-                  ? 'bg-black text-white'
-                  : 'text-neutral-500'
+                  ? 'bg-white text-slate-905 shadow-xs'
+                  : 'text-slate-500'
               }`}
             >
               DASHBOARD
@@ -428,10 +425,10 @@ export default function DashboardPage() {
             {userRole !== 'mahasiswa' && (
               <button
                 onClick={() => setActiveTab('requests')}
-                className={`flex-1 rounded-none py-2 transition-all ${
+                className={`flex-1 rounded-lg py-2 text-center transition-all ${
                   activeTab === 'requests'
-                    ? 'bg-black text-white'
-                    : 'text-neutral-500'
+                    ? 'bg-white text-slate-905 shadow-xs'
+                    : 'text-slate-500'
                 }`}
               >
                 REQUESTS
@@ -440,10 +437,10 @@ export default function DashboardPage() {
             {userRole === 'admin' && (
               <button
                 onClick={() => setActiveTab('master')}
-                className={`flex-1 rounded-none py-2 transition-all ${
+                className={`flex-1 rounded-lg py-2 text-center transition-all ${
                   activeTab === 'master'
-                    ? 'bg-black text-white'
-                    : 'text-neutral-500'
+                    ? 'bg-white text-slate-905 shadow-xs'
+                    : 'text-slate-500'
                 }`}
               >
                 MASTER
@@ -455,25 +452,25 @@ export default function DashboardPage() {
             <div className="flex flex-col gap-8 animate-in fade-in duration-300">
               {/* Conflict Header Alert Banner */}
               {hasConflicts && userRole === 'admin' && (
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 rounded-none border-2 border-black bg-rose-50 p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 rounded-2xl border border-rose-200/80 bg-rose-50/40 p-5 shadow-xs">
                   <div className="flex gap-3">
-                    <AlertTriangle className="h-6 w-6 text-rose-600 shrink-0 mt-0.5 stroke-2" />
-                    <div className="font-mono text-xs text-neutral-800">
-                      <h4 className="font-display font-extrabold italic text-sm text-neutral-900 uppercase">
+                    <AlertTriangle className="h-6 w-6 text-rose-500 shrink-0 mt-0.5" strokeWidth={1.5} />
+                    <div className="text-xs text-slate-800">
+                      <h4 className="font-bold text-slate-900 uppercase tracking-tight">
                         Deteksi Bentrok Jadwal Kuliah
                       </h4>
-                      <p className="mt-2 text-neutral-600 font-semibold leading-relaxed max-w-[620px]">
+                      <p className="mt-1 text-slate-500 font-semibold leading-relaxed max-w-[620px]">
                         Terdapat {stats.conflictCount} bentrok hard-constraint. Selesaikan secara manual atau jalankan
-                        Constraint Solver otomatis berbasis Algoritma Genetika untuk mengalokasi ulang ruangan secara bebas tumpang tindih.
+                        Constraint Solver otomatis berbasis Algoritma Genetika untuk mengalokasi ulang ruangan secara bebas bentrok.
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={triggerGASolver}
-                    className="flex items-center gap-2 shrink-0 rounded-none border-2 border-black bg-neutral-900 px-5 py-3 text-xs font-mono font-bold text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
+                    className="flex items-center gap-2 shrink-0 rounded-xl bg-slate-900 hover:bg-slate-800 px-5 py-3 text-xs font-semibold text-white shadow-xs active:scale-[0.98] transition-all cursor-pointer animate-pulse"
                   >
-                    <Play className="h-4.5 w-4.5 shrink-0 fill-current" />
-                    <span>JALANKAN GA SOLVER</span>
+                    <Play className="h-4 w-4 shrink-0 fill-current" strokeWidth={1.5} />
+                    <span>Jalankan GA Solver</span>
                   </button>
                 </div>
               )}
@@ -539,64 +536,64 @@ export default function DashboardPage() {
 
       {/* Floating Notice Toast */}
       {notice && (
-        <div className="fixed bottom-8 right-8 z-50 flex items-center gap-2 rounded-none border-2 border-black bg-black px-5 py-3 text-xs font-mono font-bold text-white shadow-[4px_4px_0px_0px_rgba(100,100,100,1)] animate-in slide-in-from-bottom-5 duration-200">
-          <CheckCircle className="h-4.5 w-4.5 text-emerald-400 shrink-0" />
+        <div className="fixed bottom-8 right-8 z-50 flex items-center gap-2.5 rounded-xl bg-slate-900 border border-slate-800 px-5 py-3.5 text-xs font-semibold text-white shadow-xl animate-in slide-in-from-bottom-5 duration-200">
+          <CheckCircle className="h-4.5 w-4.5 text-emerald-400 shrink-0" strokeWidth={1.5} />
           <span>{notice}</span>
         </div>
       )}
 
       {/* Dynamic Solver (GA) Progress Overlay */}
       {isSolving && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60 p-6 text-white backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-sm text-center border-4 border-black bg-white p-8 text-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="text-lg font-display font-extrabold italic text-neutral-900 mb-2 flex items-center justify-center gap-2">
-              <RefreshCw className="h-5.5 w-5.5 animate-spin text-black stroke-2" />
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/40 p-6 text-white backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="w-full max-w-sm text-center border border-slate-200 bg-white p-8 text-slate-900 rounded-2xl shadow-xl">
+            <h3 className="text-base font-bold text-slate-900 mb-2 flex items-center justify-center gap-2">
+              <RefreshCw className="h-5 w-5 animate-spin text-slate-800" strokeWidth={1.5} />
               <span>GA SOLVER AKTIF</span>
             </h3>
-            <p className="text-[10px] font-mono text-neutral-500 max-w-[280px] mx-auto leading-relaxed mb-6 font-bold">
+            <p className="text-[10px] text-slate-500 max-w-[280px] mx-auto leading-relaxed mb-6 font-semibold">
               Mengevaluasi alokasi constraint ruang & waktu dosen. Menghitung mutasi kecocokan penjadwalan optimal...
             </p>
 
             {/* Progress Bar Container */}
-            <div className="w-full bg-neutral-100 border-2 border-black rounded-none h-4 overflow-hidden mb-3">
+            <div className="w-full bg-slate-100 border border-slate-200/60 rounded-full h-3 overflow-hidden mb-3">
               <div
-                className="bg-black h-full transition-all duration-150"
+                className="bg-slate-900 h-full transition-all duration-150 rounded-full"
                 style={{ width: `${solveProgress}%` }}
               />
             </div>
-            <span className="text-xs font-mono font-extrabold text-black">{solveProgress}% SELESAI</span>
+            <span className="text-xs font-mono font-bold text-slate-850">{solveProgress}% SELESAI</span>
           </div>
         </div>
       )}
 
       {/* Schedule Form Modal */}
       {isScheduleOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-xs transition-opacity animate-in fade-in duration-200">
-          <div className="w-full max-w-md rounded-none border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs transition-opacity animate-in fade-in duration-200">
+          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl animate-in zoom-in-95 duration-200">
             {/* Header */}
-            <div className="flex items-start justify-between border-b-2 border-black pb-3">
-              <h3 className="text-lg font-display font-extrabold italic text-neutral-900">
+            <div className="flex items-start justify-between border-b border-slate-100 pb-3">
+              <h3 className="text-base font-bold text-slate-900">
                 {editScheduleId ? 'Edit Jadwal Kuliah' : 'Tambah Jadwal Kuliah'}
               </h3>
               <button
                 onClick={() => setIsScheduleOpen(false)}
-                className="rounded-none border-2 border-black p-1 hover:bg-neutral-100 text-black active:translate-x-0.5 active:translate-y-0.5"
+                className="rounded-lg border border-slate-250 p-1.5 hover:bg-slate-50 text-slate-500 active:scale-95 transition-all cursor-pointer"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" strokeWidth={1.5} />
               </button>
             </div>
 
             {/* Form */}
-            <form onSubmit={handleScheduleSubmit} className="mt-4 space-y-4 font-mono text-xs font-semibold">
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
+            <form onSubmit={handleScheduleSubmit} className="mt-4 space-y-4 text-xs font-semibold">
+              <div className="flex flex-col gap-1.5">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
                   Mata Kuliah
                 </label>
                 <select
                   value={schedSubject}
                   onChange={(e) => handleSubjectChange(e.target.value)}
                   required
-                  className="w-full rounded-none border-2 border-black py-2.5 px-3 bg-white outline-none"
+                  className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-slate-400 transition-all font-sans font-medium text-slate-800"
                 >
                   {dbData.matakuliah.map((m) => (
                     <option key={m.id} value={m.name}>
@@ -606,15 +603,15 @@ export default function DashboardPage() {
                 </select>
               </div>
 
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
+              <div className="flex flex-col gap-1.5">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
                   Dosen Pengampu
                 </label>
                 <select
                   value={schedLecturer}
                   onChange={(e) => setSchedLecturer(e.target.value)}
                   required
-                  className="w-full rounded-none border-2 border-black py-2.5 px-3 bg-white outline-none"
+                  className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-slate-400 transition-all font-sans font-medium text-slate-800"
                 >
                   {dbData.dosen.map((d) => (
                     <option key={d.id} value={d.name}>
@@ -625,39 +622,39 @@ export default function DashboardPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
+                <div className="flex flex-col gap-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Hari Kuliah (Sesuai MK)
                   </label>
                   <input
                     type="text"
                     value={schedDay}
                     disabled
-                    className="w-full rounded-none border-2 border-black bg-neutral-100 py-2.5 px-3 text-neutral-500"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3.5 font-sans font-medium text-slate-500"
                   />
                 </div>
-                <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
+                <div className="flex flex-col gap-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Waktu Jam (Sesuai MK)
                   </label>
                   <input
                     type="text"
                     value={schedSlot}
                     disabled
-                    className="w-full rounded-none border-2 border-black bg-neutral-100 py-2.5 px-3 text-neutral-500"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3.5 font-sans font-medium text-slate-500"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-neutral-500 mb-1.5">
+              <div className="flex flex-col gap-1.5">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
                   Ruangan Kelas
                 </label>
                 <select
                   value={schedRoom}
                   onChange={(e) => setSchedRoom(e.target.value)}
                   required
-                  className="w-full rounded-none border-2 border-black py-2.5 px-3 bg-white outline-none"
+                  className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-slate-400 transition-all font-sans font-medium text-slate-800"
                 >
                   {dbData.ruangan.map((r) => (
                     <option key={r.id} value={r.name}>
@@ -668,16 +665,16 @@ export default function DashboardPage() {
               </div>
 
               {/* Action buttons */}
-              <div className="flex justify-between items-center border-t-2 border-black pt-4 mt-2">
+              <div className="flex justify-between items-center border-t border-slate-100 pt-4 mt-2">
                 <div>
                   {editScheduleId && (
                     <button
                       type="button"
                       onClick={handleScheduleDelete}
                       disabled={schedLoading}
-                      className="flex items-center gap-1.5 rounded-none border-2 border-black bg-white text-rose-650 hover:bg-rose-50 font-bold px-3.5 py-2 text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
+                      className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white text-rose-600 hover:bg-rose-50 hover:border-rose-200 font-bold px-3.5 py-2 text-xs shadow-xs active:scale-[0.98] cursor-pointer transition-all"
                     >
-                      <Trash2 className="h-4 w-4 stroke-2" />
+                      <Trash2 className="h-4 w-4" strokeWidth={1.5} />
                       <span>HAPUS</span>
                     </button>
                   )}
@@ -687,14 +684,14 @@ export default function DashboardPage() {
                   <button
                     type="button"
                     onClick={() => setIsScheduleOpen(false)}
-                    className="rounded-none border-2 border-black bg-white px-4 py-2 text-xs font-bold text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
+                    className="rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-semibold text-slate-650 hover:bg-slate-50 active:scale-[0.98] transition-all cursor-pointer"
                   >
                     BATAL
                   </button>
                   <button
                     type="submit"
                     disabled={schedLoading}
-                    className="flex items-center gap-1.5 rounded-none border-2 border-black bg-black px-4 py-2 text-xs font-bold text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
+                    className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer"
                   >
                     {schedLoading ? (
                       <>

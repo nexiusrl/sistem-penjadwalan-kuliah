@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Schedule, ChangeRequest } from '@/lib/db';
-import { Calendar, User, Clock, AlertTriangle, CheckCircle, FileText, Send, Loader2 } from 'lucide-react';
+import { Clock, User, AlertTriangle, CheckCircle, FileText, Send, Loader2 } from 'lucide-react';
 
 interface RequestPanelProps {
   schedules: Schedule[];
@@ -166,42 +166,42 @@ export default function RequestPanel({
   };
 
   return (
-    <div className="grid grid-cols-1 gap-8 xl:grid-cols-12">
+    <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
       {/* Form Section (Only for Dosen) */}
       {userRole === 'dosen' && (
-        <div className="xl:col-span-5 rounded-none border-2 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <h3 className="font-display font-extrabold italic text-base text-neutral-900 pb-3 border-b-2 border-black mb-4 flex items-center gap-2">
-            <Send className="h-5 w-5 text-black stroke-2" />
-            <span>Ajukan Pergeseran Jadwal</span>
+        <div className="xl:col-span-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_8px_30px_rgb(0,0,0,0.02)]">
+          <h3 className="font-bold text-sm text-slate-800 pb-3 border-b border-slate-100 mb-4 flex items-center gap-2">
+            <Send className="h-4.5 w-4.5 text-indigo-650" strokeWidth={1.5} />
+            <span>Ajukan Perubahan Jadwal</span>
           </h3>
-          <p className="font-mono text-[10px] text-neutral-500 mb-5 leading-relaxed">
+          <p className="text-[11px] text-slate-400 mb-4 leading-relaxed">
             Dosen dapat mengajukan relokasi jam kuliah mandiri di sini.
           </p>
 
           {error && (
-            <div className="mb-4 flex items-start gap-2 rounded-none border-2 border-black bg-rose-50 p-3 text-xs font-mono text-rose-900 animate-in fade-in">
-              <AlertTriangle className="h-4 w-4 shrink-0 text-black mt-0.5" />
+            <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-rose-100 bg-rose-50/50 p-3 text-xs text-rose-700 animate-in fade-in">
+              <AlertTriangle className="h-4.5 w-4.5 shrink-0 mt-0.5 text-rose-600" strokeWidth={1.5} />
               <span>{error}</span>
             </div>
           )}
 
           {success && (
-            <div className="mb-4 flex items-start gap-2 rounded-none border-2 border-black bg-emerald-50 p-3 text-xs font-mono text-emerald-950 animate-in fade-in">
-              <CheckCircle className="h-4 w-4 shrink-0 text-black mt-0.5" />
+            <div className="mb-4 flex items-start gap-2.5 rounded-xl border border-emerald-105 bg-emerald-50/50 p-3 text-xs text-emerald-700 animate-in fade-in">
+              <CheckCircle className="h-4.5 w-4.5 shrink-0 mt-0.5 text-emerald-600" strokeWidth={1.5} />
               <span>{success}</span>
             </div>
           )}
 
           <form onSubmit={handleSubmitRequest} className="space-y-4">
             <div>
-              <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-600 mb-1.5">
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                 Mata Kuliah
               </label>
               <select
                 value={subject}
                 onChange={(e) => handleSubjectChange(e.target.value)}
                 required
-                className="w-full rounded-none border-2 border-black py-2 px-3 text-xs font-mono bg-white outline-none focus:bg-neutral-50"
+                className="w-full rounded-xl border border-slate-200 py-2.5 px-3 text-xs outline-none bg-white focus:border-indigo-500"
               >
                 <option value="" disabled>
                   Pilih mata kuliah & jadwal...
@@ -215,39 +215,39 @@ export default function RequestPanel({
             </div>
 
             <div>
-              <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-600 mb-1.5">
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                 Dosen Pemohon
               </label>
               <div className="relative">
-                <User className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-black stroke-2" />
+                <User className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
                   value={userName}
                   disabled
-                  className="w-full rounded-none border-2 border-black bg-neutral-100 py-2.5 pr-4 pl-9 text-xs font-mono text-neutral-600"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pr-4 pl-9 text-xs font-mono font-bold text-slate-650"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-600 mb-1.5">
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                 Jadwal Asal
               </label>
               <div className="relative">
-                <Clock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-black stroke-2" />
+                <Clock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
                   value={fromTime}
                   readOnly
                   disabled
                   placeholder="Pilih mata kuliah untuk memuat jadwal asal"
-                  className="w-full rounded-none border-2 border-black bg-neutral-100 py-2.5 pr-4 pl-9 text-xs font-mono text-neutral-600"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pr-4 pl-9 text-xs font-mono font-bold text-slate-650"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-600 mb-1.5">
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                 Tanggal Usulan Baru
               </label>
               <input
@@ -255,21 +255,21 @@ export default function RequestPanel({
                 value={toDate}
                 onChange={(e) => setToDate(e.target.value)}
                 required
-                className="w-full rounded-none border-2 border-black py-2 px-3 text-xs font-mono bg-white outline-none"
+                className="w-full rounded-xl border border-slate-200 py-2.5 px-3 text-xs outline-none bg-white focus:border-indigo-500"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-600 mb-1.5">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                   Jam Mulai Baru
                 </label>
-                <div className="flex gap-1">
+                <div className="flex gap-1.5">
                   <select
                     value={startHour}
                     onChange={(e) => setStartHour(e.target.value)}
                     required
-                    className="w-1/2 rounded-none border-2 border-black py-2 px-1 text-xs font-mono bg-white outline-none"
+                    className="w-1/2 rounded-xl border border-slate-200 py-2.5 px-1.5 text-xs bg-white outline-none focus:border-indigo-500"
                   >
                     <option value="" disabled>
                       Jam
@@ -284,7 +284,7 @@ export default function RequestPanel({
                     value={startMinute}
                     onChange={(e) => setStartMinute(e.target.value)}
                     required
-                    className="w-1/2 rounded-none border-2 border-black py-2 px-1 text-xs font-mono bg-white outline-none"
+                    className="w-1/2 rounded-xl border border-slate-200 py-2.5 px-1.5 text-xs bg-white outline-none focus:border-indigo-500"
                   >
                     <option value="" disabled>
                       Mnt
@@ -299,15 +299,15 @@ export default function RequestPanel({
               </div>
 
               <div>
-                <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-600 mb-1.5">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                   Jam Selesai Baru
                 </label>
-                <div className="flex gap-1">
+                <div className="flex gap-1.5">
                   <select
                     value={endHour}
                     onChange={(e) => setEndHour(e.target.value)}
                     required
-                    className="w-1/2 rounded-none border-2 border-black py-2 px-1 text-xs font-mono bg-white outline-none"
+                    className="w-1/2 rounded-xl border border-slate-200 py-2.5 px-1.5 text-xs bg-white outline-none focus:border-indigo-500"
                   >
                     <option value="" disabled>
                       Jam
@@ -322,7 +322,7 @@ export default function RequestPanel({
                     value={endMinute}
                     onChange={(e) => setEndMinute(e.target.value)}
                     required
-                    className="w-1/2 rounded-none border-2 border-black py-2 px-1 text-xs font-mono bg-white outline-none"
+                    className="w-1/2 rounded-xl border border-slate-200 py-2.5 px-1.5 text-xs bg-white outline-none focus:border-indigo-500"
                   >
                     <option value="" disabled>
                       Mnt
@@ -338,7 +338,7 @@ export default function RequestPanel({
             </div>
 
             <div>
-              <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-600 mb-1.5">
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                 Alasan Perubahan
               </label>
               <textarea
@@ -347,22 +347,22 @@ export default function RequestPanel({
                 rows={3}
                 required
                 placeholder="Alasan pemindahan jadwal..."
-                className="w-full rounded-none border-2 border-black py-2.5 px-3 text-xs font-mono bg-white outline-none"
+                className="w-full rounded-xl border border-slate-200 py-2.5 px-3 text-xs outline-none bg-white focus:border-indigo-500"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-none border-2 border-black bg-black py-2.5 text-xs font-mono font-bold text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-2.5 text-xs font-bold text-white shadow-md shadow-slate-900/10 hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer"
             >
               {loading ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  <span>MENGIRIM...</span>
+                  <span>Mengirim...</span>
                 </>
               ) : (
-                <span>KIRIM PERMOHONAN</span>
+                <span>Kirim Permohonan</span>
               )}
             </button>
           </form>
@@ -373,73 +373,73 @@ export default function RequestPanel({
       <div
         className={`${
           userRole === 'dosen' ? 'xl:col-span-7' : 'xl:col-span-12'
-        } rounded-none border-2 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
+        } rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_8px_30px_rgb(0,0,0,0.02)]`}
       >
-        <h3 className="font-display font-extrabold italic text-base text-neutral-900 pb-3 border-b-2 border-black mb-5 flex items-center gap-2">
-          <FileText className="h-5 w-5 text-black stroke-2" />
+        <h3 className="font-bold text-sm text-slate-800 pb-3 border-b border-slate-100 mb-4 flex items-center gap-2">
+          <FileText className="h-4.5 w-4.5 text-indigo-650" strokeWidth={1.5} />
           <span>Riwayat Pengajuan Pergeseran Jadwal</span>
         </h3>
 
         {filteredRequests.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center text-neutral-400">
-            <Clock className="h-10 w-10 stroke-1.5 mb-3 opacity-30 text-black" />
-            <p className="font-mono text-xs font-bold text-neutral-500">Belum ada riwayat permohonan masuk.</p>
+          <div className="flex flex-col items-center justify-center py-16 text-center text-slate-400">
+            <Clock className="h-9 w-9 stroke-[1.2] mb-2 opacity-50 text-slate-500" />
+            <p className="text-xs font-bold text-slate-400">Belum ada riwayat permohonan masuk.</p>
           </div>
         ) : (
-          <div className="space-y-4 max-h-[600px] overflow-y-auto pr-1">
+          <div className="space-y-3.5 max-h-[600px] overflow-y-auto pr-1">
             {filteredRequests.map((req) => (
               <div
                 key={req.id}
-                className="rounded-none border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all"
+                className="rounded-xl border border-slate-100 bg-slate-50/50 p-4 transition-all hover:bg-slate-50"
               >
-                <div className="flex items-center justify-between border-b border-black/10 pb-2 mb-2">
-                  <span className="font-display font-bold italic text-sm text-indigo-750">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-2">
+                  <span className="font-bold text-xs text-indigo-750">
                     {req.subject}
                   </span>
                   <div>
                     {req.status === 'approved' ? (
-                      <span className="inline-flex rounded-none border border-emerald-500 bg-emerald-50 px-2 py-0.5 text-[9px] font-mono font-bold uppercase text-emerald-700">
+                      <span className="inline-flex rounded-full bg-emerald-50 px-2 py-0.5 text-[9px] font-mono font-bold uppercase text-emerald-600">
                         Disetujui
                       </span>
                     ) : req.status === 'rejected' ? (
-                      <span className="inline-flex rounded-none border border-rose-500 bg-rose-50 px-2 py-0.5 text-[9px] font-mono font-bold uppercase text-rose-700">
+                      <span className="inline-flex rounded-full bg-rose-50 px-2 py-0.5 text-[9px] font-mono font-bold uppercase text-rose-600">
                         Ditolak
                       </span>
                     ) : (
-                      <span className="inline-flex rounded-none border border-amber-500 bg-amber-50 px-2 py-0.5 text-[9px] font-mono font-bold uppercase text-amber-700">
+                      <span className="inline-flex rounded-full bg-amber-50 px-2 py-0.5 text-[9px] font-mono font-bold uppercase text-amber-600">
                         Menunggu
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="text-xs font-mono text-neutral-600 space-y-1.5 mt-3">
+                <div className="text-[11px] font-mono font-semibold text-slate-500 space-y-1.5 mt-3">
                   <div>
-                    Dosen Pemohon: <span className="font-bold text-neutral-900">{req.lecturer}</span>
+                    Dosen Pemohon: <span className="font-bold text-slate-800">{req.lecturer}</span>
                   </div>
                   <div className="leading-relaxed">
-                    Pengajuan geser jadwal dari <code className="bg-neutral-100 border border-black/10 px-1 py-0.5 rounded-sm font-semibold">{req.fromTime}</code> ke <code className="bg-indigo-50 border border-indigo-200 px-1 py-0.5 rounded-sm font-bold text-indigo-700">{req.toTime}</code>.
+                    Pengajuan geser jadwal dari <code className="bg-slate-100 px-1 py-0.5 rounded-sm">{req.fromTime}</code> ke <code className="bg-indigo-50 px-1 py-0.5 rounded-sm text-indigo-750">{req.toTime}</code>.
                   </div>
-                  <div className="text-[10px] text-neutral-450 border-t border-black/5 pt-2 mt-2 leading-relaxed">
+                  <div className="text-[10px] text-slate-400 border-t border-slate-100/50 pt-2 mt-2 leading-relaxed">
                     Alasan: &ldquo;{req.reason}&rdquo;
                   </div>
                 </div>
 
                 {userRole === 'admin' && req.status === 'pending' && (
-                  <div className="flex justify-end gap-3 border-t-2 border-black pt-3 mt-3">
+                  <div className="flex justify-end gap-2 border-t border-slate-100 pt-3 mt-3">
                     <button
                       onClick={() => handleRequestStatus(req.id, 'rejected')}
                       disabled={actionLoading !== null}
-                      className="rounded-none border-2 border-black bg-white text-black font-mono font-bold px-3.5 py-1.5 text-[10px] hover:bg-rose-50 hover:text-rose-700 transition-colors disabled:opacity-50 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
+                      className="rounded-lg border border-slate-200 text-slate-650 font-bold px-3 py-1.5 text-[10px] hover:bg-rose-50 hover:text-rose-700 transition-colors disabled:opacity-50 active:scale-95 cursor-pointer"
                     >
-                      {actionLoading === req.id ? 'MEMPROSES' : 'TOLAK'}
+                      {actionLoading === req.id ? 'Memproses' : 'Tolak'}
                     </button>
                     <button
                       onClick={() => handleRequestStatus(req.id, 'approved')}
                       disabled={actionLoading !== null}
-                      className="rounded-none border-2 border-black bg-black text-white font-mono font-bold px-3.5 py-1.5 text-[10px] hover:bg-neutral-800 transition-colors disabled:opacity-50 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
+                      className="rounded-lg bg-slate-900 text-white font-bold px-3.5 py-1.5 text-[10px] hover:bg-slate-800 transition-colors disabled:opacity-50 active:scale-95 cursor-pointer"
                     >
-                      {actionLoading === req.id ? 'MEMPROSES' : 'SETUJUI'}
+                      {actionLoading === req.id ? 'Memproses' : 'Setujui'}
                     </button>
                   </div>
                 )}
