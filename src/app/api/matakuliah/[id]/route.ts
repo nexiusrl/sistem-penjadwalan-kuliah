@@ -15,7 +15,7 @@ export async function PUT(req: Request, { params }: RouteParams) {
 
     const { id } = await params;
     const targetId = parseInt(id);
-    const { name, code, sks, day, timeSlot } = await req.json();
+    const { name, code, sks, day, timeSlot, lecturer, room } = await req.json();
 
     const db = readDB();
     const index = db.matakuliah.findIndex(m => m.id === targetId);
@@ -24,28 +24,50 @@ export async function PUT(req: Request, { params }: RouteParams) {
     }
 
     const oldName = db.matakuliah[index].name;
+    const oldCode = db.matakuliah[index].code;
+
     db.matakuliah[index] = {
       ...db.matakuliah[index],
       name,
       code,
       sks: parseInt(sks),
       day: day || db.matakuliah[index].day,
-      timeSlot: timeSlot || db.matakuliah[index].timeSlot
+      timeSlot: timeSlot || db.matakuliah[index].timeSlot,
+      lecturer: lecturer || '',
+      room: room || ''
     };
 
-    // Sync subject name, code, day, and timeSlot in schedules
-    db.schedules = db.schedules.map(s => {
-      if (s.subject === oldName) {
-        return {
-          ...s,
+    // Sync schedules: create, update, or delete matching schedule based on lecturer & room presence
+    if (lecturer && room) {
+      const schedIndex = db.schedules.findIndex(s => s.code === oldCode || s.subject === oldName);
+      if (schedIndex !== -1) {
+        db.schedules[schedIndex] = {
+          ...db.schedules[schedIndex],
           subject: name,
           code: code,
-          day: day || s.day,
-          timeSlot: timeSlot || s.timeSlot
+          lecturer,
+          room,
+          day: day || db.schedules[schedIndex].day,
+          timeSlot: timeSlot || db.schedules[schedIndex].timeSlot
         };
+      } else {
+        const newSchedule = {
+          id: db.schedules.length > 0 ? Math.max(...db.schedules.map(s => s.id)) + 1 : 1,
+          subject: name,
+          code: code,
+          lecturer,
+          room,
+          day: day || db.matakuliah[index].day,
+          timeSlot: timeSlot || db.matakuliah[index].timeSlot,
+          status: 'validated' as const,
+          details: ''
+        };
+        db.schedules.push(newSchedule);
       }
-      return s;
-    });
+    } else {
+      // Remove schedule if lecturer or room is cleared
+      db.schedules = db.schedules.filter(s => s.code !== oldCode && s.subject !== oldName);
+    }
 
     writeDB(db);
     return NextResponse.json(db.matakuliah[index]);
@@ -73,7 +95,7 @@ export async function DELETE(req: Request, { params }: RouteParams) {
 
     db.matakuliah = db.matakuliah.filter(m => m.id !== targetId);
     // Remove related schedules
-    db.schedules = db.schedules.filter(s => s.subject !== mk.name);
+    db.schedules = db.schedules.filter(s => s.subject !== mk.name && s.code !== mk.code);
 
     writeDB(db);
     return NextResponse.json({ message: 'Mata kuliah berhasil dihapus.' });

@@ -30,6 +30,8 @@ export interface Subject {
   sks: number;
   day: string;
   timeSlot: string;
+  lecturer?: string;
+  room?: string;
 }
 
 export interface Schedule {
@@ -80,7 +82,35 @@ export function readDB(): Database {
       return initialData;
     }
     const raw = fs.readFileSync(DB_PATH, 'utf-8');
-    return JSON.parse(raw);
+    const db = JSON.parse(raw) as Database;
+    
+    // Auto-migration: sync lecturer and room properties from schedules to matakuliah if missing
+    let updated = false;
+    if (db.matakuliah) {
+      db.matakuliah = db.matakuliah.map(m => {
+        let modified = false;
+        if (m.lecturer === undefined) {
+          const match = db.schedules?.find(s => s.code === m.code || s.subject === m.name);
+          m.lecturer = match ? match.lecturer : '';
+          modified = true;
+        }
+        if (m.room === undefined) {
+          const match = db.schedules?.find(s => s.code === m.code || s.subject === m.name);
+          m.room = match ? match.room : '';
+          modified = true;
+        }
+        if (modified) {
+          updated = true;
+        }
+        return m;
+      });
+      
+      if (updated) {
+        fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2), 'utf-8');
+      }
+    }
+    
+    return db;
   } catch (err) {
     console.error('Error reading local JSON database:', err);
     return {

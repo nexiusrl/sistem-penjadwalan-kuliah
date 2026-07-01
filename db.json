@@ -90,15 +90,19 @@
       "code": "SI-101",
       "sks": 3,
       "day": "Senin",
-      "timeSlot": "08:00 - 10:30"
+      "timeSlot": "08:00 - 10:30",
+      "lecturer": "aco",
+      "room": "R301"
     },
     {
       "id": 2,
       "name": "Struktur Data",
       "code": "SI-102",
       "sks": 3,
-      "day": "Selasa",
-      "timeSlot": "10:30 - 13:00"
+      "day": "Jumat",
+      "timeSlot": "10:30 - 13:00",
+      "lecturer": "aco",
+      "room": "R401"
     },
     {
       "id": 3,
@@ -106,7 +110,9 @@
       "code": "SI-103",
       "sks": 3,
       "day": "Rabu",
-      "timeSlot": "08:00 - 10:30"
+      "timeSlot": "08:00 - 10:30",
+      "lecturer": "aco",
+      "room": "Lab Komputer"
     },
     {
       "id": 4,
@@ -114,7 +120,9 @@
       "code": "SI-104",
       "sks": 3,
       "day": "Kamis",
-      "timeSlot": "13:00 - 15:30"
+      "timeSlot": "13:00 - 15:30",
+      "lecturer": "",
+      "room": ""
     },
     {
       "id": 5,
@@ -122,7 +130,9 @@
       "code": "SI-201",
       "sks": 4,
       "day": "Jumat",
-      "timeSlot": "08:00 - 10:30"
+      "timeSlot": "08:00 - 10:30",
+      "lecturer": "aco",
+      "room": "R401"
     },
     {
       "id": 6,
@@ -130,7 +140,9 @@
       "code": "SI-203",
       "sks": 3,
       "day": "Senin",
-      "timeSlot": "10:30 - 13:00"
+      "timeSlot": "10:30 - 13:00",
+      "lecturer": "",
+      "room": ""
     },
     {
       "id": 7,
@@ -138,7 +150,9 @@
       "code": "SI-301",
       "sks": 3,
       "day": "Rabu",
-      "timeSlot": "13:00 - 15:30"
+      "timeSlot": "13:00 - 15:30",
+      "lecturer": "",
+      "room": ""
     }
   ],
   "schedules": [
@@ -172,6 +186,17 @@
       "room": "Lab Komputer",
       "day": "Kamis",
       "timeSlot": "11:35 - 13:35",
+      "status": "validated",
+      "details": ""
+    },
+    {
+      "id": 4,
+      "subject": "Struktur Data",
+      "code": "SI-102",
+      "lecturer": "aco",
+      "room": "R401",
+      "day": "Jumat",
+      "timeSlot": "10:30 - 13:00",
       "status": "validated",
       "details": ""
     }

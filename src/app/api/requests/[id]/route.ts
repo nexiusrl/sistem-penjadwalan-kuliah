@@ -58,6 +58,13 @@ export async function PUT(req: Request, { params }: RouteParams) {
           targetSchedule.day = toParts.day;
           targetSchedule.timeSlot = toParts.timeSlot;
           scheduleUpdated = true;
+
+          // Sync to matakuliah
+          const matchingMK = db.matakuliah.find(m => m.code === targetSchedule.code || m.name === targetSchedule.subject);
+          if (matchingMK) {
+            matchingMK.day = toParts.day;
+            matchingMK.timeSlot = toParts.timeSlot;
+          }
         }
       }
     }

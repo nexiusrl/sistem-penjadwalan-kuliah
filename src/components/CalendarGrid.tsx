@@ -110,15 +110,6 @@ export default function CalendarGrid({
           </h2>
         </div>
 
-        {userRole === 'admin' && (
-          <button
-            onClick={onAddScheduleClick}
-            className="flex items-center gap-2 rounded-xl bg-primary hover:bg-primary-hover px-5 py-3 text-sm font-semibold text-white shadow-primary active:scale-[0.98] transition-all duration-300 cursor-pointer"
-          >
-            <PlusCircle className="h-5 w-5" strokeWidth={2} />
-            <span>Tambah Jadwal Kuliah</span>
-          </button>
-        )}
       </div>
 
       {/* Grid Container */}
@@ -311,7 +302,7 @@ export default function CalendarGrid({
                   className="flex items-center gap-2 rounded-xl bg-primary hover:bg-primary-hover px-5 py-2.5 text-sm font-semibold text-white shadow-primary active:scale-95 transition-all duration-300 cursor-pointer"
                 >
                   <Edit3 className="h-4 w-4" strokeWidth={2} />
-                  <span>Edit Jadwal</span>
+                  <span>Kelola di Data Master</span>
                 </button>
               )}
             </div>

@@ -16,6 +16,24 @@ export async function POST(req: Request) {
 
     const db = readDB();
     db.schedules = schedules;
+
+    // Sync schedules back to matakuliah based on course code
+    if (db.matakuliah && Array.isArray(schedules)) {
+      db.matakuliah = db.matakuliah.map(m => {
+        const matchingSched = schedules.find(s => s.code === m.code);
+        if (matchingSched) {
+          return {
+            ...m,
+            room: matchingSched.room,
+            day: matchingSched.day,
+            timeSlot: matchingSched.timeSlot,
+            lecturer: matchingSched.lecturer
+          };
+        }
+        return m;
+      });
+    }
+
     writeDB(db);
 
     return NextResponse.json({ message: 'Semua jadwal berhasil diperbarui.' });

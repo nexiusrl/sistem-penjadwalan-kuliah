@@ -151,15 +151,9 @@ export default function DashboardPage() {
   const getStats = useStore((s) => s.getStats);
   const getEvaluatedSchedules = useStore((s) => s.getEvaluatedSchedules);
 
-  // Schedule Form Modal States (local UI state, not global)
-  const [isScheduleOpen, setIsScheduleOpen] = useState(false);
-  const [editScheduleId, setEditScheduleId] = useState<number | null>(null);
-  const [schedSubject, setSchedSubject] = useState('');
-  const [schedLecturer, setSchedLecturer] = useState('');
-  const [schedRoom, setSchedRoom] = useState('');
-  const [schedDay, setSchedDay] = useState('Senin');
-  const [schedSlot, setSchedSlot] = useState('08:00 - 10:30');
-  const [schedLoading, setSchedLoading] = useState(false);
+  // Master Data Auto-Open States
+  const [masterSubTab, setMasterSubTab] = useState<'dosen' | 'ruang' | 'mk'>('dosen');
+  const [editSubjectId, setEditSubjectId] = useState<number | null>(null);
 
   // Load auth state and fetch database on mount
   useEffect(() => {
@@ -203,78 +197,18 @@ export default function DashboardPage() {
     router.refresh();
   };
 
-  // Open Schedule Add/Edit Form
+  // Open Course Edit Form directly in Master Data Tab
   const openScheduleForm = (sched: Schedule | null = null) => {
     if (userRole !== 'admin') return;
-    
-    if (matakuliah.length === 0 || dosen.length === 0 || ruangan.length === 0) {
-      alert('Harap lengkapi Data Master (Dosen, Ruangan, Mata Kuliah) terlebih dahulu sebelum membuat Jadwal.');
-      return;
-    }
 
     if (sched) {
-      setEditScheduleId(sched.id);
-      setSchedSubject(sched.subject);
-      setSchedLecturer(sched.lecturer);
-      setSchedRoom(sched.room);
-      setSchedDay(sched.day);
-      setSchedSlot(sched.timeSlot);
-    } else {
-      setEditScheduleId(null);
-      const firstMK = matakuliah[0];
-      setSchedSubject(firstMK.name);
-      setSchedLecturer(dosen[0]?.name || '');
-      setSchedRoom(ruangan[0]?.name || '');
-      setSchedDay(firstMK.day || 'Senin');
-      setSchedSlot(firstMK.timeSlot || '08:00 - 10:30');
+      const mk = matakuliah.find(m => m.code === sched.code || m.name === sched.subject);
+      if (mk) {
+        setMasterSubTab('mk');
+        setEditSubjectId(mk.id);
+        setActiveTab('master');
+      }
     }
-    
-    setIsScheduleOpen(true);
-  };
-
-  // Update day and timeslot automatically based on selected subject in schedule form
-  const handleSubjectChange = (subjectName: string) => {
-    setSchedSubject(subjectName);
-    const selected = matakuliah.find((m) => m.name === subjectName);
-    if (selected) {
-      setSchedDay(selected.day || 'Senin');
-      setSchedSlot(selected.timeSlot || '08:00 - 10:30');
-    }
-  };
-
-  const handleScheduleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (userRole !== 'admin') return;
-
-    setSchedLoading(true);
-    const code = matakuliah.find((m) => m.name === schedSubject)?.code || '';
-
-    const payload = {
-      subject: schedSubject,
-      code,
-      lecturer: schedLecturer,
-      room: schedRoom,
-      day: schedDay,
-      timeSlot: schedSlot,
-    };
-
-    const success = await submitSchedule(payload, editScheduleId);
-    if (success) {
-      setIsScheduleOpen(false);
-    }
-    setSchedLoading(false);
-  };
-
-  const handleScheduleDelete = async () => {
-    if (!editScheduleId || userRole !== 'admin') return;
-    if (!confirm('Apakah Anda yakin ingin menghapus jadwal ini secara permanen?')) return;
-
-    setSchedLoading(true);
-    const success = await deleteSchedule(editScheduleId);
-    if (success) {
-      setIsScheduleOpen(false);
-    }
-    setSchedLoading(false);
   };
 
   // Show premium skeleton loader while data is loading
@@ -506,6 +440,11 @@ export default function DashboardPage() {
                 matakuliah={matakuliah}
                 userRole={userRole}
                 onRefresh={fetchDBState}
+                initialSubTab={masterSubTab}
+                initialEditSubjectId={editSubjectId}
+                onClearInitialState={() => {
+                  setEditSubjectId(null);
+                }}
               />
             </div>
           )}
@@ -540,149 +479,6 @@ export default function DashboardPage() {
               />
             </div>
             <span className="text-sm font-semibold text-primary">{solveProgress}% SELESAI</span>
-          </div>
-        </div>
-      )}
-
-      {/* Schedule Form Modal */}
-      {isScheduleOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm transition-opacity animate-in fade-in duration-200">
-          <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-xl animate-in zoom-in-95 duration-200">
-            {/* Header */}
-            <div className="flex items-start justify-between border-b border-slate-100 pb-4">
-              <h3 className="text-lg font-bold text-slate-900">
-                {editScheduleId ? 'Edit Jadwal Kuliah' : 'Tambah Jadwal Kuliah'}
-              </h3>
-              <button
-                onClick={() => setIsScheduleOpen(false)}
-                className="rounded-lg border border-slate-200 p-2 hover:bg-slate-50 text-slate-500 hover:text-slate-700 active:scale-95 transition-all cursor-pointer"
-              >
-                <X className="h-5 w-5" strokeWidth={2} />
-              </button>
-            </div>
-
-            {/* Form */}
-            <form onSubmit={handleScheduleSubmit} className="mt-5 space-y-5">
-              <div className="flex flex-col gap-2">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-                  Mata Kuliah
-                </label>
-                <select
-                  value={schedSubject}
-                  onChange={(e) => handleSubjectChange(e.target.value)}
-                  required
-                  className="w-full rounded-xl border border-slate-200 py-3 px-4 bg-white text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-sans font-medium text-slate-800"
-                >
-                  {matakuliah.map((m) => (
-                    <option key={m.id} value={m.name}>
-                      {m.code} - {m.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-                  Dosen Pengampu
-                </label>
-                <select
-                  value={schedLecturer}
-                  onChange={(e) => setSchedLecturer(e.target.value)}
-                  required
-                  className="w-full rounded-xl border border-slate-200 py-3 px-4 bg-white text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-sans font-medium text-slate-800"
-                >
-                  {dosen.map((d) => (
-                    <option key={d.id} value={d.name}>
-                      {d.name} ({d.code})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex flex-col gap-2">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-                    Hari Kuliah (Sesuai MK)
-                  </label>
-                  <input
-                    type="text"
-                    value={schedDay}
-                    disabled
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 px-4 text-sm font-medium text-slate-500"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-                    Waktu Jam (Sesuai MK)
-                  </label>
-                  <input
-                    type="text"
-                    value={schedSlot}
-                    disabled
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 px-4 text-sm font-medium text-slate-500"
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-                  Ruangan Kelas
-                </label>
-                <select
-                  value={schedRoom}
-                  onChange={(e) => setSchedRoom(e.target.value)}
-                  required
-                  className="w-full rounded-xl border border-slate-200 py-3 px-4 bg-white text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-sans font-medium text-slate-800"
-                >
-                  {ruangan.map((r) => (
-                    <option key={r.id} value={r.name}>
-                      {r.name} ({r.type})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Action buttons */}
-              <div className="flex justify-between items-center border-t border-slate-100 pt-5 mt-3">
-                <div>
-                  {editScheduleId && (
-                    <button
-                      type="button"
-                      onClick={handleScheduleDelete}
-                      disabled={schedLoading}
-                      className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white text-rose-600 hover:bg-rose-50 hover:border-rose-200 font-semibold px-4 py-2.5 text-sm active:scale-[0.98] cursor-pointer transition-all"
-                    >
-                      <Trash2 className="h-5 w-5" strokeWidth={2} />
-                      <span>Hapus</span>
-                    </button>
-                  )}
-                </div>
-
-                <div className="flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setIsScheduleOpen(false)}
-                    className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 active:scale-[0.98] transition-all cursor-pointer"
-                  >
-                    Batal
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={schedLoading}
-                    className="flex items-center gap-2 rounded-xl bg-primary hover:bg-primary-hover px-5 py-2.5 text-sm font-semibold text-white shadow-primary active:scale-[0.98] transition-all duration-300 cursor-pointer"
-                  >
-                    {schedLoading ? (
-                      <>
-                        <Loader2 className="h-5 w-5 animate-spin" strokeWidth={2} />
-                        <span>Menyimpan...</span>
-                      </>
-                    ) : (
-                      <span>Simpan</span>
-                    )}
-                  </button>
-                </div>
-              </div>
-            </form>
           </div>
         </div>
       )}

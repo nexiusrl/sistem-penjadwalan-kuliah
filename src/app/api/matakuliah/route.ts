@@ -9,7 +9,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'Akses ditolak.' }, { status: 403 });
     }
 
-    const { name, code, sks, day, timeSlot } = await req.json();
+    const { name, code, sks, day, timeSlot, lecturer, room } = await req.json();
     if (!name || !code || !sks || !day || !timeSlot) {
       return NextResponse.json({
         message: 'Nama, Kode MK, SKS, Hari, dan Slot Waktu wajib diisi.'
@@ -23,9 +23,28 @@ export async function POST(req: Request) {
       code,
       sks: parseInt(sks),
       day,
-      timeSlot
+      timeSlot,
+      lecturer: lecturer || '',
+      room: room || ''
     };
     db.matakuliah.push(newMK);
+
+    // Automatically sync to schedules if lecturer and room are provided
+    if (lecturer && room) {
+      const newSchedule = {
+        id: db.schedules.length > 0 ? Math.max(...db.schedules.map(s => s.id)) + 1 : 1,
+        subject: name,
+        code,
+        lecturer,
+        room,
+        day,
+        timeSlot,
+        status: 'validated' as const,
+        details: ''
+      };
+      db.schedules.push(newSchedule);
+    }
+
     writeDB(db);
 
     return NextResponse.json(newMK, { status: 201 });

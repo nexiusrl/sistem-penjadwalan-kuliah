@@ -8,17 +8,15 @@ interface MasterDataPanelProps {
   matakuliah: Subject[];
   userRole: 'admin' | 'dosen' | 'mahasiswa';
   onRefresh: () => void;
+  initialSubTab?: SubTab;
+  initialEditSubjectId?: number | null;
+  onClearInitialState?: () => void;
 }
 
 type SubTab = 'dosen' | 'ruang' | 'mk';
 
-export default function MasterDataPanel({
-  dosen,
-  ruangan,
-  matakuliah,
-  userRole,
-  onRefresh,
-}: MasterDataPanelProps) {
+export default function MasterDataPanel(props: MasterDataPanelProps) {
+  const { dosen, ruangan, matakuliah, userRole, onRefresh } = props;
   const [activeTab, setActiveTab] = useState<SubTab>('dosen');
   const [isOpen, setIsOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
@@ -39,6 +37,24 @@ export default function MasterDataPanel({
   const [mkDay, setMkDay] = useState('Senin');
   const [mkTimeStart, setMkTimeStart] = useState('08:00');
   const [mkTimeEnd, setMkTimeEnd] = useState('10:30');
+  const [mkLecturer, setMkLecturer] = useState('');
+  const [mkRoom, setMkRoom] = useState('');
+
+  // Handle external redirect from dashboard
+  React.useEffect(() => {
+    if (props.initialSubTab) {
+      setActiveTab(props.initialSubTab);
+    }
+    if (props.initialEditSubjectId) {
+      const item = matakuliah.find(m => m.id === props.initialEditSubjectId);
+      if (item) {
+        openEditModal(item);
+      }
+      if (props.onClearInitialState) {
+        props.onClearInitialState();
+      }
+    }
+  }, [props.initialSubTab, props.initialEditSubjectId, matakuliah]);
 
   const openAddModal = () => {
     setEditId(null);
@@ -54,6 +70,8 @@ export default function MasterDataPanel({
     setMkDay('Senin');
     setMkTimeStart('08:00');
     setMkTimeEnd('10:30');
+    setMkLecturer('');
+    setMkRoom('');
     setIsOpen(true);
   };
 
@@ -75,6 +93,8 @@ export default function MasterDataPanel({
       setMkCode(m.code);
       setMkSks(m.sks);
       setMkDay(m.day);
+      setMkLecturer(m.lecturer || '');
+      setMkRoom(m.room || '');
       if (m.timeSlot && m.timeSlot.includes(' - ')) {
         const parts = m.timeSlot.split(' - ');
         setMkTimeStart(parts[0]);
@@ -132,12 +152,39 @@ export default function MasterDataPanel({
         capacity: Number(ruangCapacity)
       };
     } else if (activeTab === 'mk') {
+      // Client-side conflict warning check
+      if (mkLecturer && mkRoom) {
+        const timeSlotStr = `${mkTimeStart} - ${mkTimeEnd}`;
+        const hasConflict = matakuliah.some(m => {
+          // Skip itself when editing
+          if (editId && m.id === editId) return false;
+          
+          if (m.day === mkDay && m.timeSlot === timeSlotStr) {
+            if (m.room && m.room === mkRoom) return true;
+            if (m.lecturer && m.lecturer === mkLecturer) return true;
+          }
+          return false;
+        });
+
+        if (hasConflict) {
+          const confirmSave = window.confirm(
+            'Peringatan: Jadwal baru ini bentrok dengan mata kuliah lain (Dosen atau Ruangan sama pada hari & jam tersebut).\n\nTetap simpan?'
+          );
+          if (!confirmSave) {
+            setLoading(false);
+            return;
+          }
+        }
+      }
+
       payload = {
         name: mkName.trim(),
         code: mkCode.trim().toUpperCase(),
         sks: Number(mkSks),
         day: mkDay,
-        timeSlot: `${mkTimeStart} - ${mkTimeEnd}`
+        timeSlot: `${mkTimeStart} - ${mkTimeEnd}`,
+        lecturer: mkLecturer,
+        room: mkRoom
       };
     }
 
@@ -338,7 +385,9 @@ export default function MasterDataPanel({
                   <th className="px-5 py-4 text-slate-900 font-bold text-sm">Nama Mata Kuliah</th>
                   <th className="px-5 py-4 w-20">SKS</th>
                   <th className="px-5 py-4 w-28">Hari</th>
-                  <th className="px-5 py-4 w-32">Waktu Asal</th>
+                  <th className="px-5 py-4 w-32">Waktu</th>
+                  <th className="px-5 py-4">Dosen Pengampu</th>
+                  <th className="px-5 py-4 w-24">Ruang</th>
                   {userRole === 'admin' && <th className="px-5 py-4 w-28 text-right">Aksi</th>}
                 </tr>
               </thead>
@@ -357,6 +406,16 @@ export default function MasterDataPanel({
                       <td className="px-5 py-4 text-slate-655 font-medium font-mono">{m.sks} SKS</td>
                       <td className="px-5 py-4 text-slate-500 font-semibold">{m.day}</td>
                       <td className="px-5 py-4 font-mono font-bold text-slate-700">{m.timeSlot}</td>
+                      <td className="px-5 py-4 font-medium text-slate-700">
+                        {m.lecturer ? m.lecturer : <span className="text-slate-400 italic">Belum dialokasi</span>}
+                      </td>
+                      <td className="px-5 py-4">
+                        {m.room ? (
+                          <span className="font-bold text-blue-600">{m.room}</span>
+                        ) : (
+                          <span className="text-slate-400 italic">Belum dialokasi</span>
+                        )}
+                      </td>
                       {userRole === 'admin' && (
                         <td className="px-5 py-4 text-right space-x-2">
                           <button
@@ -585,6 +644,42 @@ export default function MasterDataPanel({
                         className="w-full rounded-xl border border-slate-200 py-2 px-3 bg-white outline-none focus:border-blue-500 transition-all font-mono font-medium text-slate-800"
                       />
                     </div>
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      Dosen Pengampu (Opsional)
+                    </label>
+                    <select
+                      value={mkLecturer}
+                      onChange={(e) => setMkLecturer(e.target.value)}
+                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 transition-all font-sans font-medium text-slate-800"
+                    >
+                      <option value="">-- Pilih Dosen (Belum Dialokasikan) --</option>
+                      {dosen.map((d) => (
+                        <option key={d.id} value={d.name}>
+                          {d.name} ({d.code})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      Ruangan Kelas (Opsional)
+                    </label>
+                    <select
+                      value={mkRoom}
+                      onChange={(e) => setMkRoom(e.target.value)}
+                      className="w-full rounded-xl border border-slate-200 py-2.5 px-3 bg-white outline-none focus:border-blue-500 transition-all font-sans font-medium text-slate-800"
+                    >
+                      <option value="">-- Pilih Ruangan (Belum Dialokasikan) --</option>
+                      {ruangan.map((r) => (
+                        <option key={r.id} value={r.name}>
+                          {r.name} ({r.type})
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </>
               )}
